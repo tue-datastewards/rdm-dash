@@ -90,13 +90,18 @@ _LIST_COLS_DMP = [
 
 
 def _parse_json_list(val) -> list:
-    """Parse a JSON array string into a list. Empty/null -> []."""
+    """Parse a JSON array string into a list.
+
+    Falls back to comma-splitting for plain comma-separated values (e.g.
+    ``metadata_standard``). Empty/null -> [].
+    """
     if pd.isna(val) or val in ("", "null", "[]"):
         return []
     try:
         v = json.loads(val)
     except (json.JSONDecodeError, TypeError):
-        return []
+        # Not JSON — treat as comma-separated plain string.
+        return [p.strip() for p in str(val).split(",") if p.strip()]
     return v if isinstance(v, list) else []
 
 
@@ -118,6 +123,8 @@ def load_dmps() -> pd.DataFrame:
     for c in _LIST_COLS_DMP:
         if c in df.columns:
             df[c] = df[c].map(_parse_json_list)
+    if "status_history" in df.columns:
+        df["status_history_parsed"] = df["status_history"].map(_parse_json_list)
     for c in ("issue_creation_time", "latest_status_time", "erb_link_creation_date", "gold_processed_at"):
         if c in df.columns:
             df[c] = pd.to_datetime(df[c], errors="coerce", utc=True)
@@ -346,3 +353,201 @@ def revision_distribution(df: pd.DataFrame) -> pd.DataFrame:
     out["Revisions"] = out["Revisions"].map(lambda v: "3+" if v >= 3 else str(v))
     out = out.groupby("Revisions", as_index=False).sum()
     return out
+
+
+def revision_summary(df: pd.DataFrame) -> dict:
+    """Headline revision metrics (Q7)."""
+    n = len(df)
+    if not n:
+        return {"% with \u22651 revision": 0, "Avg revisions per DMP": 0}
+
+    def n_revisions(seq):
+        return sum(1 for s in seq if s == "Revision requested")
+
+    counts = df["ordered_status_transition_list"].map(n_revisions)
+    return {
+        "% with \u22651 revision": float((counts > 0).mean()),
+        "Avg revisions per DMP": float(counts.mean()),
+    }
+
+
+# Q2 additions --------------------------------------------------------------
+
+def erb_approval_by_department(df_dmps: pd.DataFrame, df_erbs: pd.DataFrame) -> pd.DataFrame:
+    """ERB approval rate per department (Q2)."""
+    out = []
+    for dept in DEPARTMENTS:
+        sub_dmps = filter_department(df_dmps, dept)
+        keys = set(sub_dmps["issue_key"])
+        sub_erbs = df_erbs[df_erbs["related_dmp"].isin(keys)]
+        n = len(sub_erbs)
+        approved = int(sub_erbs["is_approved"].fillna(False).sum()) if n else 0
+        out.append({
+            "Department": dept,
+            "ERBs": n,
+            "Approved": approved,
+            "Approval rate": approved / n if n else 0,
+        })
+    return pd.DataFrame(out)
+
+
+def erb_integration_timing(df_dmps: pd.DataFrame) -> pd.DataFrame:
+    """Distribution of days to ERB link creation (Q2)."""
+    if not len(df_dmps):
+        return pd.DataFrame(columns=["Metric", "Value"])
+    s = df_dmps.loc[df_dmps["days_to_erb_link_creation"].notna(), "days_to_erb_link_creation"]
+    s = pd.to_numeric(s, errors="coerce").dropna()
+    if not len(s):
+        return pd.DataFrame(columns=["Metric", "Value"])
+    return pd.DataFrame({
+        "Metric": ["Median", "Mean", "25th pct", "75th pct"],
+        "Value": [s.median(), s.mean(), s.quantile(0.25), s.quantile(0.75)],
+    })
+
+
+# Q3 additions --------------------------------------------------------------
+
+def sensitive_data_outside_tue(df: pd.DataFrame) -> pd.DataFrame:
+    """Sensitive data stored outside TU/e-supported solutions (Q3/Q4)."""
+    n = len(df)
+    if not n:
+        return pd.DataFrame(columns=["Category", "DMPs"])
+    sensitive = df[df["has_special_category"] == True]
+
+    def uses_external(v):
+        return any(s not in TUE_STORAGE for s in v)
+
+    sc_ext = int(sensitive["data_storage_list"].map(uses_external).sum()) if len(sensitive) else 0
+    sc_tue = int(len(sensitive) - sc_ext)
+    nonsc = n - len(sensitive)
+    return pd.DataFrame({
+        "Category": [
+            "Sensitive + external storage",
+            "Sensitive + TU/e storage only",
+            "Not sensitive / unknown",
+        ],
+        "DMPs": [sc_ext, sc_tue, nonsc],
+    })
+
+
+def storage_count_distribution(df: pd.DataFrame) -> pd.DataFrame:
+    """Distribution of storage solution count per DMP (Q3)."""
+    if not len(df):
+        return pd.DataFrame(columns=["Solutions", "DMPs"])
+    s = pd.to_numeric(df["storage_solution_count"], errors="coerce").fillna(0).astype(int)
+    out = s.value_counts().sort_index().reset_index()
+    out.columns = ["Solutions", "DMPs"]
+    out["Solutions"] = out["Solutions"].map(lambda v: "4+" if v >= 4 else str(v))
+    out = out.groupby("Solutions", as_index=False).sum()
+    return out
+
+
+# Q4 -------------------------------------------------------------------------
+
+def data_sharing_breakdown(df: pd.DataFrame) -> pd.DataFrame:
+    """Breakdown of data-sharing destinations (Q4)."""
+    if not len(df):
+        return pd.DataFrame(columns=["Destination", "DMPs"])
+    label_map = {
+        "no": "No sharing",
+        "inside_eea": "Inside EEA",
+        "outside_eea": "Outside EEA",
+    }
+    s = df["data_sharing"].fillna("(unknown)").replace({"null": "(unknown)"})
+    s = s.map(lambda v: label_map.get(v, v))
+    counts = s.value_counts().reset_index()
+    counts.columns = ["Destination", "DMPs"]
+    return counts
+
+
+def special_category_summary(df: pd.DataFrame) -> dict:
+    """Special-category (DPIA-relevance proxy) rate (Q4)."""
+    n = len(df)
+    if not n:
+        return {"Special-category rate": 0}
+    sc = int(df["has_special_category"].fillna(False).sum())
+    return {"Special-category rate": sc / n}
+
+
+# Q8 / Q9 -------------------------------------------------------------------
+
+def _sorted_history(row) -> list:
+    """Parse status_history into a chronologically-sorted list of (status, ts)."""
+    hist = row.get("status_history_parsed")
+    if not hist:
+        return []
+    pairs = []
+    for ev in hist:
+        if not isinstance(ev, dict):
+            continue
+        st = ev.get("status")
+        ts = ev.get("timestamp")
+        if st is None or ts is None:
+            continue
+        dt = pd.to_datetime(ts, errors="coerce", utc=True)
+        if pd.notna(dt):
+            pairs.append((st, dt))
+    pairs.sort(key=lambda p: p[1])
+    return pairs
+
+
+def days_to_first_submission(df: pd.DataFrame) -> pd.Series:
+    """Days from DMP creation to first 'Submitted' status (Q8)."""
+    if not len(df):
+        return pd.Series(dtype=float)
+    out = []
+    for _, row in df.iterrows():
+        created = row["issue_creation_time"]
+        if pd.isna(created):
+            out.append(None)
+            continue
+        pairs = _sorted_history(row)
+        first_sub = next((ts for st, ts in pairs if st == "Submitted"), None)
+        out.append((first_sub - created).days if first_sub is not None else None)
+    return pd.Series(out, index=df.index)
+
+
+def first_response_time(df: pd.DataFrame) -> pd.Series:
+    """Days from first 'Submitted' to the next status transition (Q9).
+
+    The Data Steward's response is taken as the first status change after
+    'Submitted' (e.g. 'Revision requested' or 'Revised (Positive advise)').
+    """
+    if not len(df):
+        return pd.Series(dtype=float)
+    out = []
+    for _, row in df.iterrows():
+        pairs = _sorted_history(row)
+        # find first Submitted
+        sub_idx = next((i for i, (st, _) in enumerate(pairs) if st == "Submitted"), None)
+        if sub_idx is None or sub_idx + 1 >= len(pairs):
+            out.append(None)
+            continue
+        sub_ts = pairs[sub_idx][1]
+        next_ts = pairs[sub_idx + 1][1]
+        out.append((next_ts - sub_ts).days if next_ts >= sub_ts else None)
+    return pd.Series(out, index=df.index)
+
+
+# Q10 -----------------------------------------------------------------------
+
+_HELP_FIELDS = ["data_repository", "metadata_standard", "processing_tools_list"]
+
+
+def help_needed_rate(df: pd.DataFrame) -> pd.DataFrame:
+    """'I need advice' rate per DMP field (Q10)."""
+    n = len(df)
+    if not n:
+        return pd.DataFrame(columns=["Field", "DMPs", "Rate"])
+    rows = []
+    for field in _HELP_FIELDS:
+        count = int(df[field].map(
+            lambda v: any("i need advice" in str(x).lower() for x in v)
+        ).sum())
+        rows.append({"Field": field, "DMPs": count, "Rate": count / n})
+    combined = int(df.apply(
+        lambda r: any("i need advice" in str(x).lower() for f in _HELP_FIELDS for x in r[f]),
+        axis=1,
+    ).sum())
+    rows.append({"Field": "Any field (combined)", "DMPs": combined, "Rate": combined / n})
+    return pd.DataFrame(rows)

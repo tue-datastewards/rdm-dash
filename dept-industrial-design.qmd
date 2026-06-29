@@ -22,6 +22,8 @@ dk_approval = f'{dkpi["Approval rate"]:.0%}'
 dk_erb = f'{dkpi["ERB linkage rate"]:.0%}'
 dk_repo = f'{dkpi["Trusted repository rate"]:.0%}'
 dk_raps = f'{dkpi["RAPS archival rate"]:.0%}'
+drev = h.revision_summary(ddmps)
+dk_revision = f'{drev["% with ≥1 revision"]:.0%}'
 ```
 
 {{< include _dept-content.qmd >}}

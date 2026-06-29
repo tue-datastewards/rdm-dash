@@ -17,14 +17,16 @@ pio.templates.default = "plotly_white"
 dmps = h.load_dmps()
 erbs = h.load_erbs()
 kpi = h.kpi_table(dmps)
+rev = h.revision_summary(dmps)
 k_total = kpi["Total DMPs"]
 k_approval = f'{kpi["Approval rate"]:.0%}'
 k_erb = f'{kpi["ERB linkage rate"]:.0%}'
 k_repo = f'{kpi["Trusted repository rate"]:.0%}'
 k_raps = f'{kpi["RAPS archival rate"]:.0%}'
+k_revision = f'{rev["% with ≥1 revision"]:.0%}'
 ```
 
-::: {layout="[1,1,1,1,1]"}
+::: {layout="[1,1,1,1,1,1]"}
 ::: {.callout-note title="Total DMPs"}
 `{python} k_total`
 :::
@@ -40,9 +42,12 @@ k_raps = f'{kpi["RAPS archival rate"]:.0%}'
 ::: {.callout-important title="Archived at RAPS"}
 `{python} k_raps`
 :::
+::: {.callout-note title="DMPs with ≥1 revision"}
+`{python} k_revision`
+:::
 :::
 
-## Compliance & storage {.tabset}
+## Compliance {.tabset}
 
 ### Approval by department
 
@@ -59,6 +64,31 @@ fig = px.bar(
     hover_data=["DMPs", "Approved"],
     color="Approval rate",
     color_continuous_scale="Blues",
+)
+fig.update_layout(
+    yaxis={"categoryorder": "total ascending"},
+    xaxis_tickformat="0%",
+    coloraxis_showscale=False,
+    height=500,
+)
+fig
+```
+
+### ERB approval by department
+
+ERB approval rate per department (Q2).
+
+```{python}
+df = h.erb_approval_by_department(dmps, erbs)
+fig = px.bar(
+    df,
+    x="Approval rate",
+    y="Department",
+    orientation="h",
+    text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
+    hover_data=["ERBs", "Approved"],
+    color="Approval rate",
+    color_continuous_scale="Greens",
 )
 fig.update_layout(
     yaxis={"categoryorder": "total ascending"},
@@ -103,6 +133,8 @@ fig.update_layout(height=500)
 fig
 ```
 
+## Data handling {.tabset}
+
 ### Storage
 
 TU/e-supported vs. external storage (Q3).
@@ -111,6 +143,39 @@ TU/e-supported vs. external storage (Q3).
 df = h.storage_split(dmps)
 fig = px.pie(df, names="Category", values="DMPs", hole=0.4)
 fig.update_layout(height=500)
+fig
+```
+
+### Storage solution count
+
+Number of storage solutions used per DMP (Q3).
+
+```{python}
+df = h.storage_count_distribution(dmps)
+fig = px.bar(df, x="Solutions", y="DMPs", text="DMPs", color="DMPs")
+fig.update_layout(showlegend=False, height=500)
+fig
+```
+
+### Sensitive data outside TU/e
+
+Sensitive (special-category) data stored outside TU/e-supported solutions (Q3/Q4).
+
+```{python}
+df = h.sensitive_data_outside_tue(dmps)
+fig = px.bar(df, x="Category", y="DMPs", text="DMPs", color="Category")
+fig.update_layout(showlegend=False, height=500)
+fig
+```
+
+### Data sharing
+
+Data-sharing destinations — proxy for agreement necessity (Q4).
+
+```{python}
+df = h.data_sharing_breakdown(dmps)
+fig = px.bar(df, x="Destination", y="DMPs", text="DMPs", color="Destination")
+fig.update_layout(showlegend=False, height=500)
 fig
 ```
 
@@ -124,5 +189,56 @@ Number of "Revision requested" rounds per DMP (Q7).
 df = h.revision_distribution(dmps)
 fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
 fig.update_layout(showlegend=False, height=500)
+fig
+```
+
+### Days to first submission
+
+Days from DMP creation to first "Submitted" status (Q8).
+
+```{python}
+s = h.days_to_first_submission(dmps).dropna()
+fig = px.histogram(s, nbins=40, labels={"value": "Days"})
+fig.update_layout(
+    xaxis_title="Days",
+    yaxis_title="DMPs",
+    height=500,
+    showlegend=False,
+    annotations=[dict(
+        text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
+        xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False,
+    )],
+)
+fig
+```
+
+### First response time
+
+Days from submission to the first Data Steward response (Q9).
+
+```{python}
+s = h.first_response_time(dmps).dropna()
+fig = px.histogram(s, nbins=40, labels={"value": "Days"})
+fig.update_layout(
+    xaxis_title="Days",
+    yaxis_title="DMPs",
+    height=500,
+    showlegend=False,
+    annotations=[dict(
+        text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
+        xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False,
+    )],
+)
+fig
+```
+
+### Help needed
+
+"I need advice" rate across DMP fields (Q10).
+
+```{python}
+df = h.help_needed_rate(dmps)
+fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
+fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=500)
 fig
 ```
