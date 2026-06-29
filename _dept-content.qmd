@@ -1,80 +1,47 @@
----
-title: "RDM Dashboard"
-subtitle: "Research Data Management — TU/e Data Stewards"
-format:
-  html:
-    page-layout: full
-    toc: false
----
-
-```{python}
-#| include: false
-import _helpers as h
-import plotly.express as px
-import plotly.io as pio
-
-pio.templates.default = "plotly_white"
-dmps = h.load_dmps()
-erbs = h.load_erbs()
-kpi = h.kpi_table(dmps)
-k_total = kpi["Total DMPs"]
-k_approval = f'{kpi["Approval rate"]:.0%}'
-k_erb = f'{kpi["ERB linkage rate"]:.0%}'
-k_repo = f'{kpi["Trusted repository rate"]:.0%}'
-k_raps = f'{kpi["RAPS archival rate"]:.0%}'
-```
-
 ::: {layout="[1,1,1,1,1]"}
 ::: {.callout-note title="Total DMPs"}
-`{python} k_total`
+`{python} dk_total`
 :::
 ::: {.callout-tip title="Approval rate"}
-`{python} k_approval`
+`{python} dk_approval`
 :::
 ::: {.callout-caution title="ERB linkage"}
-`{python} k_erb`
+`{python} dk_erb`
 :::
 ::: {.callout-warning title="Trusted repository"}
-`{python} k_repo`
+`{python} dk_repo`
 :::
 ::: {.callout-important title="Archived at RAPS"}
-`{python} k_raps`
+`{python} dk_raps`
 :::
 :::
 
 ## Compliance & storage {.tabset}
 
-### Approval by department
+### Approval by purpose
 
-DMP approval rate per department (Q1).
+Approval rate by scientific vs. educational purpose (Q1).
 
 ```{python}
-df = h.approval_by_department(dmps)
+df = h.approval_by_purpose(ddmps)
 fig = px.bar(
     df,
-    x="Approval rate",
-    y="Department",
-    orientation="h",
+    x="Purpose",
+    y="Approval rate",
     text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
     hover_data=["DMPs", "Approved"],
-    color="Approval rate",
-    color_continuous_scale="Blues",
+    color="Purpose",
 )
-fig.update_layout(
-    yaxis={"categoryorder": "total ascending"},
-    xaxis_tickformat="0%",
-    coloraxis_showscale=False,
-    height=500,
-)
+fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=500)
 fig
 ```
 
 ### ERB decisions
 
-ERB outcome breakdown across all ERBs (Q2).
+ERB outcome breakdown for this department (Q2).
 
 ```{python}
-df = h.erb_breakdown(dmps, erbs)
+df = h.erb_breakdown(ddmps, derbs)
 fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
 fig.update_layout(showlegend=False, height=500)
 fig
@@ -85,7 +52,7 @@ fig
 Repository selected for FAIR data publication (Q5).
 
 ```{python}
-df = h.repository_breakdown(dmps)
+df = h.repository_breakdown(ddmps)
 df = df[df["Repository"] != "(none)"]
 fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
 fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=500)
@@ -97,7 +64,7 @@ fig
 Where project data is archived (Q6).
 
 ```{python}
-df = h.archive_breakdown(dmps)
+df = h.archive_breakdown(ddmps)
 fig = px.pie(df, names="Location", values="DMPs", hole=0.4)
 fig.update_layout(height=500)
 fig
@@ -108,7 +75,7 @@ fig
 TU/e-supported vs. external storage (Q3).
 
 ```{python}
-df = h.storage_split(dmps)
+df = h.storage_split(ddmps)
 fig = px.pie(df, names="Category", values="DMPs", hole=0.4)
 fig.update_layout(height=500)
 fig
@@ -121,7 +88,7 @@ fig
 Number of "Revision requested" rounds per DMP (Q7).
 
 ```{python}
-df = h.revision_distribution(dmps)
+df = h.revision_distribution(ddmps)
 fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
 fig.update_layout(showlegend=False, height=500)
 fig

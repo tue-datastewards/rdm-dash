@@ -7,7 +7,39 @@ website:
     left:
       - href: index.qmd
         text: Home
+      - text: Departments
+        menu:
+          - href: dept-industrial-design.qmd
+            text: Industrial Design (ID)
+          - href: dept-industrial-engineering.qmd
+            text: Industrial Engineering & Innovation Sciences (IE&IS)
+          - href: dept-built-environment.qmd
+            text: Built Environment (BE)
+          - href: dept-mathematics-computer-science.qmd
+            text: Mathematics & Computer Science (M&CS)
+          - href: dept-biomedical-engineering.qmd
+            text: Biomedical Engineering (BmE)
+          - href: dept-mechanical-engineering.qmd
+            text: Mechanical Engineering (ME)
+          - href: dept-applied-physics.qmd
+            text: Applied Physics & Science Education (AP&SE)
+          - href: dept-electrical-engineering.qmd
+            text: Electrical Engineering (EE)
+          - href: dept-chemical-engineering.qmd
+            text: Chemical Engineering & Chemistry (CE&C)
+      - text: Reference
+        menu:
+          - href: research-questions.md
+            text: Research Questions
+          - href: metrics.md
+            text: Metrics
+          - href: queries.md
+            text: Data Queries
       - about.qmd
+
+execute:
+  echo: false
+  warning: false
 
 format:
   html:
@@ -16,6 +48,3 @@ format:
       - brand
     css: styles.css
     toc: true
-
-
-
