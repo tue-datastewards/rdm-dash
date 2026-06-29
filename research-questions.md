@@ -16,25 +16,25 @@ These map to the compliance table and can each be disaggregated by purpose
 5. To what extent do projects **publish their FAIR data in a trusted repository** — i.e., what share of researchers selected a repository for publication (open or restricted)?
 6. What share of projects **archive their data at the TU/e archive (RAPS)**?
 
-## B. DMP Process Evaluation (survey-based)
+## B. DMP lifecycle & workflow metrics
+
+7. **Revision frequency** — how often does a DMP enter the "Revision Requested" status?
+8. **Time to first submission** — how long elapses between DRAFT and SUBMITTED (ideally pre-computed as `days_to_first_submission`)?
+9. **First response time after submission** — how long does it take a Data Steward to first respond after submission (ideally pre-computed)?
+10. **Reuse rate** — % of researchers reusing DMPs across new projects (DMPs per person). _Flagged as low-value, since many projects require only a single DMP (most students)._
+11. **Help-seeking frequency** - What proportion of DMPs states "I need help" during first submission.
+
+## C. DMP Process Evaluation (survey-based)
 
 From the survey sent to researchers who interacted with the DMP
 template in the Research Cockpit:
 
-7. How easy do researchers find it to **locate the DMP template** in the Research Cockpit?
-8. How easy do researchers find **completing the DMP**?
-9. How clear are the **instructions and guidance** provided within the DMP template?
-10. How helpful is the **advice provided by Data Stewards**?
+12. How easy do researchers find it to **locate the DMP template** in the Research Cockpit?
+13. How easy do researchers find **completing the DMP**?
+14. How clear are the **instructions and guidance** provided within the DMP template?
+15. How helpful is the **advice provided by Data Stewards**?
 
-## C. Communication, Training & Support reach
+## D. Communication, Training & Support reach
 
-11. What is the **reach of RDM communication activities** (news items, roadshows, workshops, steward support)?
-12. What is the **training participation rate**?
-
-## D. DMP lifecycle & workflow metrics
-
-13. **Revision frequency** — how often does a DMP enter the "Revision Requested" status?
-14. **Time to first submission** — how long elapses between DRAFT and SUBMITTED (ideally pre-computed as `days_to_first_submission`)?
-15. **First response time after submission** — how long does it take a Data Steward to first respond after submission (ideally pre-computed)?
-16. **Reuse rate** — % of researchers reusing DMPs across new projects (DMPs per person). _Flagged as low-value, since many projects require only a single DMP (most students)._
-17. **Help-seeking frequency** - What proportion of DMPs states "I need help" during first submission.
+16. What is the **reach of RDM communication activities** (news items, roadshows, workshops, steward support)?
+17. What is the **training participation rate**?
