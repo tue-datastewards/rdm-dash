@@ -18,11 +18,11 @@ These map to the compliance table and can each be disaggregated by purpose
 
 ## B. DMP lifecycle & workflow metrics
 
-7. **Revision frequency** — how often does a DMP enter the "Revision Requested" status?
-8. **Time to first submission** — how long elapses between DRAFT and SUBMITTED (ideally pre-computed as `days_to_first_submission`)?
-9. **First response time after submission** — how long does it take a Data Steward to first respond after submission (ideally pre-computed)?
-10. **Reuse rate** — % of researchers reusing DMPs across new projects (DMPs per person). _Flagged as low-value, since many projects require only a single DMP (most students)._
-11. **Help-seeking frequency** - What proportion of DMPs states "I need help" during first submission.
+7. How often does a DMP enter the "Revision Requested" status?
+8. How long elapses between DRAFT and SUBMITTED (ideally pre-computed as `days_to_first_submission`)?
+9. How long does it take a Data Steward to first respond after submission (ideally pre-computed)?
+10. What proportion of DMPs state "I need help" during first submission?
+11. What share of researchers reuse DMPs across new projects (DMPs per person)?
 
 ## C. DMP Process Evaluation (survey-based)
 
