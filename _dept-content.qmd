@@ -23,7 +23,7 @@
 
 ### Approval by purpose
 
-Approval rate by scientific vs. educational purpose (Q1).
+> **Q1.** What share of research projects have an **approved Data Management Plan (DMP)**, broken down **per department**?
 
 ```{python}
 df = h.approval_by_purpose(ddmps)
@@ -41,7 +41,7 @@ fig
 
 ### ERB decisions
 
-ERB outcome breakdown for this department (Q2).
+> **Q2.** What share of projects require **Ethical Review Board (ERB) approval** — i.e., what share of research involving **human data** has valid ethical approval and an integrated DMP?
 
 ```{python}
 df = h.erb_breakdown(ddmps, derbs)
@@ -52,7 +52,7 @@ fig
 
 ### Repository choice
 
-Repository selected for FAIR data publication (Q5).
+> **Q5.** To what extent do projects **publish their FAIR data in a trusted repository** — i.e., what share of researchers selected a repository for publication (open or restricted)?
 
 ```{python}
 df = h.repository_breakdown(ddmps)
@@ -64,7 +64,7 @@ fig
 
 ### Archive location
 
-Where project data is archived (Q6).
+> **Q6.** What share of projects **archive their data at the TU/e archive (RAPS)**?
 
 ```{python}
 df = h.archive_breakdown(ddmps)
@@ -77,7 +77,7 @@ fig
 
 ### Storage
 
-TU/e-supported vs. external storage (Q3).
+> **Q3.** To what extent do projects use **TU/e secured storage**, and conversely, what share of **sensitive research data** is stored **outside** TU/e-supported solutions?
 
 ```{python}
 df = h.storage_split(ddmps)
@@ -88,7 +88,7 @@ fig
 
 ### Storage solution count
 
-Number of storage solutions used per DMP (Q3).
+> **Q3.** To what extent do projects use **TU/e secured storage**, and conversely, what share of **sensitive research data** is stored **outside** TU/e-supported solutions?
 
 ```{python}
 df = h.storage_count_distribution(ddmps)
@@ -99,7 +99,7 @@ fig
 
 ### Sensitive data outside TU/e
 
-Sensitive (special-category) data stored outside TU/e-supported solutions (Q3/Q4).
+> **Q3.** To what extent do projects use **TU/e secured storage**, and conversely, what share of **sensitive research data** is stored **outside** TU/e-supported solutions?
 
 ```{python}
 df = h.sensitive_data_outside_tue(ddmps)
@@ -110,7 +110,7 @@ fig
 
 ### Data sharing
 
-Data-sharing destinations — proxy for agreement necessity (Q4).
+> **Q4.** What share of projects require a **data sharing/receiving agreement** or other legal agreement (DPIA, etc., for special-category data)? How many DMPs **triggered a DA (Data Agreement) request**?
 
 ```{python}
 df = h.data_sharing_breakdown(ddmps)
@@ -123,7 +123,7 @@ fig
 
 ### Revisions
 
-Number of "Revision requested" rounds per DMP (Q7).
+> **Q7.** How often does a DMP enter the **"Revision Requested"** status?
 
 ```{python}
 df = h.revision_distribution(ddmps)
@@ -134,7 +134,7 @@ fig
 
 ### Days to first submission
 
-Days from DMP creation to first "Submitted" status (Q8).
+> **Q8.** How long elapses between **DRAFT and SUBMITTED** (ideally pre-computed as `days_to_first_submission`)?
 
 ```{python}
 s = h.days_to_first_submission(ddmps).dropna()
@@ -154,7 +154,7 @@ fig
 
 ### First response time
 
-Days from submission to the first Data Steward response (Q9).
+> **Q9.** How long does it take a **Data Steward to first respond** after submission (ideally pre-computed)?
 
 ```{python}
 s = h.first_response_time(ddmps).dropna()
@@ -174,7 +174,7 @@ fig
 
 ### Help needed
 
-"I need advice" rate across DMP fields (Q10).
+> **Q10.** What proportion of DMPs state **"I need help"** during first submission?
 
 ```{python}
 df = h.help_needed_rate(ddmps)
