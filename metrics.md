@@ -4,9 +4,11 @@ Concrete metrics for each answerable research question, computed from the
 DMP dataset (`data/DMPs_2025_09_10_onwards.csv`) and ERB dataset
 (`data/ERBs_2025_09_10_onwards.csv`).
 
-## Fully Answerable Questions
+## Questions
 
 ### Q1 — Approved DMP per department
+
+**Status:** Fully answerable
 
 **Sources:** DMP (`is_approved`, `tue_department`, `is_scientific`)
 
@@ -16,6 +18,8 @@ DMP dataset (`data/DMPs_2025_09_10_onwards.csv`) and ERB dataset
 
 ### Q2 — ERB approval
 
+**Status:** Fully answerable
+
 **Sources:** DMP (`has_related_erb`, `related_erb`, `erb_link_creation_date`, `days_to_erb_link_creation`, `has_special_category`) + ERB (`is_approved`, `related_dmp`, `status_history`)
 
 - **ERB linkage rate** — % of DMPs with a linked ERB (`has_related_erb = true`)
@@ -24,7 +28,31 @@ DMP dataset (`data/DMPs_2025_09_10_onwards.csv`) and ERB dataset
 - **ERB approval rate per department** (join ERB → DMP → department)
 - **Integration timing** — `days_to_erb_link_creation` / `days_to_dmp_link_creation`
 
+### Q3 — TU/e secured storage + sensitive data outside TU/e
+
+**Status:** Partially answerable
+
+**Sources:** DMP (`data_storage_list`, `data_storage_after_list`, `storage_solution_count`, `has_special_category`)
+
+- **TU/e-supported storage rate** — % using TU/e Network Drive / SharePoint-Teams / SURF Research Drive
+- **External storage rate** — % "Other..."
+- **Sensitive-data-outside-TU/e rate** — `has_special_category = true` × external storage solution
+- **Storage solution count distribution** — `storage_solution_count`
+
+### Q4 — Data sharing agreement / DA request / DPIA
+
+**Status:** Partially answerable
+
+**Sources:** DMP (`data_sharing`, `has_special_category`)
+
+- **Data-sharing rate** — % with `data_sharing` ≠ "no" (inside_eea / outside_eea)
+- **Outside-EEA sharing rate** — proxy for agreement necessity
+- **Special-category rate** — `has_special_category = true` (proxy for DPIA relevance)
+- **Cross-metric** — special-category × outside-EEA sharing (proxy for DA-request likelihood)
+
 ### Q5 — FAIR data publication in trusted repository
+
+**Status:** Fully answerable
 
 **Sources:** DMP (`data_repository`)
 
@@ -36,6 +64,8 @@ DMP dataset (`data/DMPs_2025_09_10_onwards.csv`) and ERB dataset
 
 ### Q6 — Archive at TU/e archive (RAPS)
 
+**Status:** Fully answerable
+
 **Sources:** DMP (`archive_location`)
 
 - **RAPS archival rate** — % with `archive_location = tue_archive`
@@ -45,6 +75,8 @@ DMP dataset (`data/DMPs_2025_09_10_onwards.csv`) and ERB dataset
 
 ### Q7 — Revision frequency
 
+**Status:** Fully answerable
+
 **Sources:** DMP (`ordered_status_transition_list`, `status_history`)
 
 - **% of DMPs with ≥1 "Revision requested" transition**
@@ -52,27 +84,9 @@ DMP dataset (`data/DMPs_2025_09_10_onwards.csv`) and ERB dataset
 - **Revision count distribution** (0, 1, 2, 3+)
 - Per department and per purpose
 
-## Partially answerable
-
-### Q3 — TU/e secured storage + sensitive data outside TU/e
-
-**Sources:** DMP (`data_storage_list`, `data_storage_after_list`, `storage_solution_count`, `has_special_category`)
-
-- **TU/e-supported storage rate** — % using TU/e Network Drive / SharePoint-Teams / SURF Research Drive
-- **External storage rate** — % "Other..."
-- **Sensitive-data-outside-TU/e rate** — `has_special_category = true` × external storage solution
-- **Storage solution count distribution** — `storage_solution_count`
-
-### Q4 — Data sharing agreement / DA request / DPIA
-
-**Sources:** DMP (`data_sharing`, `has_special_category`)
-
-- **Data-sharing rate** — % with `data_sharing` ≠ "no" (inside_eea / outside_eea)
-- **Outside-EEA sharing rate** — proxy for agreement necessity
-- **Special-category rate** — `has_special_category = true` (proxy for DPIA relevance)
-- **Cross-metric** — special-category × outside-EEA sharing (proxy for DA-request likelihood)
-
 ### Q8 — Time DRAFT → SUBMITTED
+
+**Status:** Partially answerable
 
 **Sources:** DMP (`status_history`, `issue_creation_time`)
 
@@ -83,6 +97,8 @@ DMP dataset (`data/DMPs_2025_09_10_onwards.csv`) and ERB dataset
 
 ### Q9 — First response time after submission
 
+**Status:** Partially answerable
+
 **Sources:** DMP (`status_history`)
 
 - **days_to_first_response** — first status transition after "Submitted" − "Submitted" timestamp
@@ -91,6 +107,8 @@ DMP dataset (`data/DMPs_2025_09_10_onwards.csv`) and ERB dataset
 - ⚠️ _Caveat:_ not pre-computed; must define which transition counts as the Data Steward's response ("Revision requested"? "Revised (Positive advise)"?)
 
 ### Q10 — "I need help" during first submission
+
+**Status:** Partially answerable
 
 **Sources:** DMP (`data_repository`, `metadata_standard`, `processing_tools_list`)
 
