@@ -8,6 +8,7 @@ pandas = "*"
 plotly = "*"
 
 [dev-packages]
+frictionless = "*"
 
 [requires]
 python_version = "3.14"

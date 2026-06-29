@@ -1,0 +1,35 @@
+{
+  "$schema": "https://specs.frictionlessdata.io/schemas/table-schema.json",
+  "title": "Ethical Review Board applications (ERBs)",
+  "description": "Ethical Review Board (ERB) applications exported from the TU/e Research Cockpit. One row per ERB ticket. Reporting period: ERBs created on or after 2025-09-01. Each ERB may link to a related DMP via related_dmp.",
+  "missingValues": ["", "null"],
+  "primaryKey": ["issue_key"],
+  "foreignKeys": [
+    {
+      "fields": ["related_dmp"],
+      "reference": { "resource": "dmps", "fields": ["issue_key"] }
+    }
+  ],
+  "fields": [
+    { "name": "issue_key", "type": "string", "title": "Issue key", "description": "Unique ERB ticket identifier (e.g. ERB-945)." },
+    { "name": "issue_title", "type": "string", "title": "Issue title", "description": "Title of the ERB application / research project." },
+    { "name": "issue_creation_time", "type": "datetime", "title": "Issue creation time", "description": "When the ERB ticket was created (ISO 8601, UTC)." },
+    { "name": "is_approved", "type": "boolean", "title": "Is approved", "description": "Whether the ERB is currently in an approved state." },
+    { "name": "latest_status_time", "type": "datetime", "title": "Latest status time", "description": "Timestamp of the most recent status transition." },
+    { "name": "status_history", "type": "array", "title": "Status history", "description": "Full chronological status history as a JSON array of {status, timestamp} objects." },
+    { "name": "ordered_status_transition_list", "type": "array", "title": "Ordered status transitions", "description": "Ordered list of status transitions (status names only), most-recent first." },
+    { "name": "days_to_first_approval", "type": "number", "title": "Days to first approval", "description": "Days from ERB creation to first approval." },
+    { "name": "tue_department", "type": "string", "title": "TU/e department", "description": "TU/e department(s) associated with the project; comma-separated when multiple." },
+    { "name": "related_dmp", "type": "string", "title": "Related DMP", "description": "Issue key of the linked DMP (foreign key to DMPs.issue_key)." },
+    { "name": "dmp_link_creation_date", "type": "datetime", "title": "DMP link creation date", "description": "When the DMP link was created." },
+    { "name": "has_related_dmp", "type": "boolean", "title": "Has related DMP", "description": "Whether a DMP is linked to this ERB." },
+    { "name": "days_to_dmp_link_creation", "type": "number", "title": "Days to DMP link creation", "description": "Days from ERB creation to DMP link creation." },
+    { "name": "ever_approved", "type": "boolean", "title": "Ever approved", "description": "Whether the ERB was ever approved at any point in its history." },
+    { "name": "approval_count", "type": "integer", "title": "Approval count", "description": "Number of times the ERB was approved." },
+    { "name": "gold_processed_at", "type": "datetime", "title": "Gold processed at", "description": "When the record was processed into the gold fact table." },
+    { "name": "is_scientific", "type": "boolean", "title": "Is scientific purpose", "description": "Whether the project is for a scientific purpose (false = educational; missing = unknown). Sparsely populated in the ERB export." },
+    { "name": "has_special_category", "type": "boolean", "title": "Has special category", "description": "Whether the project involves special-category (sensitive) data. Empty in this ERB export; see the linked DMP." },
+    { "name": "data_sharing", "type": "string", "title": "Data sharing", "description": "Whether data is shared outside TU/e and the destination. Empty in this ERB export; see the linked DMP.", "constraints": { "enum": ["no", "inside_eea", "outside_eea"] } },
+    { "name": "archive_location", "type": "string", "title": "Archive location", "description": "Where project data is archived. Empty in this ERB export; see the linked DMP.", "constraints": { "enum": ["tue_archive", "other_archive", "other"] } }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://specs.frictionlessdata.io/schemas/data-package.json",
+  "name": "rdm-dash",
+  "title": "RDM Dashboard data package",
+  "description": "Research Data Management (RDM) exports from the TU/e Research Cockpit: Data Management Plans (DMPs) and Ethical Review Board applications (ERBs). DMPs and ERBs are linked via related_erb / related_dmp issue keys.",
+  "resources": [
+    {
+      "name": "dmps",
+      "path": "data/DMPs_2025_09_10_onwards.csv",
+      "schema": "data/DMPs.schema.json"
+    },
+    {
+      "name": "erbs",
+      "path": "data/ERBs_2025_09_10_onwards.csv",
+      "schema": "data/ERBs.schema.json"
+    }
+  ]
+}

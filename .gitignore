@@ -3,4 +3,5 @@
 **/*.quarto_ipynb
 **/*.quarto_ipynb_*
 .DS_Store
-/data/
+/data/*
+!/data/*.schema.json

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://specs.frictionlessdata.io/schemas/table-schema.json",
+  "title": "Data Management Plans (DMPs)",
+  "description": "Approved and in-progress Data Management Plans (DMPs) exported from the TU/e Research Cockpit. One row per DMP ticket. Reporting period: DMPs created on or after 2025-09-01.",
+  "missingValues": ["", "null"],
+  "primaryKey": ["issue_key"],
+  "foreignKeys": [
+    {
+      "fields": ["related_erb"],
+      "reference": { "resource": "erbs", "fields": ["issue_key"] }
+    }
+  ],
+  "fields": [
+    { "name": "issue_key", "type": "string", "title": "Issue key", "description": "Unique DMP ticket identifier (e.g. DMP-1326)." },
+    { "name": "issue_title", "type": "string", "title": "Issue title", "description": "Title of the DMP / research project." },
+    { "name": "issue_creation_time", "type": "datetime", "title": "Issue creation time", "description": "When the DMP ticket was created (ISO 8601, UTC)." },
+    { "name": "is_approved", "type": "boolean", "title": "Is approved", "description": "Whether the DMP is currently in an approved state." },
+    { "name": "latest_status_time", "type": "datetime", "title": "Latest status time", "description": "Timestamp of the most recent status transition." },
+    { "name": "status_history", "type": "array", "title": "Status history", "description": "Full chronological status history as a JSON array of {status, timestamp} objects." },
+    { "name": "ordered_status_transition_list", "type": "array", "title": "Ordered status transitions", "description": "Ordered list of status transitions (status names only), most-recent first." },
+    { "name": "days_to_first_approval", "type": "number", "title": "Days to first approval", "description": "Days from DMP creation to first approval." },
+    { "name": "tue_department", "type": "string", "title": "TU/e department", "description": "TU/e department(s) associated with the project; comma-separated when multiple." },
+    { "name": "data_volume_list", "type": "string", "title": "Data volume (bucket)", "description": "Coarse data-volume bucket.", "constraints": { "enum": ["<10 GBs", "10's of GBs", "100's of GBs", "<10 TBs", "10's TBs"] } },
+    { "name": "data_volume_tb", "type": "number", "title": "Data volume (TB)", "description": "Estimated data volume in terabytes." },
+    { "name": "has_data_volume_info", "type": "boolean", "title": "Has data volume info", "description": "Whether data-volume information was provided." },
+    { "name": "data_storage_list", "type": "array", "title": "Data storage list", "description": "JSON array of storage solutions listed in the DMP." },
+    { "name": "data_storage_after_list", "type": "array", "title": "Data storage (after) list", "description": "JSON array of storage solutions to be used after the project ends." },
+    { "name": "has_data_storage_info", "type": "boolean", "title": "Has data storage info", "description": "Whether storage information was provided." },
+    { "name": "storage_solution_count", "type": "integer", "title": "Storage solution count", "description": "Number of storage solutions listed." },
+    { "name": "data_repository", "type": "array", "title": "Data repository", "description": "JSON array of repositories selected for data publication (e.g. 4TU.ResearchData, Zenodo, OSF, 'I need advice')." },
+    { "name": "metadata_standard", "type": "string", "title": "Metadata standard", "description": "Selected metadata standard(s); comma-separated (not a JSON array)." },
+    { "name": "processing_tools_list", "type": "array", "title": "Processing tools list", "description": "JSON array of data processing tools." },
+    { "name": "processing_tools_count", "type": "integer", "title": "Processing tools count", "description": "Number of processing tools listed." },
+    { "name": "processing_tools_info", "type": "boolean", "title": "Has processing tools info", "description": "Whether processing-tools information was provided." },
+    { "name": "related_erb", "type": "string", "title": "Related ERB", "description": "Issue key of the linked ERB (foreign key to ERBs.issue_key)." },
+    { "name": "erb_link_creation_date", "type": "datetime", "title": "ERB link creation date", "description": "When the ERB link was created." },
+    { "name": "has_related_erb", "type": "boolean", "title": "Has related ERB", "description": "Whether an ERB is linked to this DMP." },
+    { "name": "days_to_erb_link_creation", "type": "number", "title": "Days to ERB link creation", "description": "Days from DMP creation to ERB link creation." },
+    { "name": "ever_approved", "type": "boolean", "title": "Ever approved", "description": "Whether the DMP was ever approved at any point in its history." },
+    { "name": "approval_count", "type": "integer", "title": "Approval count", "description": "Number of times the DMP was approved." },
+    { "name": "gold_processed_at", "type": "datetime", "title": "Gold processed at", "description": "When the record was processed into the gold fact table." },
+    { "name": "is_scientific", "type": "boolean", "title": "Is scientific purpose", "description": "Whether the project is for a scientific purpose (false = educational; missing = unknown)." },
+    { "name": "has_special_category", "type": "boolean", "title": "Has special category", "description": "Whether the project involves special-category (sensitive) data." },
+    { "name": "data_sharing", "type": "string", "title": "Data sharing", "description": "Whether data is shared outside TU/e and the destination.", "constraints": { "enum": ["no", "inside_eea", "outside_eea"] } },
+    { "name": "archive_location", "type": "string", "title": "Archive location", "description": "Where project data is archived.", "constraints": { "enum": ["tue_archive", "other_archive", "other"] } }
+  ]
+}
