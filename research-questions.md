@@ -4,7 +4,7 @@ Key research questions the RDM Dashboard seeks to answer, derived from the
 RDM Policy Implementation Report (TU/e Library & Information Services,
 Data Stewards' Team; reporting period September 2025 – August 2026).
 
-## A. RDM Policy Compliance (the six requirements)
+## A. RDM Policy Compliance
 
 These map to the compliance table and can each be disaggregated by purpose
 (scientific vs. educational) and viewed against the total across all DMPs:
