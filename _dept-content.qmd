@@ -68,8 +68,19 @@ fig
 
 ```{python}
 df = h.archive_breakdown(ddmps)
-fig = px.pie(df, names="Location", values="DMPs", hole=0.4)
-fig.update_layout(height=500)
+total = df["DMPs"].sum() or 1
+df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
+fig.update_traces(textposition="auto")
+fig.update_layout(
+    xaxis_title="",
+    yaxis_title="DMPs",
+    height=500,
+    barmode="stack",
+    showlegend=True,
+    legend_title="Location",
+)
 fig
 ```
 
@@ -81,8 +92,19 @@ fig
 
 ```{python}
 df = h.storage_split(ddmps)
-fig = px.pie(df, names="Category", values="DMPs", hole=0.4)
-fig.update_layout(height=500)
+total = df["DMPs"].sum() or 1
+df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label")
+fig.update_traces(textposition="auto")
+fig.update_layout(
+    xaxis_title="",
+    yaxis_title="DMPs",
+    height=500,
+    barmode="stack",
+    showlegend=True,
+    legend_title="Storage",
+)
 fig
 ```
 
