@@ -26,25 +26,80 @@ k_raps = f'{kpi["RAPS archival rate"]:.0%}'
 k_revision = f'{rev["% with ≥1 revision"]:.0%}'
 ```
 
-::: {layout="[1,1,1,1,1,1]"}
-::: {.callout-note title="Total DMPs"}
+::: {.kpi-grid}
+
+::: {.kpi-card .kpi-blue}
+
+::: {.kpi-label}
+Total DMPs
+:::
+
+::: {.kpi-value}
 `{python} k_total`
 :::
-::: {.callout-tip title="Approval rate"}
+
+:::
+
+::: {.kpi-card .kpi-green}
+
+::: {.kpi-label}
+Approval rate
+:::
+
+::: {.kpi-value}
 `{python} k_approval`
 :::
-::: {.callout-caution title="ERB linkage"}
+
+:::
+
+::: {.kpi-card .kpi-teal}
+
+::: {.kpi-label}
+ERB linkage
+:::
+
+::: {.kpi-value}
 `{python} k_erb`
 :::
-::: {.callout-warning title="Trusted repository"}
+
+:::
+
+::: {.kpi-card .kpi-purple}
+
+::: {.kpi-label}
+Trusted repository
+:::
+
+::: {.kpi-value}
 `{python} k_repo`
 :::
-::: {.callout-important title="Archived at RAPS"}
+
+:::
+
+::: {.kpi-card .kpi-amber}
+
+::: {.kpi-label}
+Archived at RAPS
+:::
+
+::: {.kpi-value}
 `{python} k_raps`
 :::
-::: {.callout-note title="DMPs with ≥1 revision"}
+
+:::
+
+::: {.kpi-card .kpi-indigo}
+
+::: {.kpi-label}
+DMPs with ≥1 revision
+:::
+
+::: {.kpi-value}
 `{python} k_revision`
 :::
+
+:::
+
 :::
 
 ## Compliance {.tabset}

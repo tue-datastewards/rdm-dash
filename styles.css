@@ -1,1 +1,71 @@
 /* css styles */
+
+/* ---------- KPI cards ---------- */
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.85rem;
+  margin: 1.25rem 0 1.75rem;
+}
+
+.kpi-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 108px;
+  padding: 1rem 1.15rem;
+  background: #ffffff;
+  border: 1px solid #e6e8eb;
+  border-radius: 0.6rem;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06);
+  overflow: hidden;
+}
+
+/* colored accent bar across the top of each card */
+.kpi-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--kpi-accent, #6c757d);
+}
+
+.kpi-label,
+.kpi-label p {
+  margin: 0 0 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b7280;
+}
+
+.kpi-value,
+.kpi-value p {
+  margin: 0;
+  font-size: 1.95rem;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #111827;
+}
+
+/* make the inline `{python}` result look like a number, not code */
+.kpi-value code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+
+/* accent colors */
+.kpi-blue   { --kpi-accent: #2563eb; }
+.kpi-green  { --kpi-accent: #16a34a; }
+.kpi-teal   { --kpi-accent: #0d9488; }
+.kpi-purple { --kpi-accent: #7c3aed; }
+.kpi-amber  { --kpi-accent: #d97706; }
+.kpi-indigo { --kpi-accent: #4f46e5; }
