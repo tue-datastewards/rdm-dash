@@ -102,7 +102,61 @@ DMPs with ≥1 revision
 
 :::
 
-## Compliance {.tabset}
+## DMPs per department
+
+::: {.panel-tabset}
+
+### Total
+
+> **Overview.** How many Data Management Plans (DMPs) has each department produced?
+
+```{python}
+df = h.approval_by_department(dmps)
+fig = px.bar(
+    df,
+    x="DMPs",
+    y="Department",
+    orientation="h",
+    text="DMPs",
+    color="DMPs",
+    color_continuous_scale="Blues",
+)
+fig.update_layout(
+    yaxis={"categoryorder": "total ascending"},
+    coloraxis_showscale=False,
+    height=500,
+)
+fig
+```
+
+### By purpose
+
+> **Overview.** How many Data Management Plans (DMPs) has each department produced, split by **purpose** — scientific vs. educational research?
+
+```{python}
+df = h.dmps_by_department_purpose(dmps)
+fig = px.bar(
+    df,
+    x="DMPs",
+    y="Department",
+    color="Purpose",
+    orientation="h",
+    text="DMPs",
+    category_orders={"Purpose": ["Scientific", "Educational", "Unknown"]},
+)
+fig.update_layout(
+    yaxis={"categoryorder": "total ascending"},
+    barmode="stack",
+    height=500,
+    legend_title="Purpose",
+)
+fig
+```
+
+:::
+
+## Compliance
+
 
 ### Approval by department
 
