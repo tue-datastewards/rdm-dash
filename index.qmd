@@ -1,6 +1,6 @@
 ---
-title: "RDM Dashboard"
-subtitle: "Research Data Management — TU/e Data Stewards"
+title: "RDM Policy Implementation Dashboard"
+subtitle: "Eindhoven Unviersity of Technology"
 format:
   html:
     page-layout: full
@@ -9,6 +9,7 @@ format:
 
 ```{python}
 #| include: false
+
 import _helpers as h
 import plotly.express as px
 import plotly.io as pio
@@ -27,79 +28,65 @@ k_revision = f'{rev["% with ≥1 revision"]:.0%}'
 ```
 
 ::: {.kpi-grid}
-
-::: {.kpi-card .kpi-blue}
-
-::: {.kpi-label}
+::::: {.kpi-card .kpi-blue}
+::::::: {.kpi-label}
 Total DMPs
-:::
+:::::::
 
-::: {.kpi-value}
+::::::: {.kpi-value}
 `{python} k_total`
-:::
+:::::::
+:::::
 
-:::
-
-::: {.kpi-card .kpi-green}
-
-::: {.kpi-label}
+::::: {.kpi-card .kpi-green}
+::::::: {.kpi-label}
 Approval rate
-:::
+:::::::
 
-::: {.kpi-value}
+::::::: {.kpi-value}
 `{python} k_approval`
-:::
+:::::::
+:::::
 
-:::
-
-::: {.kpi-card .kpi-teal}
-
-::: {.kpi-label}
+::::: {.kpi-card .kpi-teal}
+::::::: {.kpi-label}
 ERB linkage
-:::
+:::::::
 
-::: {.kpi-value}
+::::::: {.kpi-value}
 `{python} k_erb`
-:::
+:::::::
+:::::
 
-:::
-
-::: {.kpi-card .kpi-purple}
-
-::: {.kpi-label}
+::::: {.kpi-card .kpi-purple}
+::::::: {.kpi-label}
 Trusted repository
-:::
+:::::::
 
-::: {.kpi-value}
+::::::: {.kpi-value}
 `{python} k_repo`
-:::
+:::::::
+:::::
 
-:::
-
-::: {.kpi-card .kpi-amber}
-
-::: {.kpi-label}
+::::: {.kpi-card .kpi-amber}
+::::::: {.kpi-label}
 Archived at RAPS
-:::
+:::::::
 
-::: {.kpi-value}
+::::::: {.kpi-value}
 `{python} k_raps`
-:::
+:::::::
+:::::
 
-:::
-
-::: {.kpi-card .kpi-indigo}
-
-::: {.kpi-label}
+::::: {.kpi-card .kpi-indigo}
+::::::: {.kpi-label}
 DMPs with ≥1 revision
-:::
+:::::::
 
-::: {.kpi-value}
+::::::: {.kpi-value}
 `{python} k_revision`
-:::
-
-:::
-
+:::::::
+:::::
 :::
 
 ## DMPs per department
@@ -160,7 +147,8 @@ fig
 
 ### Approval by department
 
-> **Q1.** What share of research projects have an **approved Data Management Plan (DMP)**, broken down **per department**?
+> **Q1.** What share of research projects have an **approved Data Management
+> Plan (DMP)**, broken down **per department**?
 
 ```{python}
 df = h.approval_by_department(dmps)
@@ -185,7 +173,9 @@ fig
 
 ### ERB approval by department
 
-> **Q2.** What share of projects require **Ethical Review Board (ERB) approval** — i.e., what share of research involving **human data** has valid ethical approval and an integrated DMP?
+> **Q2.** What share of projects require **Ethical Review Board (ERB) approval**
+> --- i.e., what share of research involving **human data** has valid ethical
+> approval and an integrated DMP?
 
 ```{python}
 df = h.erb_approval_by_department(dmps, erbs)
@@ -210,7 +200,9 @@ fig
 
 ### ERB decisions
 
-> **Q2.** What share of projects require **Ethical Review Board (ERB) approval** — i.e., what share of research involving **human data** has valid ethical approval and an integrated DMP?
+> **Q2.** What share of projects require **Ethical Review Board (ERB) approval**
+> --- i.e., what share of research involving **human data** has valid ethical
+> approval and an integrated DMP?
 
 ```{python}
 df = h.erb_breakdown(dmps, erbs)
@@ -221,7 +213,9 @@ fig
 
 ### Repository choice
 
-> **Q5.** To what extent do projects **publish their FAIR data in a trusted repository** — i.e., what share of researchers selected a repository for publication (open or restricted)?
+> **Q5.** To what extent do projects **publish their FAIR data in a trusted
+> repository** --- i.e., what share of researchers selected a repository for
+> publication (open or restricted)?
 
 ```{python}
 df = h.repository_breakdown(dmps)
@@ -233,7 +227,8 @@ fig
 
 ### Archive location
 
-> **Q6.** What share of projects **archive their data at the TU/e archive (RAPS)**?
+> **Q6.** What share of projects **archive their data at the TU/e archive
+> (RAPS)**?
 
 ```{python}
 df = h.archive_breakdown(dmps)
@@ -257,7 +252,9 @@ fig
 
 ### Storage
 
-> **Q3.** To what extent do projects use **TU/e secured storage**, and conversely, what share of **sensitive research data** is stored **outside** TU/e-supported solutions?
+> **Q3.** To what extent do projects use **TU/e secured storage**, and
+> conversely, what share of **sensitive research data** is stored **outside**
+> TU/e-supported solutions?
 
 ```{python}
 df = h.storage_split(dmps)
@@ -279,7 +276,9 @@ fig
 
 ### Storage solution count
 
-> **Q3.** To what extent do projects use **TU/e secured storage**, and conversely, what share of **sensitive research data** is stored **outside** TU/e-supported solutions?
+> **Q3.** To what extent do projects use **TU/e secured storage**, and
+> conversely, what share of **sensitive research data** is stored **outside**
+> TU/e-supported solutions?
 
 ```{python}
 df = h.storage_count_distribution(dmps)
@@ -290,7 +289,9 @@ fig
 
 ### Sensitive data outside TU/e
 
-> **Q3.** To what extent do projects use **TU/e secured storage**, and conversely, what share of **sensitive research data** is stored **outside** TU/e-supported solutions?
+> **Q3.** To what extent do projects use **TU/e secured storage**, and
+> conversely, what share of **sensitive research data** is stored **outside**
+> TU/e-supported solutions?
 
 ```{python}
 df = h.sensitive_data_outside_tue(dmps)
@@ -301,7 +302,9 @@ fig
 
 ### Data sharing
 
-> **Q4.** What share of projects require a **data sharing/receiving agreement** or other legal agreement (DPIA, etc., for special-category data)? How many DMPs **triggered a DA (Data Agreement) request**?
+> **Q4.** What share of projects require a **data sharing/receiving agreement**
+> or other legal agreement (DPIA, etc., for special-category data)? How many
+> DMPs **triggered a DA (Data Agreement) request**?
 
 ```{python}
 df = h.data_sharing_breakdown(dmps)
@@ -325,7 +328,8 @@ fig
 
 ### Days to first submission
 
-> **Q8.** How long elapses between **DRAFT and SUBMITTED** (ideally pre-computed as `days_to_first_submission`)?
+> **Q8.** How long elapses between **DRAFT and SUBMITTED** (ideally pre-computed
+> as `days_to_first_submission`)?
 
 ```{python}
 s = h.days_to_first_submission(dmps).dropna()
@@ -345,7 +349,8 @@ fig
 
 ### First response time
 
-> **Q9.** How long does it take a **Data Steward to first respond** after submission (ideally pre-computed)?
+> **Q9.** How long does it take a **Data Steward to first respond** after
+> submission (ideally pre-computed)?
 
 ```{python}
 s = h.first_response_time(dmps).dropna()
@@ -365,7 +370,8 @@ fig
 
 ### Help needed
 
-> **Q10.** What proportion of DMPs state **"I need help"** during first submission?
+> **Q10.** What proportion of DMPs state **"I need help"** during first
+> submission?
 
 ```{python}
 df = h.help_needed_rate(dmps)
