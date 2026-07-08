@@ -4,22 +4,92 @@ SQL queries used to generate the DMP and ERB data files in `data/`.
 
 Source table: `rdi_tst.cockpit` (TU/e Research Cockpit gold fact tables).
 
+The `SELECT` lists below are limited to the columns the dashboard actually
+consumes (see `_helpers.py` and the `index.qmd` / `dept-*.qmd` pages).
+`reporter_email` and every other unused field are omitted so the exports
+stay lean.
+
 ## DMPs
 
 ```sql
-SELECT * EXCEPT(reporter_email)
+SELECT
+  issue_key,
+  issue_creation_time,
+  is_approved,
+  status_history,
+  ordered_status_transition_list,
+  tue_department,
+  data_storage_list,
+  storage_solution_count,
+  data_repository,
+  metadata_standard,
+  processing_tools_list,
+  has_related_erb,
+  is_scientific,
+  has_special_category,
+  data_sharing,
+  archive_location
 FROM
   rdi_tst.cockpit.dmp_gold_fact_dedup
 WHERE
   issue_creation_time >= '2025-09-01'
 ```
 
+### Columns used by
+
+| Column | Metric / function |
+| --- | --- |
+| `issue_key` | `department_erbs`, `erb_approval_by_department` |
+| `issue_creation_time` | `days_to_first_submission` (Q8) |
+| `is_approved` | `kpi_table`, `approval_by_department`, `approval_by_purpose` (Q1) |
+| `status_history` | `days_to_first_submission` (Q8), `first_response_time` (Q9) |
+| `ordered_status_transition_list` | `revision_distribution`, `revision_summary` (Q7) |
+| `tue_department` | `filter_department` |
+| `data_storage_list` | `storage_split`, `sensitive_data_outside_tue` (Q3) |
+| `storage_solution_count` | `storage_count_distribution` (Q3) |
+| `data_repository` | `kpi_table`, `repository_breakdown`, `help_needed_rate` (Q5/Q10) |
+| `metadata_standard` | `help_needed_rate` (Q10) |
+| `processing_tools_list` | `help_needed_rate` (Q10) |
+| `has_related_erb` | `kpi_table` (Q2 linkage) |
+| `is_scientific` | `approval_by_purpose` |
+| `has_special_category` | `sensitive_data_outside_tue` (Q3/Q4) |
+| `data_sharing` | `data_sharing_breakdown` (Q4) |
+| `archive_location` | `kpi_table`, `archive_breakdown` (Q6) |
+
+### Columns excluded
+
+`issue_title`, `latest_status_time`, `days_to_first_approval`,
+`data_volume_list`, `data_volume_tb`, `has_data_volume_info`,
+`data_storage_after_list`, `has_data_storage_info`,
+`processing_tools_count`, `processing_tools_info`, `related_erb`,
+`erb_link_creation_date`, `days_to_erb_link_creation`, `ever_approved`,
+`approval_count`, `gold_processed_at`, `reporter_email`.
+
 ## ERBs
 
 ```sql
-SELECT * EXCEPT(reporter_email)
+SELECT
+  related_dmp,
+  is_approved,
+  ordered_status_transition_list
 FROM
   rdi_tst.cockpit.erb_gold_fact_dedup
 WHERE
   issue_creation_time >= '2025-09-01'
 ```
+
+### Columns used by
+
+| Column | Metric / function |
+| --- | --- |
+| `related_dmp` | `department_erbs`, `erb_approval_by_department` (Q2) |
+| `is_approved` | `erb_approval_by_department` (Q2) |
+| `ordered_status_transition_list` | `erb_breakdown` (Q2 decisions) |
+
+### Columns excluded
+
+`issue_key`, `issue_title`, `issue_creation_time`, `latest_status_time`,
+`status_history`, `days_to_first_approval`, `tue_department`,
+`dmp_link_creation_date`, `has_related_dmp`, `days_to_dmp_link_creation`,
+`ever_approved`, `approval_count`, `gold_processed_at`, `is_scientific`,
+`has_special_category`, `data_sharing`, `archive_location`, `reporter_email`.
