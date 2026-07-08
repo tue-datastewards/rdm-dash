@@ -1,6 +1,6 @@
 ---
-title: "RDM Dashboard"
-subtitle: "Research Data Management — TU/e Data Stewards"
+title: "RDM Policy Implementation Dashboard"
+subtitle: "Eindhoven Unviersity of Technology"
 format:
   html:
     page-layout: full
