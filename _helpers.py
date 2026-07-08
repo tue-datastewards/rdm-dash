@@ -233,6 +233,29 @@ def approval_by_department(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(out)
 
 
+def dmps_by_department_purpose(df: pd.DataFrame) -> pd.DataFrame:
+    """DMP counts per department split by purpose (Q1 / cross-cutting).
+
+    Returns one row per (department, purpose) with the DMP count, so the
+    rows can be stacked to decompose each department's total. ``is_scientific``
+    is mapped to ``Scientific`` (true) / ``Educational`` (false) / ``Unknown``
+    (null); the three categories sum to the department's total DMP count.
+    """
+    rows = []
+    for dept in DEPARTMENTS:
+        sub = filter_department(df, dept)
+        n_sci = int((sub["is_scientific"] == True).sum())
+        n_edu = int((sub["is_scientific"] == False).sum())
+        n_unk = int(sub["is_scientific"].isna().sum())
+        for label, count in (
+            ("Scientific", n_sci),
+            ("Educational", n_edu),
+            ("Unknown", n_unk),
+        ):
+            rows.append({"Department": dept, "Purpose": label, "DMPs": count})
+    return pd.DataFrame(rows)
+
+
 def erb_breakdown(df_dmps: pd.DataFrame, df_erbs: pd.DataFrame) -> pd.DataFrame:
     """ERB decision breakdown among ERB-linked DMPs (Q2).
 
