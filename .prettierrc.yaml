@@ -1,0 +1,32 @@
+# Prettier config for the RDM Dashboard (Quarto project)
+# Docs: https://prettier.io/docs/configuration
+# Note: Prettier does not format Python (_helpers.py) or CSV data.
+
+# --- General formatting -----------------------------------------------------
+# A little more room than the 80 default; prose is preserved (see proseWrap).
+printWidth: 100
+# Matches _quarto.yml, styles.css, datapackage.json.
+tabWidth: 2
+useTabs: false
+# Consistent line endings across platforms.
+endOfLine: lf
+
+# --- JS/TS conventions ------------------------------------------------------
+# No JS in this repo yet, but documented for consistency with the double-quote
+# style used in the YAML/JSON/Python throughout the project.
+semi: true
+singleQuote: false
+trailingComma: all
+
+# --- Markdown / Quarto -------------------------------------------------------
+# Never reflow hand-wrapped prose in *.md / *.qmd.
+proseWrap: preserve
+htmlWhitespaceSensitivity: css
+
+# Treat Quarto .qmd notebooks as Markdown so Prettier formats the surrounding
+# prose and tables while leaving ```{python}``` code chunks and pandoc `:::`
+# fenced divs untouched.
+overrides:
+  - files: "*.qmd"
+    options:
+      parser: markdown
