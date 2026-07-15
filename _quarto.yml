@@ -3,12 +3,12 @@ project:
 
 website:
   title: "RDM Dashboard"
-  navbar:
-    left:
+  sidebar:
+    contents:
       - href: index.qmd
         text: Home
-      - text: Departments
-        menu:
+      - section: "Departments"
+        contents:
           - href: dept-industrial-design.qmd
             text: Industrial Design (ID)
           - href: dept-industrial-engineering.qmd
@@ -27,16 +27,18 @@ website:
             text: Electrical Engineering (EE)
           - href: dept-chemical-engineering.qmd
             text: Chemical Engineering & Chemistry (CE&C)
-      - text: Reference
-        menu:
-          - href: research-questions.md
-            text: Research Questions
-          - href: metrics.md
-            text: Metrics
-          - href: queries.md
-            text: Data Queries
-      - about.qmd
-
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: research-questions.md
+        text: Research Questions
+      - href: metrics.md
+        text: Metrics
+      - href: queries.md
+        text: Data Queries
+      - href: about.qmd
+        text: About
 execute:
   echo: false
   warning: false
