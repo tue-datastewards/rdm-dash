@@ -1,0 +1,21 @@
+---
+title: "Process Evaluation"
+format:
+  html:
+    page-layout: full
+    toc: false
+---
+
+## Process Evaluation
+
+These metrics are derived from the **researcher survey** sent to researchers who
+interacted with the DMP template in the Research Cockpit.
+
+| # | Question | Status |
+|---|----------|--------|
+| Q12 | How easy do researchers find it to **locate the DMP template** in the Research Cockpit? | Pending |
+| Q13 | How easy do researchers find **completing the DMP**? | Pending |
+| Q14 | How clear are the **instructions and guidance** provided within the DMP template? | Pending |
+| Q15 | How helpful is the **advice provided by Data Stewards**? | Pending |
+
+*Survey data collection is ongoing. Visualizations will be added once the dataset is available.*

@@ -1,0 +1,504 @@
+---
+title: "Policy Compliance"
+format:
+  html:
+    page-layout: full
+    toc: false
+---
+
+```{python}
+#| tags: [hide-all]
+import _helpers as h
+import plotly.express as px
+import plotly.io as pio
+
+pio.templates.default = "plotly_white"
+
+dmps = h.load_dmps()
+erbs = h.load_erbs()
+
+dept_data = {}
+for dept in h.DEPARTMENTS:
+    dd = h.filter_department(dmps, dept)
+    de = h.department_erbs(dd, erbs)
+    dept_data[dept] = {"dmps": dd, "erbs": de}
+```
+
+<select id="dept-select" class="dept-selector">
+```{python}
+#| output: asis
+for d in h.DEPARTMENTS:
+    print(f'<option value="{h.DEPT_SLUGS[d]}">{d}</option>')
+```
+</select>
+
+<div class="dept-panel" id="dept-industrial-design">
+```{python}
+#| output: asis
+print(h.kpi_html(dept_data["Industrial Design (ID)"]["dmps"]))
+```
+
+```{python}
+#| echo: false
+dd = dept_data["Industrial Design (ID)"]["dmps"]
+de = dept_data["Industrial Design (ID)"]["erbs"]
+df = h.approval_by_purpose(dd)
+fig = px.bar(df, x="Purpose", y="Approval rate",
+             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
+             hover_data=["DMPs", "Approved"], color="Purpose")
+fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.erb_breakdown(dd, de)
+fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
+fig.update_layout(showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.repository_breakdown(dd)
+df = df[df["Repository"] != "(none)"]
+fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
+fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.archive_breakdown(dd)
+total = df["DMPs"].sum() or 1
+df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
+fig.update_traces(textposition="auto")
+fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
+                  showlegend=True, legend_title="Location")
+fig
+```
+
+</div>
+
+<div class="dept-panel" id="dept-industrial-engineering" style="display:none">
+```{python}
+#| output: asis
+print(h.kpi_html(dept_data["Industrial Engineering and Innovation Sciences (IE&IS)"]["dmps"]))
+```
+
+```{python}
+#| echo: false
+dd = dept_data["Industrial Engineering and Innovation Sciences (IE&IS)"]["dmps"]
+de = dept_data["Industrial Engineering and Innovation Sciences (IE&IS)"]["erbs"]
+df = h.approval_by_purpose(dd)
+fig = px.bar(df, x="Purpose", y="Approval rate",
+             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
+             hover_data=["DMPs", "Approved"], color="Purpose")
+fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.erb_breakdown(dd, de)
+fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
+fig.update_layout(showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.repository_breakdown(dd)
+df = df[df["Repository"] != "(none)"]
+fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
+fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.archive_breakdown(dd)
+total = df["DMPs"].sum() or 1
+df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
+fig.update_traces(textposition="auto")
+fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
+                  showlegend=True, legend_title="Location")
+fig
+```
+
+</div>
+
+<div class="dept-panel" id="dept-built-environment" style="display:none">
+```{python}
+#| output: asis
+print(h.kpi_html(dept_data["Built Environment (BE)"]["dmps"]))
+```
+
+```{python}
+#| echo: false
+dd = dept_data["Built Environment (BE)"]["dmps"]
+de = dept_data["Built Environment (BE)"]["erbs"]
+df = h.approval_by_purpose(dd)
+fig = px.bar(df, x="Purpose", y="Approval rate",
+             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
+             hover_data=["DMPs", "Approved"], color="Purpose")
+fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.erb_breakdown(dd, de)
+fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
+fig.update_layout(showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.repository_breakdown(dd)
+df = df[df["Repository"] != "(none)"]
+fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
+fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.archive_breakdown(dd)
+total = df["DMPs"].sum() or 1
+df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
+fig.update_traces(textposition="auto")
+fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
+                  showlegend=True, legend_title="Location")
+fig
+```
+
+</div>
+
+<div class="dept-panel" id="dept-mathematics-computer-science" style="display:none">
+```{python}
+#| output: asis
+print(h.kpi_html(dept_data["Mathematics and Computer Science (M&CS)"]["dmps"]))
+```
+
+```{python}
+#| echo: false
+dd = dept_data["Mathematics and Computer Science (M&CS)"]["dmps"]
+de = dept_data["Mathematics and Computer Science (M&CS)"]["erbs"]
+df = h.approval_by_purpose(dd)
+fig = px.bar(df, x="Purpose", y="Approval rate",
+             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
+             hover_data=["DMPs", "Approved"], color="Purpose")
+fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.erb_breakdown(dd, de)
+fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
+fig.update_layout(showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.repository_breakdown(dd)
+df = df[df["Repository"] != "(none)"]
+fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
+fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.archive_breakdown(dd)
+total = df["DMPs"].sum() or 1
+df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
+fig.update_traces(textposition="auto")
+fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
+                  showlegend=True, legend_title="Location")
+fig
+```
+
+</div>
+
+<div class="dept-panel" id="dept-biomedical-engineering" style="display:none">
+```{python}
+#| output: asis
+print(h.kpi_html(dept_data["Biomedical Engineering (BmE)"]["dmps"]))
+```
+
+```{python}
+#| echo: false
+dd = dept_data["Biomedical Engineering (BmE)"]["dmps"]
+de = dept_data["Biomedical Engineering (BmE)"]["erbs"]
+df = h.approval_by_purpose(dd)
+fig = px.bar(df, x="Purpose", y="Approval rate",
+             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
+             hover_data=["DMPs", "Approved"], color="Purpose")
+fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.erb_breakdown(dd, de)
+fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
+fig.update_layout(showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.repository_breakdown(dd)
+df = df[df["Repository"] != "(none)"]
+fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
+fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.archive_breakdown(dd)
+total = df["DMPs"].sum() or 1
+df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
+fig.update_traces(textposition="auto")
+fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
+                  showlegend=True, legend_title="Location")
+fig
+```
+
+</div>
+
+<div class="dept-panel" id="dept-mechanical-engineering" style="display:none">
+```{python}
+#| output: asis
+print(h.kpi_html(dept_data["Mechanical Engineering (ME)"]["dmps"]))
+```
+
+```{python}
+#| echo: false
+dd = dept_data["Mechanical Engineering (ME)"]["dmps"]
+de = dept_data["Mechanical Engineering (ME)"]["erbs"]
+df = h.approval_by_purpose(dd)
+fig = px.bar(df, x="Purpose", y="Approval rate",
+             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
+             hover_data=["DMPs", "Approved"], color="Purpose")
+fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.erb_breakdown(dd, de)
+fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
+fig.update_layout(showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.repository_breakdown(dd)
+df = df[df["Repository"] != "(none)"]
+fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
+fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.archive_breakdown(dd)
+total = df["DMPs"].sum() or 1
+df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
+fig.update_traces(textposition="auto")
+fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
+                  showlegend=True, legend_title="Location")
+fig
+```
+
+</div>
+
+<div class="dept-panel" id="dept-applied-physics" style="display:none">
+```{python}
+#| output: asis
+print(h.kpi_html(dept_data["Applied Physics and Science Education (AP&SE)"]["dmps"]))
+```
+
+```{python}
+#| echo: false
+dd = dept_data["Applied Physics and Science Education (AP&SE)"]["dmps"]
+de = dept_data["Applied Physics and Science Education (AP&SE)"]["erbs"]
+df = h.approval_by_purpose(dd)
+fig = px.bar(df, x="Purpose", y="Approval rate",
+             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
+             hover_data=["DMPs", "Approved"], color="Purpose")
+fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.erb_breakdown(dd, de)
+fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
+fig.update_layout(showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.repository_breakdown(dd)
+df = df[df["Repository"] != "(none)"]
+fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
+fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.archive_breakdown(dd)
+total = df["DMPs"].sum() or 1
+df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
+fig.update_traces(textposition="auto")
+fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
+                  showlegend=True, legend_title="Location")
+fig
+```
+
+</div>
+
+<div class="dept-panel" id="dept-electrical-engineering" style="display:none">
+```{python}
+#| output: asis
+print(h.kpi_html(dept_data["Electrical Engineering (EE)"]["dmps"]))
+```
+
+```{python}
+#| echo: false
+dd = dept_data["Electrical Engineering (EE)"]["dmps"]
+de = dept_data["Electrical Engineering (EE)"]["erbs"]
+df = h.approval_by_purpose(dd)
+fig = px.bar(df, x="Purpose", y="Approval rate",
+             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
+             hover_data=["DMPs", "Approved"], color="Purpose")
+fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.erb_breakdown(dd, de)
+fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
+fig.update_layout(showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.repository_breakdown(dd)
+df = df[df["Repository"] != "(none)"]
+fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
+fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.archive_breakdown(dd)
+total = df["DMPs"].sum() or 1
+df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
+fig.update_traces(textposition="auto")
+fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
+                  showlegend=True, legend_title="Location")
+fig
+```
+
+</div>
+
+<div class="dept-panel" id="dept-chemical-engineering" style="display:none">
+```{python}
+#| output: asis
+print(h.kpi_html(dept_data["Chemical Engineering and Chemistry (CE&C)"]["dmps"]))
+```
+
+```{python}
+#| echo: false
+dd = dept_data["Chemical Engineering and Chemistry (CE&C)"]["dmps"]
+de = dept_data["Chemical Engineering and Chemistry (CE&C)"]["erbs"]
+df = h.approval_by_purpose(dd)
+fig = px.bar(df, x="Purpose", y="Approval rate",
+             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
+             hover_data=["DMPs", "Approved"], color="Purpose")
+fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.erb_breakdown(dd, de)
+fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
+fig.update_layout(showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.repository_breakdown(dd)
+df = df[df["Repository"] != "(none)"]
+fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
+fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
+fig
+```
+
+```{python}
+#| echo: false
+df = h.archive_breakdown(dd)
+total = df["DMPs"].sum() or 1
+df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
+fig.update_traces(textposition="auto")
+fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
+                  showlegend=True, legend_title="Location")
+fig
+```
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var sel = document.getElementById("dept-select");
+  var panels = document.querySelectorAll(".dept-panel");
+  function show(slug) {
+    panels.forEach(function (p) { p.style.display = "none"; });
+    var target = document.getElementById("dept-" + slug);
+    if (target) target.style.display = "";
+  }
+  var params = new URLSearchParams(window.location.search);
+  var init = params.get("dept");
+  if (init) { sel.value = init; show(init); }
+  else { show(sel.value); }
+  sel.addEventListener("change", function () {
+    show(this.value);
+    params.set("dept", this.value);
+    history.replaceState(null, "", "?" + params.toString());
+  });
+});
+</script>
