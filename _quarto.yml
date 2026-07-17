@@ -6,15 +6,15 @@ website:
   sidebar:
     contents:
       - href: index.qmd
-        text: Overview
+        text: "Overview<br><span class='sidebar-subtitle'>Dashboard home & key metrics</span>"
       - href: compliance.qmd
-        text: Policy Compliance
+        text: "Policy Compliance<br><span class='sidebar-subtitle'>Policy adherence metrics (Q8–Q10)</span>"
       - href: lifecycle.qmd
-        text: DMP Lifecycle
+        text: "DMP Lifecycle<br><span class='sidebar-subtitle'>Data management planning (Q1–Q11)</span>"
       - href: process-eval.qmd
-        text: Process Evaluation
+        text: "Process Evaluation<br><span class='sidebar-subtitle'>Process quality metrics (Q12–Q15)</span>"
       - href: communication-training.qmd
-        text: Communication & Training
+        text: "Communication & Training<br><span class='sidebar-subtitle'>Outreach activities (Q16–Q17)</span>"
       - section: "Reference"
         contents:
           - href: research-questions.md
@@ -40,3 +40,4 @@ format:
       - brand
     css: styles.css
     toc: true
+    include-after-body: sidebar-footer.html
