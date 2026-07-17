@@ -217,6 +217,31 @@ def kpi_table(df: pd.DataFrame) -> dict:
     }
 
 
+def kpi_html(df: pd.DataFrame, with_revisions: bool = False) -> str:
+    """Return an HTML string for the KPI card grid."""
+    k = kpi_table(df)
+    rev = revision_summary(df) if with_revisions else None
+
+    def card(label, value, color):
+        return (
+            f'<div class="kpi-card kpi-{color}">'
+            f'<div class="kpi-label"><p>{label}</p></div>'
+            f'<div class="kpi-value"><p>{value}</p></div>'
+            f'</div>'
+        )
+
+    cards = [
+        card("Total DMPs", len(df), "blue"),
+        card("Approval rate", f'{k["Approval rate"]:.0%}', "green"),
+        card("ERB linkage", f'{k["ERB linkage rate"]:.0%}', "teal"),
+        card("Trusted repository", f'{k["Trusted repository rate"]:.0%}', "purple"),
+        card("Archived at RAPS", f'{k["RAPS archival rate"]:.0%}', "amber"),
+    ]
+    if rev is not None:
+        cards.append(card("DMPs with \u22651 revision", f'{rev["% with \u22651 revision"]:.0%}', "indigo"))
+    return '<div class="kpi-grid">' + "".join(cards) + "</div>"
+
+
 def approval_by_department(df: pd.DataFrame) -> pd.DataFrame:
     """Approval counts and rates per department (Q1)."""
     out = []

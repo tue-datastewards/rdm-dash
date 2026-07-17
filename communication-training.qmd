@@ -1,0 +1,19 @@
+---
+title: "Communication & Training"
+format:
+  html:
+    page-layout: full
+    toc: false
+---
+
+## Communication & Training
+
+These metrics track the **reach and effectiveness** of RDM communication and
+training activities across the university.
+
+| # | Question | Status |
+|---|----------|--------|
+| Q16 | What is the **reach of RDM communication activities** (news items, roadshows, workshops, steward support)? | Pending |
+| Q17 | What is the **training participation rate**? | Pending |
+
+*Data from communication and training tracking systems will be integrated in a future update.*
