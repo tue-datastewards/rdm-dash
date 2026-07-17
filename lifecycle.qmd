@@ -22,12 +22,92 @@ for dept in h.DEPARTMENTS:
 ```
 
 <select id="dept-select" class="dept-selector">
+<option value="overview">Overview (all departments)</option>
 ```{python}
 #| output: asis
 for d in h.DEPARTMENTS:
     print(f'<option value="{h.DEPT_SLUGS[d]}">{d}</option>')
 ```
 </select>
+
+<div class="dept-panel" id="dept-overview">
+```{python}
+#| output: asis
+print(h.kpi_html(dmps, with_revisions=True))
+```
+
+```{python}
+#| echo: false
+import pandas as pd
+rows = []
+for dept in h.DEPARTMENTS:
+    sub = h.filter_department(dmps, dept)
+    rev = h.revision_distribution(sub)
+    for _, r in rev.iterrows():
+        rows.append({"Department": dept, "Revisions": r["Revisions"], "DMPs": r["DMPs"]})
+df = pd.DataFrame(rows)
+fig = px.bar(df, x="Revisions", y="DMPs", color="Department",
+             barmode="group", height=450,
+             title="Revision distribution by department")
+fig
+```
+
+```{python}
+#| echo: false
+import pandas as pd
+rows = []
+for dept in h.DEPARTMENTS:
+    sub = h.filter_department(dmps, dept)
+    s = h.days_to_first_submission(sub).dropna()
+    if len(s):
+        rows.append({"Department": dept, "Median days": s.median()})
+df = pd.DataFrame(rows)
+fig = px.bar(df, x="Department", y="Median days",
+             text=df["Median days"].map(lambda v: f"{v:.0f}"),
+             color="Department", height=450,
+             title="Median days to first submission by department")
+fig.update_layout(showlegend=False)
+fig
+```
+
+```{python}
+#| echo: false
+import pandas as pd
+rows = []
+for dept in h.DEPARTMENTS:
+    sub = h.filter_department(dmps, dept)
+    s = h.first_response_time(sub).dropna()
+    if len(s):
+        rows.append({"Department": dept, "Median days": s.median()})
+df = pd.DataFrame(rows)
+fig = px.bar(df, x="Department", y="Median days",
+             text=df["Median days"].map(lambda v: f"{v:.0f}"),
+             color="Department", height=450,
+             title="Median first response time by department")
+fig.update_layout(showlegend=False)
+fig
+```
+
+```{python}
+#| echo: false
+import pandas as pd
+rows = []
+for dept in h.DEPARTMENTS:
+    sub = h.filter_department(dmps, dept)
+    hr = h.help_needed_rate(sub)
+    combined = hr[hr["Field"] == "Any field (combined)"]
+    if len(combined):
+        rows.append({"Department": dept, "Rate": combined.iloc[0]["Rate"]})
+df = pd.DataFrame(rows)
+fig = px.bar(df, x="Department", y="Rate",
+             text=df["Rate"].map(lambda v: f"{v:.1%}"),
+             color="Department", height=450,
+             title="'I need advice' rate by department")
+fig.update_layout(yaxis_tickformat="0%", showlegend=False)
+fig
+```
+
+</div>
 
 <div class="dept-panel" id="dept-industrial-design">
 ```{python}
