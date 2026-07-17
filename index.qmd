@@ -98,6 +98,7 @@ DMPs with ≥1 revision
 > **Overview.** How many Data Management Plans (DMPs) has each department produced?
 
 ```{python}
+#| output: asis
 df = h.approval_by_department(dmps)
 fig = px.bar(
     df,
@@ -113,7 +114,7 @@ fig.update_layout(
     coloraxis_showscale=False,
     height=500,
 )
-fig
+print(h.render_chart(fig))
 ```
 
 ### By purpose
@@ -121,6 +122,7 @@ fig
 > **Overview.** How many Data Management Plans (DMPs) has each department produced, split by **purpose** — scientific vs. educational research?
 
 ```{python}
+#| output: asis
 df = h.dmps_by_department_purpose(dmps)
 fig = px.bar(
     df,
@@ -137,7 +139,7 @@ fig.update_layout(
     height=500,
     legend_title="Purpose",
 )
-fig
+print(h.render_chart(fig))
 ```
 
 :::
@@ -151,6 +153,7 @@ fig
 > Plan (DMP)**, broken down **per department**?
 
 ```{python}
+#| output: asis
 df = h.approval_by_department(dmps)
 fig = px.bar(
     df,
@@ -168,7 +171,7 @@ fig.update_layout(
     coloraxis_showscale=False,
     height=500,
 )
-fig
+print(h.render_chart(fig))
 ```
 
 ### ERB approval by department
@@ -178,6 +181,7 @@ fig
 > approval and an integrated DMP?
 
 ```{python}
+#| output: asis
 df = h.erb_approval_by_department(dmps, erbs)
 fig = px.bar(
     df,
@@ -195,7 +199,7 @@ fig.update_layout(
     coloraxis_showscale=False,
     height=500,
 )
-fig
+print(h.render_chart(fig))
 ```
 
 ### ERB decisions
@@ -205,10 +209,11 @@ fig
 > approval and an integrated DMP?
 
 ```{python}
+#| output: asis
 df = h.erb_breakdown(dmps, erbs)
 fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
 fig.update_layout(showlegend=False, height=500)
-fig
+print(h.render_chart(fig))
 ```
 
 ### Repository choice
@@ -218,11 +223,12 @@ fig
 > publication (open or restricted)?
 
 ```{python}
+#| output: asis
 df = h.repository_breakdown(dmps)
 df = df[df["Repository"] != "(none)"]
 fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
 fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=500)
-fig
+print(h.render_chart(fig))
 ```
 
 ### Archive location
@@ -231,6 +237,7 @@ fig
 > (RAPS)**?
 
 ```{python}
+#| output: asis
 df = h.archive_breakdown(dmps)
 total = df["DMPs"].sum() or 1
 df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
@@ -245,7 +252,7 @@ fig.update_layout(
     showlegend=True,
     legend_title="Location",
 )
-fig
+print(h.render_chart(fig))
 ```
 
 ## Data handling {.tabset}
@@ -257,6 +264,7 @@ fig
 > TU/e-supported solutions?
 
 ```{python}
+#| output: asis
 df = h.storage_split(dmps)
 total = df["DMPs"].sum() or 1
 df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
@@ -271,7 +279,7 @@ fig.update_layout(
     showlegend=True,
     legend_title="Storage",
 )
-fig
+print(h.render_chart(fig))
 ```
 
 ### Storage solution count
@@ -281,10 +289,11 @@ fig
 > TU/e-supported solutions?
 
 ```{python}
+#| output: asis
 df = h.storage_count_distribution(dmps)
 fig = px.bar(df, x="Solutions", y="DMPs", text="DMPs", color="DMPs")
 fig.update_layout(showlegend=False, height=500)
-fig
+print(h.render_chart(fig))
 ```
 
 ### Sensitive data outside TU/e
@@ -294,10 +303,11 @@ fig
 > TU/e-supported solutions?
 
 ```{python}
+#| output: asis
 df = h.sensitive_data_outside_tue(dmps)
 fig = px.bar(df, x="Category", y="DMPs", text="DMPs", color="Category")
 fig.update_layout(showlegend=False, height=500)
-fig
+print(h.render_chart(fig))
 ```
 
 ### Data sharing
@@ -307,10 +317,11 @@ fig
 > DMPs **triggered a DA (Data Agreement) request**?
 
 ```{python}
+#| output: asis
 df = h.data_sharing_breakdown(dmps)
 fig = px.bar(df, x="Destination", y="DMPs", text="DMPs", color="Destination")
 fig.update_layout(showlegend=False, height=500)
-fig
+print(h.render_chart(fig))
 ```
 
 ## Workflow {.tabset}
@@ -320,10 +331,11 @@ fig
 > **Q7.** How often does a DMP enter the **"Revision Requested"** status?
 
 ```{python}
+#| output: asis
 df = h.revision_distribution(dmps)
 fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
 fig.update_layout(showlegend=False, height=500)
-fig
+print(h.render_chart(fig))
 ```
 
 ### Days to first submission
@@ -332,6 +344,7 @@ fig
 > as `days_to_first_submission`)?
 
 ```{python}
+#| output: asis
 s = h.days_to_first_submission(dmps).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(
@@ -344,7 +357,7 @@ fig.update_layout(
         xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False,
     )],
 )
-fig
+print(h.render_chart(fig))
 ```
 
 ### First response time
@@ -353,6 +366,7 @@ fig
 > submission (ideally pre-computed)?
 
 ```{python}
+#| output: asis
 s = h.first_response_time(dmps).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(
@@ -365,7 +379,7 @@ fig.update_layout(
         xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False,
     )],
 )
-fig
+print(h.render_chart(fig))
 ```
 
 ### Help needed
@@ -374,8 +388,9 @@ fig
 > submission?
 
 ```{python}
+#| output: asis
 df = h.help_needed_rate(dmps)
 fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=500)
-fig
+print(h.render_chart(fig))
 ```

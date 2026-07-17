@@ -242,6 +242,16 @@ def kpi_html(df: pd.DataFrame, with_revisions: bool = False) -> str:
     return '<div class="kpi-grid">' + "".join(cards) + "</div>"
 
 
+def render_chart(fig, width: int = 900, height: int = 450) -> str:
+    """Render a Plotly figure as an inline SVG image (no JS needed)."""
+    import plotly.io as pio
+    svg = pio.to_image(fig, format="svg", width=width, height=height)
+    return (
+        f'<div style="width:100%;max-width:{width}px;margin:0 auto 1.5rem">'
+        f'{svg.decode()}</div>'
+    )
+
+
 def approval_by_department(df: pd.DataFrame) -> pd.DataFrame:
     """Approval counts and rates per department (Q1)."""
     out = []

@@ -40,29 +40,29 @@ print(h.kpi_html(dmps))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.approval_by_department(dmps)
 fig = px.bar(df, x="Department", y="Approval rate",
              text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
              hover_data=["DMPs", "Approved"], color="Department")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450,
                   title="Approval rate by department")
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.erb_approval_by_department(dmps, erbs)
 fig = px.bar(df, x="Department", y="Approval rate",
              text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
              hover_data=["ERBs", "Approved"], color="Department")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450,
                   title="ERB approval rate by department")
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 import pandas as pd
 rows = []
 for dept in h.DEPARTMENTS:
@@ -76,11 +76,11 @@ fig = px.bar(df, x="DMPs", y="Repository", orientation="h",
              color="Department", barmode="group", height=500,
              title="Repository usage by department")
 fig.update_layout(yaxis={"categoryorder": "total ascending"})
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 import pandas as pd
 rows = []
 for dept in h.DEPARTMENTS:
@@ -92,7 +92,7 @@ df = pd.DataFrame(rows)
 fig = px.bar(df, x="DMPs", y="Department", color="Location",
              barmode="stack", height=450,
              title="Archive location by department")
-fig
+print(h.render_chart(fig))
 ```
 
 </div>
@@ -104,7 +104,7 @@ print(h.kpi_html(dept_data["Industrial Design (ID)"]["dmps"]))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Industrial Design (ID)"]["dmps"]
 de = dept_data["Industrial Design (ID)"]["erbs"]
 df = h.approval_by_purpose(dd)
@@ -112,28 +112,28 @@ fig = px.bar(df, x="Purpose", y="Approval rate",
              text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
              hover_data=["DMPs", "Approved"], color="Purpose")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.erb_breakdown(dd, de)
 fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.repository_breakdown(dd)
 df = df[df["Repository"] != "(none)"]
 fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
 fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.archive_breakdown(dd)
 total = df["DMPs"].sum() or 1
 df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
@@ -142,7 +142,7 @@ fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
 fig.update_traces(textposition="auto")
 fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
                   showlegend=True, legend_title="Location")
-fig
+print(h.render_chart(fig))
 ```
 
 </div>
@@ -154,7 +154,7 @@ print(h.kpi_html(dept_data["Industrial Engineering and Innovation Sciences (IE&I
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Industrial Engineering and Innovation Sciences (IE&IS)"]["dmps"]
 de = dept_data["Industrial Engineering and Innovation Sciences (IE&IS)"]["erbs"]
 df = h.approval_by_purpose(dd)
@@ -162,28 +162,28 @@ fig = px.bar(df, x="Purpose", y="Approval rate",
              text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
              hover_data=["DMPs", "Approved"], color="Purpose")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.erb_breakdown(dd, de)
 fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.repository_breakdown(dd)
 df = df[df["Repository"] != "(none)"]
 fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
 fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.archive_breakdown(dd)
 total = df["DMPs"].sum() or 1
 df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
@@ -192,7 +192,7 @@ fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
 fig.update_traces(textposition="auto")
 fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
                   showlegend=True, legend_title="Location")
-fig
+print(h.render_chart(fig))
 ```
 
 </div>
@@ -204,7 +204,7 @@ print(h.kpi_html(dept_data["Built Environment (BE)"]["dmps"]))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Built Environment (BE)"]["dmps"]
 de = dept_data["Built Environment (BE)"]["erbs"]
 df = h.approval_by_purpose(dd)
@@ -212,28 +212,28 @@ fig = px.bar(df, x="Purpose", y="Approval rate",
              text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
              hover_data=["DMPs", "Approved"], color="Purpose")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.erb_breakdown(dd, de)
 fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.repository_breakdown(dd)
 df = df[df["Repository"] != "(none)"]
 fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
 fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.archive_breakdown(dd)
 total = df["DMPs"].sum() or 1
 df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
@@ -242,7 +242,7 @@ fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
 fig.update_traces(textposition="auto")
 fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
                   showlegend=True, legend_title="Location")
-fig
+print(h.render_chart(fig))
 ```
 
 </div>
@@ -254,7 +254,7 @@ print(h.kpi_html(dept_data["Mathematics and Computer Science (M&CS)"]["dmps"]))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Mathematics and Computer Science (M&CS)"]["dmps"]
 de = dept_data["Mathematics and Computer Science (M&CS)"]["erbs"]
 df = h.approval_by_purpose(dd)
@@ -262,28 +262,28 @@ fig = px.bar(df, x="Purpose", y="Approval rate",
              text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
              hover_data=["DMPs", "Approved"], color="Purpose")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.erb_breakdown(dd, de)
 fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.repository_breakdown(dd)
 df = df[df["Repository"] != "(none)"]
 fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
 fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.archive_breakdown(dd)
 total = df["DMPs"].sum() or 1
 df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
@@ -292,7 +292,7 @@ fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
 fig.update_traces(textposition="auto")
 fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
                   showlegend=True, legend_title="Location")
-fig
+print(h.render_chart(fig))
 ```
 
 </div>
@@ -304,7 +304,7 @@ print(h.kpi_html(dept_data["Biomedical Engineering (BmE)"]["dmps"]))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Biomedical Engineering (BmE)"]["dmps"]
 de = dept_data["Biomedical Engineering (BmE)"]["erbs"]
 df = h.approval_by_purpose(dd)
@@ -312,28 +312,28 @@ fig = px.bar(df, x="Purpose", y="Approval rate",
              text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
              hover_data=["DMPs", "Approved"], color="Purpose")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.erb_breakdown(dd, de)
 fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.repository_breakdown(dd)
 df = df[df["Repository"] != "(none)"]
 fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
 fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.archive_breakdown(dd)
 total = df["DMPs"].sum() or 1
 df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
@@ -342,7 +342,7 @@ fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
 fig.update_traces(textposition="auto")
 fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
                   showlegend=True, legend_title="Location")
-fig
+print(h.render_chart(fig))
 ```
 
 </div>
@@ -354,7 +354,7 @@ print(h.kpi_html(dept_data["Mechanical Engineering (ME)"]["dmps"]))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Mechanical Engineering (ME)"]["dmps"]
 de = dept_data["Mechanical Engineering (ME)"]["erbs"]
 df = h.approval_by_purpose(dd)
@@ -362,28 +362,28 @@ fig = px.bar(df, x="Purpose", y="Approval rate",
              text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
              hover_data=["DMPs", "Approved"], color="Purpose")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.erb_breakdown(dd, de)
 fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.repository_breakdown(dd)
 df = df[df["Repository"] != "(none)"]
 fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
 fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.archive_breakdown(dd)
 total = df["DMPs"].sum() or 1
 df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
@@ -392,7 +392,7 @@ fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
 fig.update_traces(textposition="auto")
 fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
                   showlegend=True, legend_title="Location")
-fig
+print(h.render_chart(fig))
 ```
 
 </div>
@@ -404,7 +404,7 @@ print(h.kpi_html(dept_data["Applied Physics and Science Education (AP&SE)"]["dmp
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Applied Physics and Science Education (AP&SE)"]["dmps"]
 de = dept_data["Applied Physics and Science Education (AP&SE)"]["erbs"]
 df = h.approval_by_purpose(dd)
@@ -412,28 +412,28 @@ fig = px.bar(df, x="Purpose", y="Approval rate",
              text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
              hover_data=["DMPs", "Approved"], color="Purpose")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.erb_breakdown(dd, de)
 fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.repository_breakdown(dd)
 df = df[df["Repository"] != "(none)"]
 fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
 fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.archive_breakdown(dd)
 total = df["DMPs"].sum() or 1
 df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
@@ -442,7 +442,7 @@ fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
 fig.update_traces(textposition="auto")
 fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
                   showlegend=True, legend_title="Location")
-fig
+print(h.render_chart(fig))
 ```
 
 </div>
@@ -454,7 +454,7 @@ print(h.kpi_html(dept_data["Electrical Engineering (EE)"]["dmps"]))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Electrical Engineering (EE)"]["dmps"]
 de = dept_data["Electrical Engineering (EE)"]["erbs"]
 df = h.approval_by_purpose(dd)
@@ -462,28 +462,28 @@ fig = px.bar(df, x="Purpose", y="Approval rate",
              text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
              hover_data=["DMPs", "Approved"], color="Purpose")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.erb_breakdown(dd, de)
 fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.repository_breakdown(dd)
 df = df[df["Repository"] != "(none)"]
 fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
 fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.archive_breakdown(dd)
 total = df["DMPs"].sum() or 1
 df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
@@ -492,7 +492,7 @@ fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
 fig.update_traces(textposition="auto")
 fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
                   showlegend=True, legend_title="Location")
-fig
+print(h.render_chart(fig))
 ```
 
 </div>
@@ -504,7 +504,7 @@ print(h.kpi_html(dept_data["Chemical Engineering and Chemistry (CE&C)"]["dmps"])
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Chemical Engineering and Chemistry (CE&C)"]["dmps"]
 de = dept_data["Chemical Engineering and Chemistry (CE&C)"]["erbs"]
 df = h.approval_by_purpose(dd)
@@ -512,28 +512,28 @@ fig = px.bar(df, x="Purpose", y="Approval rate",
              text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
              hover_data=["DMPs", "Approved"], color="Purpose")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.erb_breakdown(dd, de)
 fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.repository_breakdown(dd)
 df = df[df["Repository"] != "(none)"]
 fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
 fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.archive_breakdown(dd)
 total = df["DMPs"].sum() or 1
 df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
@@ -542,7 +542,7 @@ fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
 fig.update_traces(textposition="auto")
 fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
                   showlegend=True, legend_title="Location")
-fig
+print(h.render_chart(fig))
 ```
 
 </div>

@@ -37,7 +37,7 @@ print(h.kpi_html(dmps, with_revisions=True))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 import pandas as pd
 rows = []
 for dept in h.DEPARTMENTS:
@@ -49,11 +49,11 @@ df = pd.DataFrame(rows)
 fig = px.bar(df, x="Revisions", y="DMPs", color="Department",
              barmode="group", height=450,
              title="Revision distribution by department")
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 import pandas as pd
 rows = []
 for dept in h.DEPARTMENTS:
@@ -67,11 +67,11 @@ fig = px.bar(df, x="Department", y="Median days",
              color="Department", height=450,
              title="Median days to first submission by department")
 fig.update_layout(showlegend=False)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 import pandas as pd
 rows = []
 for dept in h.DEPARTMENTS:
@@ -85,11 +85,11 @@ fig = px.bar(df, x="Department", y="Median days",
              color="Department", height=450,
              title="Median first response time by department")
 fig.update_layout(showlegend=False)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 import pandas as pd
 rows = []
 for dept in h.DEPARTMENTS:
@@ -104,7 +104,7 @@ fig = px.bar(df, x="Department", y="Rate",
              color="Department", height=450,
              title="'I need advice' rate by department")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False)
-fig
+print(h.render_chart(fig))
 ```
 
 </div>
@@ -116,40 +116,40 @@ print(h.kpi_html(dept_data["Industrial Design (ID)"], with_revisions=True))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Industrial Design (ID)"]
 df = h.revision_distribution(dd)
 fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.days_to_first_submission(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.first_response_time(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.help_needed_rate(dd)
 fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 <h3>DMP reuse rate</h3>
@@ -165,40 +165,40 @@ print(h.kpi_html(dept_data["Industrial Engineering and Innovation Sciences (IE&I
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Industrial Engineering and Innovation Sciences (IE&IS)"]
 df = h.revision_distribution(dd)
 fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.days_to_first_submission(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.first_response_time(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.help_needed_rate(dd)
 fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 <h3>DMP reuse rate</h3>
@@ -214,40 +214,40 @@ print(h.kpi_html(dept_data["Built Environment (BE)"], with_revisions=True))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Built Environment (BE)"]
 df = h.revision_distribution(dd)
 fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.days_to_first_submission(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.first_response_time(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.help_needed_rate(dd)
 fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 <h3>DMP reuse rate</h3>
@@ -263,40 +263,40 @@ print(h.kpi_html(dept_data["Mathematics and Computer Science (M&CS)"], with_revi
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Mathematics and Computer Science (M&CS)"]
 df = h.revision_distribution(dd)
 fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.days_to_first_submission(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.first_response_time(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.help_needed_rate(dd)
 fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 <h3>DMP reuse rate</h3>
@@ -312,40 +312,40 @@ print(h.kpi_html(dept_data["Biomedical Engineering (BmE)"], with_revisions=True)
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Biomedical Engineering (BmE)"]
 df = h.revision_distribution(dd)
 fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.days_to_first_submission(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.first_response_time(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.help_needed_rate(dd)
 fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 <h3>DMP reuse rate</h3>
@@ -361,40 +361,40 @@ print(h.kpi_html(dept_data["Mechanical Engineering (ME)"], with_revisions=True))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Mechanical Engineering (ME)"]
 df = h.revision_distribution(dd)
 fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.days_to_first_submission(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.first_response_time(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.help_needed_rate(dd)
 fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 <h3>DMP reuse rate</h3>
@@ -410,40 +410,40 @@ print(h.kpi_html(dept_data["Applied Physics and Science Education (AP&SE)"], wit
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Applied Physics and Science Education (AP&SE)"]
 df = h.revision_distribution(dd)
 fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.days_to_first_submission(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.first_response_time(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.help_needed_rate(dd)
 fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 <h3>DMP reuse rate</h3>
@@ -459,40 +459,40 @@ print(h.kpi_html(dept_data["Electrical Engineering (EE)"], with_revisions=True))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Electrical Engineering (EE)"]
 df = h.revision_distribution(dd)
 fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.days_to_first_submission(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.first_response_time(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.help_needed_rate(dd)
 fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 <h3>DMP reuse rate</h3>
@@ -508,40 +508,40 @@ print(h.kpi_html(dept_data["Chemical Engineering and Chemistry (CE&C)"], with_re
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 dd = dept_data["Chemical Engineering and Chemistry (CE&C)"]
 df = h.revision_distribution(dd)
 fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
 fig.update_layout(showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.days_to_first_submission(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 s = h.first_response_time(dd).dropna()
 fig = px.histogram(s, nbins=40, labels={"value": "Days"})
 fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
                    annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
                    xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.help_needed_rate(dd)
 fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
+print(h.render_chart(fig))
 ```
 
 <h3>DMP reuse rate</h3>
