@@ -8,7 +8,7 @@ format:
 ---
 
 ```{python}
-#| include: false
+from IPython.display import HTML, display
 
 import _helpers as h
 import plotly.express as px
@@ -20,74 +20,28 @@ erbs = h.load_erbs()
 kpi = h.kpi_table(dmps)
 rev = h.revision_summary(dmps)
 k_total = kpi["Total DMPs"]
-k_approval = f'{kpi["Approval rate"]:.0%}'
-k_erb = f'{kpi["ERB linkage rate"]:.0%}'
-k_repo = f'{kpi["Trusted repository rate"]:.0%}'
-k_raps = f'{kpi["RAPS archival rate"]:.0%}'
-k_revision = f'{rev["% with ≥1 revision"]:.0%}'
+
+kpi_gauges = [
+    h.gauge_svg(kpi["Approval rate"], "Approval rate"),
+    h.gauge_svg(kpi["ERB linkage rate"], "ERB linkage"),
+    h.gauge_svg(kpi["Trusted repository rate"], "Trusted repository"),
+    h.gauge_svg(kpi["RAPS archival rate"], "Archived at RAPS"),
+    h.gauge_svg(rev["% with ≥1 revision"], "DMPs with ≥1 revision"),
+]
+
+kpi_html_body = '<div class="kpi-grid">' + '\n' + "".join(kpi_gauges) + '</div>'
+
+kpi_total_card = (
+    '<div class="kpi-card kpi-blue">'
+    '<div class="kpi-label">Total DMPs</div>'
+    '<div class="kpi-value">'
+    '<p>' + str(int(k_total)) + '</p>'
+    '</div>'
+    '</div>'
+)
+kpi_section = kpi_total_card + '\n' + kpi_html_body
+display(HTML(kpi_section))
 ```
-
-::: {.kpi-grid}
-::::: {.kpi-card .kpi-blue}
-::::::: {.kpi-label}
-Total DMPs
-:::::::
-
-::::::: {.kpi-value}
-`{python} k_total`
-:::::::
-:::::
-
-::::: {.kpi-card .kpi-green}
-::::::: {.kpi-label}
-Approval rate
-:::::::
-
-::::::: {.kpi-value}
-`{python} k_approval`
-:::::::
-:::::
-
-::::: {.kpi-card .kpi-teal}
-::::::: {.kpi-label}
-ERB linkage
-:::::::
-
-::::::: {.kpi-value}
-`{python} k_erb`
-:::::::
-:::::
-
-::::: {.kpi-card .kpi-purple}
-::::::: {.kpi-label}
-Trusted repository
-:::::::
-
-::::::: {.kpi-value}
-`{python} k_repo`
-:::::::
-:::::
-
-::::: {.kpi-card .kpi-amber}
-::::::: {.kpi-label}
-Archived at RAPS
-:::::::
-
-::::::: {.kpi-value}
-`{python} k_raps`
-:::::::
-:::::
-
-::::: {.kpi-card .kpi-indigo}
-::::::: {.kpi-label}
-DMPs with ≥1 revision
-:::::::
-
-::::::: {.kpi-value}
-`{python} k_revision`
-:::::::
-:::::
-:::
 
 ## DMPs per department
 
