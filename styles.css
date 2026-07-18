@@ -1,18 +1,22 @@
 /* css styles */
 
-/* ─── TU/e Design Tokens ─────────────────────────── */
+/* ─── RDM Handbook Design Tokens (from rdm.tue.nl) ── */
 :root {
-  /* Scarlet palette */
-  --scarlet-50:  #fdf0f0;
-  --scarlet-100: #fbe1e1;
-  --scarlet-200: #f7c4c4;
-  --scarlet-300: #f19d9d;
-  --scarlet-400: #e55252;
-  --scarlet-500: #d82929;
-  --scarlet-600: #c41e1e;
-  --scarlet-700: #b31212;
-  --scarlet-800: #8e0e0e;
-  --scarlet-900: #6b0b0b;
+  /* Magenta/purple palette */
+  --rdm-50:   #fdf0f7;
+  --rdm-100:  #fae1f0;
+  --rdm-200:  #f5bddd;
+  --rdm-300:  #e885bf;
+  --rdm-400:  #c74393;
+  --rdm-500:  #a12d76;
+  --rdm-600:  #882569;
+  --rdm-700:  #742459;
+  --rdm-800:  #5f1e4a;
+  --rdm-900:  #4e183c;
+  --rdm-950:  #3a122d;
+
+  /* Dark slate (from rdm.tue.nl hero/footer) */
+  --slate-600: #303846;
 
   /* Neutral palette */
   --neutral-50:  #fafaf9;
@@ -96,12 +100,12 @@
 }
 
 /* accent colors */
-.kpi-blue   { --kpi-accent: #2563eb; }
+.kpi-blue   { --kpi-accent: #458ee1; }
 .kpi-green  { --kpi-accent: #16a34a; }
 .kpi-teal   { --kpi-accent: #0d9488; }
-.kpi-purple { --kpi-accent: #7c3aed; }
+.kpi-purple { --kpi-accent: var(--rdm-700); }
 .kpi-amber  { --kpi-accent: #d97706; }
-.kpi-indigo { --kpi-accent: #4f46e5; }
+.kpi-indigo { --kpi-accent: #6366f1; }
 
 /* ---------- Department selector ---------- */
 
@@ -122,9 +126,9 @@
 }
 
 .dept-selector:focus {
-  outline: 2px solid #2563eb;
+  outline: 2px solid var(--rdm-700);
   outline-offset: 1px;
-  border-color: #2563eb;
+  border-color: var(--rdm-700);
 }
 
 /* ─── Sidebar Button Navigation ────────────────────── */
@@ -167,7 +171,7 @@
 }
 
 .sidebar-item .sidebar-link:hover {
-  background: var(--scarlet-50);
+  background: var(--rdm-50);
 }
 
 .sidebar-item .sidebar-link .menu-text {
@@ -179,13 +183,13 @@
 
 /* Active state */
 .sidebar-item .sidebar-link.active {
-  background: var(--scarlet-50);
+  background: var(--rdm-50);
   border-left: none;
 }
 
 .sidebar-item .sidebar-link.active .menu-text {
   font-weight: 700;
-  color: var(--scarlet-700);
+  color: var(--rdm-700);
 }
 
 /* Subtitle */
@@ -200,7 +204,7 @@
 }
 
 .sidebar-link.active .sidebar-subtitle {
-  color: var(--scarlet-400);
+  color: var(--rdm-400);
 }
 
 /* Hide subtitle in breadcrumbs */
@@ -240,3 +244,38 @@
   color: var(--neutral-600);
   font-weight: 600;
 }
+
+/* ---------- Navbar (rdm.tue.nl dark slate) ---------- */
+
+.navbar {
+  background-color: var(--slate-600) !important;
+  border-bottom: none;
+}
+
+.navbar a,
+.navbar .nav-link,
+.navbar .navbar-brand,
+.navbar .navbar-title {
+  color: #ffffff !important;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+  color: var(--rdm-300) !important;
+}
+
+.navbar .nav-link.active {
+  color: var(--rdm-200) !important;
+}
+
+/* ---------- Links (use RDM purple) ---------- */
+
+a {
+  color: var(--rdm-700);
+}
+
+a:hover {
+  color: var(--rdm-800);
+}
+
+

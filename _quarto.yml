@@ -35,9 +35,7 @@ execute:
 
 format:
   html:
-    theme:
-      - cosmo
-      - brand
+    theme: cosmo
     css: styles.css
     toc: true
     include-after-body: sidebar-footer.html
