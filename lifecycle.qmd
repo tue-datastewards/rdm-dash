@@ -8,6 +8,7 @@ format:
 
 ```{python}
 #| tags: [hide-all]
+
 import _helpers as h
 import plotly.express as px
 import plotly.io as pio
@@ -25,6 +26,7 @@ for dept in h.DEPARTMENTS:
 <option value="overview">Overview (all departments)</option>
 ```{python}
 #| output: asis
+
 for d in h.DEPARTMENTS:
     print(f'<option value="{h.DEPT_SLUGS[d]}">{d}</option>')
 ```
