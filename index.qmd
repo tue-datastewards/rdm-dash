@@ -8,6 +8,7 @@ format:
 ---
 
 ```{python}
+#| tags: [hide-all]
 from IPython.display import HTML, display
 
 import _helpers as h
@@ -17,30 +18,43 @@ import plotly.io as pio
 pio.templates.default = "plotly_white"
 dmps = h.load_dmps()
 erbs = h.load_erbs()
-kpi = h.kpi_table(dmps)
-rev = h.revision_summary(dmps)
-k_total = kpi["Total DMPs"]
+```
 
-kpi_gauges = [
-    h.gauge_svg(kpi["Approval rate"], "Approval rate"),
-    h.gauge_svg(kpi["ERB linkage rate"], "ERB linkage"),
-    h.gauge_svg(kpi["Trusted repository rate"], "Trusted repository"),
-    h.gauge_svg(kpi["RAPS archival rate"], "Archived at RAPS"),
-    h.gauge_svg(rev["% with ≥1 revision"], "DMPs with ≥1 revision"),
-]
+```{python}
+#| output: asis
+print(h.purpose_toggle_html())
+```
 
-kpi_html_body = '<div class="kpi-grid">' + '\n' + "".join(kpi_gauges) + '</div>'
+```{python}
+#| tags: [hide-all]
+dmps_all = dmps
+dmps_sci = h.filter_by_purpose(dmps, True)
+dmps_edu = h.filter_by_purpose(dmps, False)
+```
 
-kpi_total_card = (
-    '<div class="kpi-card kpi-blue">'
-    '<div class="kpi-label">Total DMPs</div>'
-    '<div class="kpi-value">'
-    '<p>' + str(int(k_total)) + '</p>'
-    '</div>'
-    '</div>'
-)
-kpi_section = kpi_total_card + '\n' + kpi_html_body
-display(HTML(kpi_section))
+```{python}
+#| output: asis
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    kpi = h.kpi_table(pdf)
+    rev = h.revision_summary(pdf)
+    gauges = [
+        h.gauge_svg(kpi["Approval rate"], "Approval rate"),
+        h.gauge_svg(kpi["ERB linkage rate"], "ERB linkage"),
+        h.gauge_svg(kpi["Trusted repository rate"], "Trusted repository"),
+        h.gauge_svg(kpi["RAPS archival rate"], "Archived at RAPS"),
+        h.gauge_svg(rev["% with ≥1 revision"], "DMPs with ≥1 revision"),
+    ]
+    total_card = (
+        '<div class="kpi-card kpi-blue">'
+        '<div class="kpi-label">Total DMPs</div>'
+        '<div class="kpi-value"><p>' + str(int(kpi["Total DMPs"])) + '</p></div>'
+        '</div>'
+    )
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    print(total_card)
+    print('<div class="kpi-grid">' + "\n".join(gauges) + '</div>')
+    print('</div>')
 ```
 
 ## DMPs per department
@@ -53,22 +67,16 @@ display(HTML(kpi_section))
 
 ```{python}
 #| output: asis
-df = h.approval_by_department(dmps)
-fig = px.bar(
-    df,
-    x="DMPs",
-    y="Department",
-    orientation="h",
-    text="DMPs",
-    color="DMPs",
-    color_continuous_scale="Blues",
-)
-fig.update_layout(
-    yaxis={"categoryorder": "total ascending"},
-    coloraxis_showscale=False,
-    height=500,
-)
-print(h.render_chart(fig))
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.approval_by_department(pdf)
+    fig = px.bar(df, x="DMPs", y="Department", orientation="h",
+                 text="DMPs", color="DMPs", color_continuous_scale="Blues")
+    fig.update_layout(yaxis={"categoryorder": "total ascending"},
+                      coloraxis_showscale=False, height=500)
+    print(h.render_chart(fig))
+    print('</div>')
 ```
 
 ### By purpose
@@ -78,21 +86,10 @@ print(h.render_chart(fig))
 ```{python}
 #| output: asis
 df = h.dmps_by_department_purpose(dmps)
-fig = px.bar(
-    df,
-    x="DMPs",
-    y="Department",
-    color="Purpose",
-    orientation="h",
-    text="DMPs",
-    category_orders={"Purpose": ["Scientific", "Educational", "Unknown"]},
-)
-fig.update_layout(
-    yaxis={"categoryorder": "total ascending"},
-    barmode="stack",
-    height=500,
-    legend_title="Purpose",
-)
+fig = px.bar(df, x="DMPs", y="Department", color="Purpose", orientation="h",
+             text="DMPs", category_orders={"Purpose": ["Scientific", "Educational", "Unknown"]})
+fig.update_layout(yaxis={"categoryorder": "total ascending"}, barmode="stack",
+                  height=500, legend_title="Purpose")
 print(h.render_chart(fig))
 ```
 
@@ -108,24 +105,18 @@ print(h.render_chart(fig))
 
 ```{python}
 #| output: asis
-df = h.approval_by_department(dmps)
-fig = px.bar(
-    df,
-    x="Approval rate",
-    y="Department",
-    orientation="h",
-    text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-    hover_data=["DMPs", "Approved"],
-    color="Approval rate",
-    color_continuous_scale="Blues",
-)
-fig.update_layout(
-    yaxis={"categoryorder": "total ascending"},
-    xaxis_tickformat="0%",
-    coloraxis_showscale=False,
-    height=500,
-)
-print(h.render_chart(fig))
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.approval_by_department(pdf)
+    fig = px.bar(df, x="Approval rate", y="Department", orientation="h",
+                 text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
+                 hover_data=["DMPs", "Approved"], color="Approval rate",
+                 color_continuous_scale="Blues")
+    fig.update_layout(yaxis={"categoryorder": "total ascending"},
+                      xaxis_tickformat="0%", coloraxis_showscale=False, height=500)
+    print(h.render_chart(fig))
+    print('</div>')
 ```
 
 ### ERB approval by department
@@ -137,22 +128,12 @@ print(h.render_chart(fig))
 ```{python}
 #| output: asis
 df = h.erb_approval_by_department(dmps, erbs)
-fig = px.bar(
-    df,
-    x="Approval rate",
-    y="Department",
-    orientation="h",
-    text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-    hover_data=["ERBs", "Approved"],
-    color="Approval rate",
-    color_continuous_scale="Greens",
-)
-fig.update_layout(
-    yaxis={"categoryorder": "total ascending"},
-    xaxis_tickformat="0%",
-    coloraxis_showscale=False,
-    height=500,
-)
+fig = px.bar(df, x="Approval rate", y="Department", orientation="h",
+             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
+             hover_data=["ERBs", "Approved"], color="Approval rate",
+             color_continuous_scale="Greens")
+fig.update_layout(yaxis={"categoryorder": "total ascending"},
+                  xaxis_tickformat="0%", coloraxis_showscale=False, height=500)
 print(h.render_chart(fig))
 ```
 
@@ -178,11 +159,15 @@ print(h.render_chart(fig))
 
 ```{python}
 #| output: asis
-df = h.repository_breakdown(dmps)
-df = df[df["Repository"] != "(none)"]
-fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
-fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=500)
-print(h.render_chart(fig))
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.repository_breakdown(pdf)
+    df = df[df["Repository"] != "(none)"]
+    fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
+    fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=500)
+    print(h.render_chart(fig))
+    print('</div>')
 ```
 
 ### Archive location
@@ -192,21 +177,19 @@ print(h.render_chart(fig))
 
 ```{python}
 #| output: asis
-df = h.archive_breakdown(dmps)
-total = df["DMPs"].sum() or 1
-df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
-fig.update_traces(textposition="auto")
-fig.update_layout(
-    xaxis_title="",
-    yaxis_title="DMPs",
-    height=500,
-    barmode="stack",
-    showlegend=True,
-    legend_title="Location",
-)
-print(h.render_chart(fig))
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.archive_breakdown(pdf)
+    total = df["DMPs"].sum() or 1
+    df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+    df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+    fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
+    fig.update_traces(textposition="auto")
+    fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=500,
+                      barmode="stack", showlegend=True, legend_title="Location")
+    print(h.render_chart(fig))
+    print('</div>')
 ```
 
 ## Data handling {.tabset}
@@ -219,21 +202,19 @@ print(h.render_chart(fig))
 
 ```{python}
 #| output: asis
-df = h.storage_split(dmps)
-total = df["DMPs"].sum() or 1
-df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label")
-fig.update_traces(textposition="auto")
-fig.update_layout(
-    xaxis_title="",
-    yaxis_title="DMPs",
-    height=500,
-    barmode="stack",
-    showlegend=True,
-    legend_title="Storage",
-)
-print(h.render_chart(fig))
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.storage_split(pdf)
+    total = df["DMPs"].sum() or 1
+    df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+    df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+    fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label")
+    fig.update_traces(textposition="auto")
+    fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=500,
+                      barmode="stack", showlegend=True, legend_title="Storage")
+    print(h.render_chart(fig))
+    print('</div>')
 ```
 
 ### Storage solution count
@@ -244,10 +225,14 @@ print(h.render_chart(fig))
 
 ```{python}
 #| output: asis
-df = h.storage_count_distribution(dmps)
-fig = px.bar(df, x="Solutions", y="DMPs", text="DMPs", color="DMPs")
-fig.update_layout(showlegend=False, height=500)
-print(h.render_chart(fig))
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.storage_count_distribution(pdf)
+    fig = px.bar(df, x="Solutions", y="DMPs", text="DMPs", color="DMPs")
+    fig.update_layout(showlegend=False, height=500)
+    print(h.render_chart(fig))
+    print('</div>')
 ```
 
 ### Sensitive data outside TU/e
@@ -258,10 +243,14 @@ print(h.render_chart(fig))
 
 ```{python}
 #| output: asis
-df = h.sensitive_data_outside_tue(dmps)
-fig = px.bar(df, x="Category", y="DMPs", text="DMPs", color="Category")
-fig.update_layout(showlegend=False, height=500)
-print(h.render_chart(fig))
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.sensitive_data_outside_tue(pdf)
+    fig = px.bar(df, x="Category", y="DMPs", text="DMPs", color="Category")
+    fig.update_layout(showlegend=False, height=500)
+    print(h.render_chart(fig))
+    print('</div>')
 ```
 
 ### Data sharing
@@ -272,10 +261,14 @@ print(h.render_chart(fig))
 
 ```{python}
 #| output: asis
-df = h.data_sharing_breakdown(dmps)
-fig = px.bar(df, x="Destination", y="DMPs", text="DMPs", color="Destination")
-fig.update_layout(showlegend=False, height=500)
-print(h.render_chart(fig))
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.data_sharing_breakdown(pdf)
+    fig = px.bar(df, x="Destination", y="DMPs", text="DMPs", color="Destination")
+    fig.update_layout(showlegend=False, height=500)
+    print(h.render_chart(fig))
+    print('</div>')
 ```
 
 ## Workflow {.tabset}
@@ -286,10 +279,14 @@ print(h.render_chart(fig))
 
 ```{python}
 #| output: asis
-df = h.revision_distribution(dmps)
-fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
-fig.update_layout(showlegend=False, height=500)
-print(h.render_chart(fig))
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.revision_distribution(pdf)
+    fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
+    fig.update_layout(showlegend=False, height=500)
+    print(h.render_chart(fig))
+    print('</div>')
 ```
 
 ### Days to first submission
@@ -299,19 +296,16 @@ print(h.render_chart(fig))
 
 ```{python}
 #| output: asis
-s = h.days_to_first_submission(dmps).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(
-    xaxis_title="Days",
-    yaxis_title="DMPs",
-    height=500,
-    showlegend=False,
-    annotations=[dict(
-        text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-        xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False,
-    )],
-)
-print(h.render_chart(fig))
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    s = h.days_to_first_submission(pdf).dropna()
+    fig = px.histogram(s, nbins=40, labels={"value": "Days"})
+    fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=500, showlegend=False,
+                      annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
+                      xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
+    print(h.render_chart(fig))
+    print('</div>')
 ```
 
 ### First response time
@@ -321,19 +315,16 @@ print(h.render_chart(fig))
 
 ```{python}
 #| output: asis
-s = h.first_response_time(dmps).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(
-    xaxis_title="Days",
-    yaxis_title="DMPs",
-    height=500,
-    showlegend=False,
-    annotations=[dict(
-        text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-        xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False,
-    )],
-)
-print(h.render_chart(fig))
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    s = h.first_response_time(pdf).dropna()
+    fig = px.histogram(s, nbins=40, labels={"value": "Days"})
+    fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=500, showlegend=False,
+                      annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
+                      xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
+    print(h.render_chart(fig))
+    print('</div>')
 ```
 
 ### Help needed
@@ -343,8 +334,28 @@ print(h.render_chart(fig))
 
 ```{python}
 #| output: asis
-df = h.help_needed_rate(dmps)
-fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=500)
-print(h.render_chart(fig))
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.help_needed_rate(pdf)
+    fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
+    fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=500)
+    print(h.render_chart(fig))
+    print('</div>')
 ```
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var purposeToggle = document.querySelector(".purpose-toggle");
+  if (purposeToggle) {
+    var pBtns = purposeToggle.querySelectorAll(".purpose-btn");
+    var pPanels = document.querySelectorAll(".purpose-content");
+    function showPurpose(p) {
+      pBtns.forEach(function (b) { b.classList.toggle("active", b.dataset.purpose === p); });
+      pPanels.forEach(function (el) { el.classList.toggle("purpose-active", el.dataset.purpose === p); });
+    }
+    pBtns.forEach(function (b) { b.addEventListener("click", function () { showPurpose(this.dataset.purpose); }); });
+    showPurpose("all");
+  }
+});
+</script>

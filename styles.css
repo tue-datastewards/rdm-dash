@@ -305,3 +305,46 @@ a {
 a:hover {
   color: var(--rdm-800);
 }
+
+/* ---------- Purpose toggle ---------- */
+
+.purpose-toggle {
+  display: inline-flex;
+  background: var(--neutral-100);
+  border-radius: 4px;
+  padding: 3px;
+  gap: 2px;
+  margin-bottom: 1.25rem;
+}
+
+.purpose-btn {
+  padding: 7px 14px;
+  border: medium;
+  border-radius: 3px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: 150ms;
+  background: transparent;
+  color: var(--neutral-500);
+  font-weight: 500;
+}
+
+.purpose-btn:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.purpose-btn.active {
+  background: var(--surface);
+  color: var(--rdm-700);
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.purpose-content {
+  display: none;
+}
+
+.purpose-content.purpose-active {
+  display: block;
+}

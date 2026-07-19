@@ -651,3 +651,30 @@ def gauge_svg(value_float: float, label: str) -> str:
         ca=ca_str, off=off_str,
         pct_display=pct_display,
     )
+
+
+# Purpose filtering -----------------------------------------------------------
+
+def filter_by_purpose(df: pd.DataFrame, purpose: bool | None) -> pd.DataFrame:
+    """Filter DMPs by purpose. None = all, True = scientific, False = educational."""
+    if purpose is None:
+        return df
+    return df[df["is_scientific"] == purpose].copy()
+
+
+PURPOSES = [("all", None), ("scientific", True), ("educational", False)]
+
+
+def purpose_toggle_html() -> str:
+    """Render the purpose toggle button group."""
+    buttons = []
+    for value, _ in PURPOSES:
+        cls = "purpose-btn active" if value == "all" else "purpose-btn"
+        label = {"all": "All purposes", "scientific": "Scientific",
+                 "educational": "Educational"}[value]
+        buttons.append(f'  <button class="{cls}" data-purpose="{value}">{label}</button>')
+    return (
+        '<div class="purpose-toggle">\n'
+        + "\n".join(buttons)
+        + "\n</div>"
+    )
