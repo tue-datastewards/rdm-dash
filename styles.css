@@ -314,7 +314,15 @@ a:hover {
   border-radius: 4px;
   padding: 3px;
   gap: 2px;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.purpose-toggle p {
+  margin: 0;
+}
+
+.purpose-toggle + p {
+  margin-top: 0;
 }
 
 .purpose-btn {
