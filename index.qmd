@@ -52,8 +52,7 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
         '</div>'
     )
     print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    print(total_card)
-    print('<div class="kpi-grid">' + "\n".join(gauges) + '</div>')
+    print('<div class="kpi-grid">' + total_card + "\n".join(gauges) + '</div>')
     print('</div>')
 ```
 
