@@ -246,6 +246,16 @@ def kpi_html(df: pd.DataFrame, with_revisions: bool = False) -> str:
     return '<div class="kpi-grid">' + "".join(items) + "</div>"
 
 
+def render_chart(fig, width: int = 900, height: int = 450) -> str:
+    """Render a Plotly figure as an inline SVG image (no JS needed)."""
+    import plotly.io as pio
+    svg = pio.to_image(fig, format="svg", width=width, height=height)
+    return (
+        f'<div style="width:100%;max-width:{width}px;margin:0 auto 1.5rem">'
+        f'{svg.decode()}</div>'
+    )
+
+
 def approval_by_department(df: pd.DataFrame) -> pd.DataFrame:
     """Approval counts and rates per department (Q1)."""
     out = []
@@ -640,4 +650,31 @@ def gauge_svg(value_float: float, label: str) -> str:
         label=label, x=x, y=y, r=r, t=t,
         ca=ca_str, off=off_str,
         pct_display=pct_display,
+    )
+
+
+# Purpose filtering -----------------------------------------------------------
+
+def filter_by_purpose(df: pd.DataFrame, purpose: bool | None) -> pd.DataFrame:
+    """Filter DMPs by purpose. None = all, True = scientific, False = educational."""
+    if purpose is None:
+        return df
+    return df[df["is_scientific"] == purpose].copy()
+
+
+PURPOSES = [("all", None), ("scientific", True), ("educational", False)]
+
+
+def purpose_toggle_html() -> str:
+    """Render the purpose toggle button group."""
+    buttons = []
+    for value, _ in PURPOSES:
+        cls = "purpose-btn active" if value == "all" else "purpose-btn"
+        label = {"all": "All purposes", "scientific": "Scientific",
+                 "educational": "Educational"}[value]
+        buttons.append(f'  <button class="{cls}" data-purpose="{value}">{label}</button>')
+    return (
+        '<div class="purpose-toggle">\n'
+        + "\n".join(buttons)
+        + "\n</div>"
     )

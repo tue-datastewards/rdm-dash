@@ -24,6 +24,11 @@ for dept in h.DEPARTMENTS:
     dept_data[dept] = {"dmps": dd, "erbs": de}
 ```
 
+```{python}
+#| output: asis
+print(h.purpose_toggle_html())
+```
+
 <select id="dept-select" class="dept-selector">
 <option value="overview">Overview (all departments)</option>
 ```{python}
@@ -36,516 +41,133 @@ for d in h.DEPARTMENTS:
 <div class="dept-panel" id="dept-overview">
 ```{python}
 #| output: asis
-print(h.kpi_html(dmps))
+for pkey, pval in h.PURPOSES:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    dd = h.filter_by_purpose(dmps, pval)
+    print(h.kpi_html(dd))
+    print('</div>')
 ```
 
 ```{python}
-#| echo: false
-df = h.approval_by_department(dmps)
-fig = px.bar(df, x="Department", y="Approval rate",
-             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-             hover_data=["DMPs", "Approved"], color="Department")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450,
-                  title="Approval rate by department")
-fig
+#| output: asis
+for pkey, pval in h.PURPOSES:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    dd = h.filter_by_purpose(dmps, pval)
+    df = h.approval_by_department(dd)
+    fig = px.bar(df, x="Department", y="Approval rate",
+                 text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
+                 hover_data=["DMPs", "Approved"], color="Department")
+    fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450,
+                      title="Approval rate by department")
+    print(h.render_chart(fig))
+    print('</div>')
 ```
 
 ```{python}
-#| echo: false
+#| output: asis
 df = h.erb_approval_by_department(dmps, erbs)
 fig = px.bar(df, x="Department", y="Approval rate",
              text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
              hover_data=["ERBs", "Approved"], color="Department")
 fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450,
                   title="ERB approval rate by department")
-fig
+print(h.render_chart(fig))
 ```
 
 ```{python}
-#| echo: false
-import pandas as pd
-rows = []
+#| output: asis
+for pkey, pval in h.PURPOSES:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    dd = h.filter_by_purpose(dmps, pval)
+    import pandas as pd
+    rows = []
+    for dept in h.DEPARTMENTS:
+        sub = h.filter_department(dd, dept)
+        repo = h.repository_breakdown(sub)
+        repo = repo[repo["Repository"] != "(none)"]
+        for _, r in repo.iterrows():
+            rows.append({"Department": dept, "Repository": r["Repository"], "DMPs": r["DMPs"]})
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="DMPs", y="Repository", orientation="h",
+                 color="Department", barmode="group", height=500,
+                 title="Repository usage by department")
+    fig.update_layout(yaxis={"categoryorder": "total ascending"})
+    print(h.render_chart(fig))
+    print('</div>')
+```
+
+```{python}
+#| output: asis
+for pkey, pval in h.PURPOSES:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    dd = h.filter_by_purpose(dmps, pval)
+    import pandas as pd
+    rows = []
+    for dept in h.DEPARTMENTS:
+        sub = h.filter_department(dd, dept)
+        arch = h.archive_breakdown(sub)
+        for _, r in arch.iterrows():
+            rows.append({"Department": dept, "Location": r["Location"], "DMPs": r["DMPs"]})
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="DMPs", y="Department", color="Location",
+                 barmode="stack", height=450,
+                 title="Archive location by department")
+    print(h.render_chart(fig))
+    print('</div>')
+```
+
+</div>
+
+```{python}
+#| tags: [hide-all]
+#| output: asis
 for dept in h.DEPARTMENTS:
-    sub = h.filter_department(dmps, dept)
-    repo = h.repository_breakdown(sub)
-    repo = repo[repo["Repository"] != "(none)"]
-    for _, r in repo.iterrows():
-        rows.append({"Department": dept, "Repository": r["Repository"], "DMPs": r["DMPs"]})
-df = pd.DataFrame(rows)
-fig = px.bar(df, x="DMPs", y="Repository", orientation="h",
-             color="Department", barmode="group", height=500,
-             title="Repository usage by department")
-fig.update_layout(yaxis={"categoryorder": "total ascending"})
-fig
+    slug = h.DEPT_SLUGS[dept]
+    dd_all = dept_data[dept]["dmps"]
+    de = dept_data[dept]["erbs"]
+    print(f'<div class="dept-panel" id="dept-{slug}" style="display:none">')
+
+    for pkey, pval in h.PURPOSES:
+        act = " purpose-active" if pkey == "all" else ""
+        print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+        dd = h.filter_by_purpose(dd_all, pval)
+        print(h.kpi_html(dd))
+
+        df = h.approval_by_purpose(dd)
+        fig = px.bar(df, x="Purpose", y="Approval rate",
+                     text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
+                     hover_data=["DMPs", "Approved"], color="Purpose")
+        fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
+        print(h.render_chart(fig))
+
+        df = h.erb_breakdown(dd_all, de)
+        fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
+        fig.update_layout(showlegend=False, height=450)
+        print(h.render_chart(fig))
+
+        df = h.repository_breakdown(dd)
+        df = df[df["Repository"] != "(none)"]
+        fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
+        fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
+        print(h.render_chart(fig))
+
+        df = h.archive_breakdown(dd)
+        total = df["DMPs"].sum() or 1
+        df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+        fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
+        fig.update_traces(textposition="auto")
+        fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
+                          showlegend=True, legend_title="Location")
+        print(h.render_chart(fig))
+
+        print('</div>')
+    print('</div>')
 ```
-
-```{python}
-#| echo: false
-import pandas as pd
-rows = []
-for dept in h.DEPARTMENTS:
-    sub = h.filter_department(dmps, dept)
-    arch = h.archive_breakdown(sub)
-    for _, r in arch.iterrows():
-        rows.append({"Department": dept, "Location": r["Location"], "DMPs": r["DMPs"]})
-df = pd.DataFrame(rows)
-fig = px.bar(df, x="DMPs", y="Department", color="Location",
-             barmode="stack", height=450,
-             title="Archive location by department")
-fig
-```
-
-</div>
-
-<div class="dept-panel" id="dept-industrial-design">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Industrial Design (ID)"]["dmps"]))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Industrial Design (ID)"]["dmps"]
-de = dept_data["Industrial Design (ID)"]["erbs"]
-df = h.approval_by_purpose(dd)
-fig = px.bar(df, x="Purpose", y="Approval rate",
-             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-             hover_data=["DMPs", "Approved"], color="Purpose")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.erb_breakdown(dd, de)
-fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.repository_breakdown(dd)
-df = df[df["Repository"] != "(none)"]
-fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
-fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.archive_breakdown(dd)
-total = df["DMPs"].sum() or 1
-df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
-fig.update_traces(textposition="auto")
-fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                  showlegend=True, legend_title="Location")
-fig
-```
-
-</div>
-
-<div class="dept-panel" id="dept-industrial-engineering" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Industrial Engineering and Innovation Sciences (IE&IS)"]["dmps"]))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Industrial Engineering and Innovation Sciences (IE&IS)"]["dmps"]
-de = dept_data["Industrial Engineering and Innovation Sciences (IE&IS)"]["erbs"]
-df = h.approval_by_purpose(dd)
-fig = px.bar(df, x="Purpose", y="Approval rate",
-             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-             hover_data=["DMPs", "Approved"], color="Purpose")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.erb_breakdown(dd, de)
-fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.repository_breakdown(dd)
-df = df[df["Repository"] != "(none)"]
-fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
-fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.archive_breakdown(dd)
-total = df["DMPs"].sum() or 1
-df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
-fig.update_traces(textposition="auto")
-fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                  showlegend=True, legend_title="Location")
-fig
-```
-
-</div>
-
-<div class="dept-panel" id="dept-built-environment" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Built Environment (BE)"]["dmps"]))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Built Environment (BE)"]["dmps"]
-de = dept_data["Built Environment (BE)"]["erbs"]
-df = h.approval_by_purpose(dd)
-fig = px.bar(df, x="Purpose", y="Approval rate",
-             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-             hover_data=["DMPs", "Approved"], color="Purpose")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.erb_breakdown(dd, de)
-fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.repository_breakdown(dd)
-df = df[df["Repository"] != "(none)"]
-fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
-fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.archive_breakdown(dd)
-total = df["DMPs"].sum() or 1
-df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
-fig.update_traces(textposition="auto")
-fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                  showlegend=True, legend_title="Location")
-fig
-```
-
-</div>
-
-<div class="dept-panel" id="dept-mathematics-computer-science" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Mathematics and Computer Science (M&CS)"]["dmps"]))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Mathematics and Computer Science (M&CS)"]["dmps"]
-de = dept_data["Mathematics and Computer Science (M&CS)"]["erbs"]
-df = h.approval_by_purpose(dd)
-fig = px.bar(df, x="Purpose", y="Approval rate",
-             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-             hover_data=["DMPs", "Approved"], color="Purpose")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.erb_breakdown(dd, de)
-fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.repository_breakdown(dd)
-df = df[df["Repository"] != "(none)"]
-fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
-fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.archive_breakdown(dd)
-total = df["DMPs"].sum() or 1
-df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
-fig.update_traces(textposition="auto")
-fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                  showlegend=True, legend_title="Location")
-fig
-```
-
-</div>
-
-<div class="dept-panel" id="dept-biomedical-engineering" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Biomedical Engineering (BmE)"]["dmps"]))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Biomedical Engineering (BmE)"]["dmps"]
-de = dept_data["Biomedical Engineering (BmE)"]["erbs"]
-df = h.approval_by_purpose(dd)
-fig = px.bar(df, x="Purpose", y="Approval rate",
-             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-             hover_data=["DMPs", "Approved"], color="Purpose")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.erb_breakdown(dd, de)
-fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.repository_breakdown(dd)
-df = df[df["Repository"] != "(none)"]
-fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
-fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.archive_breakdown(dd)
-total = df["DMPs"].sum() or 1
-df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
-fig.update_traces(textposition="auto")
-fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                  showlegend=True, legend_title="Location")
-fig
-```
-
-</div>
-
-<div class="dept-panel" id="dept-mechanical-engineering" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Mechanical Engineering (ME)"]["dmps"]))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Mechanical Engineering (ME)"]["dmps"]
-de = dept_data["Mechanical Engineering (ME)"]["erbs"]
-df = h.approval_by_purpose(dd)
-fig = px.bar(df, x="Purpose", y="Approval rate",
-             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-             hover_data=["DMPs", "Approved"], color="Purpose")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.erb_breakdown(dd, de)
-fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.repository_breakdown(dd)
-df = df[df["Repository"] != "(none)"]
-fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
-fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.archive_breakdown(dd)
-total = df["DMPs"].sum() or 1
-df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
-fig.update_traces(textposition="auto")
-fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                  showlegend=True, legend_title="Location")
-fig
-```
-
-</div>
-
-<div class="dept-panel" id="dept-applied-physics" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Applied Physics and Science Education (AP&SE)"]["dmps"]))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Applied Physics and Science Education (AP&SE)"]["dmps"]
-de = dept_data["Applied Physics and Science Education (AP&SE)"]["erbs"]
-df = h.approval_by_purpose(dd)
-fig = px.bar(df, x="Purpose", y="Approval rate",
-             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-             hover_data=["DMPs", "Approved"], color="Purpose")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.erb_breakdown(dd, de)
-fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.repository_breakdown(dd)
-df = df[df["Repository"] != "(none)"]
-fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
-fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.archive_breakdown(dd)
-total = df["DMPs"].sum() or 1
-df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
-fig.update_traces(textposition="auto")
-fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                  showlegend=True, legend_title="Location")
-fig
-```
-
-</div>
-
-<div class="dept-panel" id="dept-electrical-engineering" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Electrical Engineering (EE)"]["dmps"]))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Electrical Engineering (EE)"]["dmps"]
-de = dept_data["Electrical Engineering (EE)"]["erbs"]
-df = h.approval_by_purpose(dd)
-fig = px.bar(df, x="Purpose", y="Approval rate",
-             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-             hover_data=["DMPs", "Approved"], color="Purpose")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.erb_breakdown(dd, de)
-fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.repository_breakdown(dd)
-df = df[df["Repository"] != "(none)"]
-fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
-fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.archive_breakdown(dd)
-total = df["DMPs"].sum() or 1
-df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
-fig.update_traces(textposition="auto")
-fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                  showlegend=True, legend_title="Location")
-fig
-```
-
-</div>
-
-<div class="dept-panel" id="dept-chemical-engineering" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Chemical Engineering and Chemistry (CE&C)"]["dmps"]))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Chemical Engineering and Chemistry (CE&C)"]["dmps"]
-de = dept_data["Chemical Engineering and Chemistry (CE&C)"]["erbs"]
-df = h.approval_by_purpose(dd)
-fig = px.bar(df, x="Purpose", y="Approval rate",
-             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-             hover_data=["DMPs", "Approved"], color="Purpose")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.erb_breakdown(dd, de)
-fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.repository_breakdown(dd)
-df = df[df["Repository"] != "(none)"]
-fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
-fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-df = h.archive_breakdown(dd)
-total = df["DMPs"].sum() or 1
-df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
-fig.update_traces(textposition="auto")
-fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                  showlegend=True, legend_title="Location")
-fig
-```
-
-</div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -565,5 +187,17 @@ document.addEventListener("DOMContentLoaded", function () {
     params.set("dept", this.value);
     history.replaceState(null, "", "?" + params.toString());
   });
+
+  var purposeToggle = document.querySelector(".purpose-toggle");
+  if (purposeToggle) {
+    var pBtns = purposeToggle.querySelectorAll(".purpose-btn");
+    var pPanels = document.querySelectorAll(".purpose-content");
+    function showPurpose(p) {
+      pBtns.forEach(function (b) { b.classList.toggle("active", b.dataset.purpose === p); });
+      pPanels.forEach(function (el) { el.classList.toggle("purpose-active", el.dataset.purpose === p); });
+    }
+    pBtns.forEach(function (b) { b.addEventListener("click", function () { showPurpose(this.dataset.purpose); }); });
+    showPurpose("all");
+  }
 });
 </script>
