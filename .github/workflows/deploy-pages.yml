@@ -29,6 +29,12 @@ jobs:
         run: pipenv install
       - name: Render site
         run: pipenv run quarto render
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages
+          path: _site/
+          retention-days: 1
 
   deploy-production:
     needs: build-site
@@ -37,6 +43,11 @@ jobs:
       name: github-pages
       url: https://tue-datastewards.github.io/rdm-dash/
     steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: _site/
       - name: Deploy to GitHub Pages
         uses: rossjrw/pr-preview-action@v1
         with:
