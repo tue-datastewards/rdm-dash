@@ -21,6 +21,11 @@ for dept in h.DEPARTMENTS:
     dept_data[dept] = h.filter_department(dmps, dept)
 ```
 
+```{python}
+#| output: asis
+print(h.purpose_toggle_html())
+```
+
 <select id="dept-select" class="dept-selector">
 <option value="overview">Overview (all departments)</option>
 ```{python}
@@ -33,522 +38,148 @@ for d in h.DEPARTMENTS:
 <div class="dept-panel" id="dept-overview">
 ```{python}
 #| output: asis
-print(h.kpi_html(dmps, with_revisions=True))
+for pkey, pval in h.PURPOSES:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    dd = h.filter_by_purpose(dmps, pval)
+    print(h.kpi_html(dd, with_revisions=True))
+    print('</div>')
 ```
 
 ```{python}
-#| echo: false
-import pandas as pd
-rows = []
+#| output: asis
+for pkey, pval in h.PURPOSES:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    dd = h.filter_by_purpose(dmps, pval)
+    import pandas as pd
+    rows = []
+    for dept in h.DEPARTMENTS:
+        sub = h.filter_department(dd, dept)
+        rev = h.revision_distribution(sub)
+        for _, r in rev.iterrows():
+            rows.append({"Department": dept, "Revisions": r["Revisions"], "DMPs": r["DMPs"]})
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="Revisions", y="DMPs", color="Department",
+                 barmode="group", height=450,
+                 title="Revision distribution by department")
+    print(h.render_chart(fig))
+    print('</div>')
+```
+
+```{python}
+#| output: asis
+for pkey, pval in h.PURPOSES:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    dd = h.filter_by_purpose(dmps, pval)
+    import pandas as pd
+    rows = []
+    for dept in h.DEPARTMENTS:
+        sub = h.filter_department(dd, dept)
+        s = h.days_to_first_submission(sub).dropna()
+        if len(s):
+            rows.append({"Department": dept, "Median days": s.median()})
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="Department", y="Median days",
+                 text=df["Median days"].map(lambda v: f"{v:.0f}"),
+                 color="Department", height=450,
+                 title="Median days to first submission by department")
+    fig.update_layout(showlegend=False)
+    print(h.render_chart(fig))
+    print('</div>')
+```
+
+```{python}
+#| output: asis
+for pkey, pval in h.PURPOSES:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    dd = h.filter_by_purpose(dmps, pval)
+    import pandas as pd
+    rows = []
+    for dept in h.DEPARTMENTS:
+        sub = h.filter_department(dd, dept)
+        s = h.first_response_time(sub).dropna()
+        if len(s):
+            rows.append({"Department": dept, "Median days": s.median()})
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="Department", y="Median days",
+                 text=df["Median days"].map(lambda v: f"{v:.0f}"),
+                 color="Department", height=450,
+                 title="Median first response time by department")
+    fig.update_layout(showlegend=False)
+    print(h.render_chart(fig))
+    print('</div>')
+```
+
+```{python}
+#| output: asis
+for pkey, pval in h.PURPOSES:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    dd = h.filter_by_purpose(dmps, pval)
+    import pandas as pd
+    rows = []
+    for dept in h.DEPARTMENTS:
+        sub = h.filter_department(dd, dept)
+        hr = h.help_needed_rate(sub)
+        combined = hr[hr["Field"] == "Any field (combined)"]
+        if len(combined):
+            rows.append({"Department": dept, "Rate": combined.iloc[0]["Rate"]})
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="Department", y="Rate",
+                 text=df["Rate"].map(lambda v: f"{v:.1%}"),
+                 color="Department", height=450,
+                 title="'I need advice' rate by department")
+    fig.update_layout(yaxis_tickformat="0%", showlegend=False)
+    print(h.render_chart(fig))
+    print('</div>')
+```
+
+</div>
+
+```{python}
+#| tags: [hide-all]
+#| output: asis
 for dept in h.DEPARTMENTS:
-    sub = h.filter_department(dmps, dept)
-    rev = h.revision_distribution(sub)
-    for _, r in rev.iterrows():
-        rows.append({"Department": dept, "Revisions": r["Revisions"], "DMPs": r["DMPs"]})
-df = pd.DataFrame(rows)
-fig = px.bar(df, x="Revisions", y="DMPs", color="Department",
-             barmode="group", height=450,
-             title="Revision distribution by department")
-fig
+    slug = h.DEPT_SLUGS[dept]
+    dd_all = dept_data[dept]
+    print(f'<div class="dept-panel" id="dept-{slug}" style="display:none">')
+
+    for pkey, pval in h.PURPOSES:
+        act = " purpose-active" if pkey == "all" else ""
+        print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+        dd = h.filter_by_purpose(dd_all, pval)
+        print(h.kpi_html(dd, with_revisions=True))
+
+        df = h.revision_distribution(dd)
+        fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
+        fig.update_layout(showlegend=False, height=450)
+        print(h.render_chart(fig))
+
+        s = h.days_to_first_submission(dd).dropna()
+        fig = px.histogram(s, nbins=40, labels={"value": "Days"})
+        fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
+                          annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
+                          xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
+        print(h.render_chart(fig))
+
+        s = h.first_response_time(dd).dropna()
+        fig = px.histogram(s, nbins=40, labels={"value": "Days"})
+        fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
+                          annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
+                          xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
+        print(h.render_chart(fig))
+
+        df = h.help_needed_rate(dd)
+        fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
+        fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
+        print(h.render_chart(fig))
+
+        print('</div>')
+    print('</div>')
 ```
-
-```{python}
-#| echo: false
-import pandas as pd
-rows = []
-for dept in h.DEPARTMENTS:
-    sub = h.filter_department(dmps, dept)
-    s = h.days_to_first_submission(sub).dropna()
-    if len(s):
-        rows.append({"Department": dept, "Median days": s.median()})
-df = pd.DataFrame(rows)
-fig = px.bar(df, x="Department", y="Median days",
-             text=df["Median days"].map(lambda v: f"{v:.0f}"),
-             color="Department", height=450,
-             title="Median days to first submission by department")
-fig.update_layout(showlegend=False)
-fig
-```
-
-```{python}
-#| echo: false
-import pandas as pd
-rows = []
-for dept in h.DEPARTMENTS:
-    sub = h.filter_department(dmps, dept)
-    s = h.first_response_time(sub).dropna()
-    if len(s):
-        rows.append({"Department": dept, "Median days": s.median()})
-df = pd.DataFrame(rows)
-fig = px.bar(df, x="Department", y="Median days",
-             text=df["Median days"].map(lambda v: f"{v:.0f}"),
-             color="Department", height=450,
-             title="Median first response time by department")
-fig.update_layout(showlegend=False)
-fig
-```
-
-```{python}
-#| echo: false
-import pandas as pd
-rows = []
-for dept in h.DEPARTMENTS:
-    sub = h.filter_department(dmps, dept)
-    hr = h.help_needed_rate(sub)
-    combined = hr[hr["Field"] == "Any field (combined)"]
-    if len(combined):
-        rows.append({"Department": dept, "Rate": combined.iloc[0]["Rate"]})
-df = pd.DataFrame(rows)
-fig = px.bar(df, x="Department", y="Rate",
-             text=df["Rate"].map(lambda v: f"{v:.1%}"),
-             color="Department", height=450,
-             title="'I need advice' rate by department")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False)
-fig
-```
-
-</div>
-
-<div class="dept-panel" id="dept-industrial-design">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Industrial Design (ID)"], with_revisions=True))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Industrial Design (ID)"]
-df = h.revision_distribution(dd)
-fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-s = h.days_to_first_submission(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-s = h.first_response_time(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-df = h.help_needed_rate(dd)
-fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-<h3>DMP reuse rate</h3>
-<p><strong>Q11.</strong> What share of researchers reuse DMPs across new projects (DMPs per person)?</p>
-<p><em>Data pending — this metric requires cross-project linking not yet available in the dataset.</em></p>
-
-</div>
-
-<div class="dept-panel" id="dept-industrial-engineering" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Industrial Engineering and Innovation Sciences (IE&IS)"], with_revisions=True))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Industrial Engineering and Innovation Sciences (IE&IS)"]
-df = h.revision_distribution(dd)
-fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-s = h.days_to_first_submission(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-s = h.first_response_time(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-df = h.help_needed_rate(dd)
-fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-<h3>DMP reuse rate</h3>
-<p><strong>Q11.</strong> What share of researchers reuse DMPs across new projects (DMPs per person)?</p>
-<p><em>Data pending — this metric requires cross-project linking not yet available in the dataset.</em></p>
-
-</div>
-
-<div class="dept-panel" id="dept-built-environment" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Built Environment (BE)"], with_revisions=True))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Built Environment (BE)"]
-df = h.revision_distribution(dd)
-fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-s = h.days_to_first_submission(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-s = h.first_response_time(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-df = h.help_needed_rate(dd)
-fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-<h3>DMP reuse rate</h3>
-<p><strong>Q11.</strong> What share of researchers reuse DMPs across new projects (DMPs per person)?</p>
-<p><em>Data pending — this metric requires cross-project linking not yet available in the dataset.</em></p>
-
-</div>
-
-<div class="dept-panel" id="dept-mathematics-computer-science" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Mathematics and Computer Science (M&CS)"], with_revisions=True))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Mathematics and Computer Science (M&CS)"]
-df = h.revision_distribution(dd)
-fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-s = h.days_to_first_submission(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-s = h.first_response_time(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-df = h.help_needed_rate(dd)
-fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-<h3>DMP reuse rate</h3>
-<p><strong>Q11.</strong> What share of researchers reuse DMPs across new projects (DMPs per person)?</p>
-<p><em>Data pending — this metric requires cross-project linking not yet available in the dataset.</em></p>
-
-</div>
-
-<div class="dept-panel" id="dept-biomedical-engineering" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Biomedical Engineering (BmE)"], with_revisions=True))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Biomedical Engineering (BmE)"]
-df = h.revision_distribution(dd)
-fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-s = h.days_to_first_submission(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-s = h.first_response_time(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-df = h.help_needed_rate(dd)
-fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-<h3>DMP reuse rate</h3>
-<p><strong>Q11.</strong> What share of researchers reuse DMPs across new projects (DMPs per person)?</p>
-<p><em>Data pending — this metric requires cross-project linking not yet available in the dataset.</em></p>
-
-</div>
-
-<div class="dept-panel" id="dept-mechanical-engineering" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Mechanical Engineering (ME)"], with_revisions=True))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Mechanical Engineering (ME)"]
-df = h.revision_distribution(dd)
-fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-s = h.days_to_first_submission(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-s = h.first_response_time(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-df = h.help_needed_rate(dd)
-fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-<h3>DMP reuse rate</h3>
-<p><strong>Q11.</strong> What share of researchers reuse DMPs across new projects (DMPs per person)?</p>
-<p><em>Data pending — this metric requires cross-project linking not yet available in the dataset.</em></p>
-
-</div>
-
-<div class="dept-panel" id="dept-applied-physics" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Applied Physics and Science Education (AP&SE)"], with_revisions=True))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Applied Physics and Science Education (AP&SE)"]
-df = h.revision_distribution(dd)
-fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-s = h.days_to_first_submission(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-s = h.first_response_time(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-df = h.help_needed_rate(dd)
-fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-<h3>DMP reuse rate</h3>
-<p><strong>Q11.</strong> What share of researchers reuse DMPs across new projects (DMPs per person)?</p>
-<p><em>Data pending — this metric requires cross-project linking not yet available in the dataset.</em></p>
-
-</div>
-
-<div class="dept-panel" id="dept-electrical-engineering" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Electrical Engineering (EE)"], with_revisions=True))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Electrical Engineering (EE)"]
-df = h.revision_distribution(dd)
-fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-s = h.days_to_first_submission(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-s = h.first_response_time(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-df = h.help_needed_rate(dd)
-fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-<h3>DMP reuse rate</h3>
-<p><strong>Q11.</strong> What share of researchers reuse DMPs across new projects (DMPs per person)?</p>
-<p><em>Data pending — this metric requires cross-project linking not yet available in the dataset.</em></p>
-
-</div>
-
-<div class="dept-panel" id="dept-chemical-engineering" style="display:none">
-```{python}
-#| output: asis
-print(h.kpi_html(dept_data["Chemical Engineering and Chemistry (CE&C)"], with_revisions=True))
-```
-
-```{python}
-#| echo: false
-dd = dept_data["Chemical Engineering and Chemistry (CE&C)"]
-df = h.revision_distribution(dd)
-fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
-fig.update_layout(showlegend=False, height=450)
-fig
-```
-
-```{python}
-#| echo: false
-s = h.days_to_first_submission(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-s = h.first_response_time(dd).dropna()
-fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                   annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                   xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-fig
-```
-
-```{python}
-#| echo: false
-df = h.help_needed_rate(dd)
-fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
-fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450)
-fig
-```
-
-<h3>DMP reuse rate</h3>
-<p><strong>Q11.</strong> What share of researchers reuse DMPs across new projects (DMPs per person)?</p>
-<p><em>Data pending — this metric requires cross-project linking not yet available in the dataset.</em></p>
-
-</div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -568,5 +199,17 @@ document.addEventListener("DOMContentLoaded", function () {
     params.set("dept", this.value);
     history.replaceState(null, "", "?" + params.toString());
   });
+
+  var purposeToggle = document.querySelector(".purpose-toggle");
+  if (purposeToggle) {
+    var pBtns = purposeToggle.querySelectorAll(".purpose-btn");
+    var pPanels = document.querySelectorAll(".purpose-content");
+    function showPurpose(p) {
+      pBtns.forEach(function (b) { b.classList.toggle("active", b.dataset.purpose === p); });
+      pPanels.forEach(function (el) { el.classList.toggle("purpose-active", el.dataset.purpose === p); });
+    }
+    pBtns.forEach(function (b) { b.addEventListener("click", function () { showPurpose(this.dataset.purpose); }); });
+    showPurpose("all");
+  }
 });
 </script>

@@ -222,24 +222,38 @@ def kpi_html(df: pd.DataFrame, with_revisions: bool = False) -> str:
     k = kpi_table(df)
     rev = revision_summary(df) if with_revisions else None
 
-    def card(label, value, color):
-        return (
-            f'<div class="kpi-card kpi-{color}">'
-            f'<div class="kpi-label"><p>{label}</p></div>'
-            f'<div class="kpi-value"><p>{value}</p></div>'
-            f'</div>'
-        )
+    items = []
 
-    cards = [
-        card("Total DMPs", len(df), "blue"),
-        card("Approval rate", f'{k["Approval rate"]:.0%}', "green"),
-        card("ERB linkage", f'{k["ERB linkage rate"]:.0%}', "teal"),
-        card("Trusted repository", f'{k["Trusted repository rate"]:.0%}', "purple"),
-        card("Archived at RAPS", f'{k["RAPS archival rate"]:.0%}', "amber"),
+    items.append(
+        '<div class="kpi-card kpi-blue">'
+        '<div class="kpi-label"><p>Total DMPs</p></div>'
+        '<div class="kpi-value"><p>' + str(len(df)) + '</p></div>'
+        '</div>'
+    )
+
+    pct_kpis = [
+        ("Approval rate", k["Approval rate"]),
+        ("ERB linkage", k["ERB linkage rate"]),
+        ("Trusted repository", k["Trusted repository rate"]),
+        ("Archived at RAPS", k["RAPS archival rate"]),
     ]
+    for label, value in pct_kpis:
+        items.append(gauge_svg(value, label))
+
     if rev is not None:
-        cards.append(card("DMPs with \u22651 revision", f'{rev["% with \u22651 revision"]:.0%}', "indigo"))
-    return '<div class="kpi-grid">' + "".join(cards) + "</div>"
+        items.append(gauge_svg(rev["% with \u22651 revision"], "\u22651 revision"))
+
+    return '<div class="kpi-grid">' + "".join(items) + "</div>"
+
+
+def render_chart(fig, width: int = 900, height: int = 450) -> str:
+    """Render a Plotly figure as an inline SVG image (no JS needed)."""
+    import plotly.io as pio
+    svg = pio.to_image(fig, format="svg", width=width, height=height)
+    return (
+        f'<div style="width:100%;max-width:{width}px;margin:0 auto 1.5rem">'
+        f'{svg.decode()}</div>'
+    )
 
 
 def approval_by_department(df: pd.DataFrame) -> pd.DataFrame:
@@ -599,3 +613,68 @@ def help_needed_rate(df: pd.DataFrame) -> pd.DataFrame:
     ).sum())
     rows.append({"Field": "Any field (combined)", "DMPs": combined, "Rate": combined / n})
     return pd.DataFrame(rows)
+
+
+def gauge_svg(value_float: float, label: str) -> str:
+    """Return an inline SVG circle gauge for a decimal value 0-1."""
+    pct = max(0.0, min(1.0, value_float))
+    pct_display = f"{pct:.0%}"
+    x = 66
+    y = 66
+    r = 52
+    t = 12
+    circumference = 2 * 3.14159265 * r
+    offset = circumference * (1 - pct)
+    ca_str = f"{round(circumference, 1)}"
+    off_str = f"{round(offset, 1)}"
+    return (
+        '<div class="kpi-card kpi-circle">'
+        '<div class="gauge-wrap">'
+        '<svg class="gauge-svg" viewBox="0 0 132 132" width="132" height="132">'
+        '<circle cx="{x}" cy="{y}" r="{r}" '
+        'fill="none" stroke="var(--rdm-100)" stroke-width="{t}" />'
+        '<circle cx="{x}" cy="{y}" r="{r}" '
+        'fill="none" stroke="var(--kpi-accent, var(--rdm-700))" '
+        'stroke-width="{t}" stroke-linecap="round" '
+        'transform="rotate(-90 {x} {y})" '
+        'stroke-dasharray="{ca}" stroke-dashoffset="{off}" />'
+        '<text class="gauge-value" x="{x}" y="{y}" '
+        'text-anchor="middle" dominant-baseline="central" '
+        'style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">'
+        '{pct_display}</text>'
+        '</svg>'
+        '</div>'
+        '<div class="kpi-label">{label}</div>'
+        '</div>'
+    ).format(
+        label=label, x=x, y=y, r=r, t=t,
+        ca=ca_str, off=off_str,
+        pct_display=pct_display,
+    )
+
+
+# Purpose filtering -----------------------------------------------------------
+
+def filter_by_purpose(df: pd.DataFrame, purpose: bool | None) -> pd.DataFrame:
+    """Filter DMPs by purpose. None = all, True = scientific, False = educational."""
+    if purpose is None:
+        return df
+    return df[df["is_scientific"] == purpose].copy()
+
+
+PURPOSES = [("all", None), ("scientific", True), ("educational", False)]
+
+
+def purpose_toggle_html() -> str:
+    """Render the purpose toggle button group."""
+    buttons = []
+    for value, _ in PURPOSES:
+        cls = "purpose-btn active" if value == "all" else "purpose-btn"
+        label = {"all": "All purposes", "scientific": "Scientific",
+                 "educational": "Educational"}[value]
+        buttons.append(f'  <button class="{cls}" data-purpose="{value}">{label}</button>')
+    return (
+        '<div class="purpose-toggle">\n'
+        + "\n".join(buttons)
+        + "\n</div>"
+    )

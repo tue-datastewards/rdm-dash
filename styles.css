@@ -1,21 +1,25 @@
 /* css styles */
 
-/* ─── TU/e Design Tokens ─────────────────────────── */
+/* ─── RDM Handbook Design Tokens (from rdm.tue.nl) ── */
 :root {
-  /* Scarlet palette */
-  --scarlet-50:  #fdf0f0;
-  --scarlet-100: #fbe1e1;
-  --scarlet-200: #f7c4c4;
-  --scarlet-300: #f19d9d;
-  --scarlet-400: #e55252;
-  --scarlet-500: #d82929;
-  --scarlet-600: #c41e1e;
-  --scarlet-700: #b31212;
-  --scarlet-800: #8e0e0e;
-  --scarlet-900: #6b0b0b;
+  /* Magenta/purple palette */
+  --rdm-50: #fdf0f7;
+  --rdm-100: #fae1f0;
+  --rdm-200: #f5bddd;
+  --rdm-300: #e885bf;
+  --rdm-400: #c74393;
+  --rdm-500: #a12d76;
+  --rdm-600: #882569;
+  --rdm-700: #742459;
+  --rdm-800: #5f1e4a;
+  --rdm-900: #4e183c;
+  --rdm-950: #3a122d;
+
+  /* Dark slate (from rdm.tue.nl hero/footer) */
+  --slate-600: #303846;
 
   /* Neutral palette */
-  --neutral-50:  #fafaf9;
+  --neutral-50: #fafaf9;
   --neutral-100: #f2f1ef;
   --neutral-200: #e3e1de;
   --neutral-300: #d1cfcc;
@@ -28,9 +32,9 @@
   --neutral-950: #0a0a0a;
 
   /* Surface */
-  --surface:      #ffffff;
-  --surface-dim:  #f5f4f2;
-  --border:       #e3e1de;
+  --surface: #ffffff;
+  --surface-dim: #f5f4f2;
+  --border: #e3e1de;
 }
 
 /* ---------- KPI cards ---------- */
@@ -47,22 +51,13 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 108px;
+  min-height: 150px;
   padding: 1rem 1.15rem;
   background: #ffffff;
   border: 1px solid #e6e8eb;
   border-radius: 0.6rem;
   box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06);
   overflow: hidden;
-}
-
-/* colored accent bar across the top of each card */
-.kpi-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 4px;
-  background: var(--kpi-accent, #6c757d);
 }
 
 .kpi-label,
@@ -96,12 +91,48 @@
 }
 
 /* accent colors */
-.kpi-blue   { --kpi-accent: #2563eb; }
-.kpi-green  { --kpi-accent: #16a34a; }
-.kpi-teal   { --kpi-accent: #0d9488; }
-.kpi-purple { --kpi-accent: #7c3aed; }
-.kpi-amber  { --kpi-accent: #d97706; }
-.kpi-indigo { --kpi-accent: #4f46e5; }
+.kpi-blue {
+  --kpi-accent: #458ee1;
+}
+.kpi-green {
+  --kpi-accent: #16a34a;
+}
+.kpi-teal {
+  --kpi-accent: #0d9488;
+}
+.kpi-purple {
+  --kpi-accent: var(--rdm-700);
+}
+.kpi-amber {
+  --kpi-accent: #d97706;
+}
+.kpi-indigo {
+  --kpi-accent: #6366f1;
+}
+
+/* ─── Gauges (circle) ─────────────────────────────── */
+
+.kpi-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 150px;
+  padding: 0.85rem 0.5rem 0.85rem;
+}
+
+.gauge-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gauge-svg {
+  display: block;
+}
+
+.kpi-circle .kpi-label {
+  margin-top: 0.5rem;
+}
 
 /* ---------- Department selector ---------- */
 
@@ -117,14 +148,14 @@
   background: #fff;
   border: 1px solid #d1d5db;
   border-radius: 0.45rem;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   cursor: pointer;
 }
 
 .dept-selector:focus {
-  outline: 2px solid #2563eb;
+  outline: 2px solid var(--rdm-700);
   outline-offset: 1px;
-  border-color: #2563eb;
+  border-color: var(--rdm-700);
 }
 
 /* ─── Sidebar Button Navigation ────────────────────── */
@@ -158,7 +189,9 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background 150ms, color 150ms;
+  transition:
+    background 150ms,
+    color 150ms;
   background: transparent;
   text-decoration: none;
   font-size: 0.9rem;
@@ -167,7 +200,7 @@
 }
 
 .sidebar-item .sidebar-link:hover {
-  background: var(--scarlet-50);
+  background: var(--rdm-50);
 }
 
 .sidebar-item .sidebar-link .menu-text {
@@ -179,13 +212,13 @@
 
 /* Active state */
 .sidebar-item .sidebar-link.active {
-  background: var(--scarlet-50);
+  background: var(--rdm-50);
   border-left: none;
 }
 
 .sidebar-item .sidebar-link.active .menu-text {
   font-weight: 700;
-  color: var(--scarlet-700);
+  color: var(--rdm-700);
 }
 
 /* Subtitle */
@@ -200,7 +233,7 @@
 }
 
 .sidebar-link.active .sidebar-subtitle {
-  color: var(--scarlet-400);
+  color: var(--rdm-400);
 }
 
 /* Hide subtitle in breadcrumbs */
@@ -221,7 +254,6 @@
 .sidebar-item-section > .sidebar-item-container > .sidebar-item-text {
   font-weight: 600;
   font-size: 0.7rem;
-  text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--neutral-400);
 }
@@ -239,4 +271,88 @@
 .sidebar-footer strong {
   color: var(--neutral-600);
   font-weight: 600;
+}
+
+/* ---------- Navbar (rdm.tue.nl dark slate) ---------- */
+
+.navbar {
+  background-color: var(--slate-600) !important;
+  border-bottom: none;
+}
+
+.navbar a,
+.navbar .nav-link,
+.navbar .navbar-brand,
+.navbar .navbar-title {
+  color: #ffffff !important;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+  color: var(--rdm-300) !important;
+}
+
+.navbar .nav-link.active {
+  color: var(--rdm-200) !important;
+}
+
+/* ---------- Links (use RDM purple) ---------- */
+
+a {
+  color: var(--rdm-700);
+}
+
+a:hover {
+  color: var(--rdm-800);
+}
+
+/* ---------- Purpose toggle ---------- */
+
+.purpose-toggle {
+  display: inline-flex;
+  background: var(--neutral-100);
+  border-radius: 4px;
+  padding: 3px;
+  gap: 2px;
+  margin-bottom: 0.75rem;
+}
+
+.purpose-toggle p {
+  margin: 0;
+}
+
+.purpose-toggle + p {
+  margin-top: 0;
+}
+
+.purpose-btn {
+  padding: 7px 14px;
+  border: medium;
+  border-radius: 3px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: 150ms;
+  background: transparent;
+  color: var(--neutral-500);
+  font-weight: 500;
+}
+
+.purpose-btn:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.purpose-btn.active {
+  background: var(--surface);
+  color: var(--rdm-700);
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.purpose-content {
+  display: none;
+}
+
+.purpose-content.purpose-active {
+  display: block;
 }
