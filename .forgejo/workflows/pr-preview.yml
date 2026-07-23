@@ -15,7 +15,7 @@ jobs:
       - name: Set up Quarto
         uses: https://github.com/quarto-dev/quarto-actions/setup@v2
         with:
-          version: 1.9
+          version: release
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
