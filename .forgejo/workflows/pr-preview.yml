@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Set up Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
+        uses: https://github.com/quarto-dev/quarto-actions/setup@v2
         with:
           version: 1.9
       - name: Set up Python
