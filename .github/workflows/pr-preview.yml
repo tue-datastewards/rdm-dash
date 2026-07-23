@@ -1,0 +1,128 @@
+name: PR Preview Deployment
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - closed
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: release
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Install pipenv
+        run: pip install pipenv
+      - name: Install dependencies
+        run: pipenv install
+      - name: Render site
+        run: pipenv run quarto render
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages-${{ github.event.number }}
+          path: _site/
+          retention-days: 1
+
+  deploy-preview:
+    needs: build-site
+    if: ${{ github.event.action != 'closed' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages-preview
+      url: https://tue-datastewards.github.io/rdm-dash/pr-${{ github.event.number }}/
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages-${{ github.event.number }}
+          path: _site/
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+      - name: Post PR comment
+        if: ${{ github.event.action == 'opened' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Preview ready: https://tue-datastewards.github.io/rdm-dash/pr-${{ github.event.number }}/`
+            })
+      - name: Update PR comment
+        if: ${{ github.event.action == 'synchronize' }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            const oldComment = comments.find(comment => 
+              comment.body.includes('Preview updated:') || 
+              (comment.body.includes('Preview ready:') && !comment.body.includes('updated'))
+            );
+            if (oldComment) {
+              await github.rest.issues.updateComment({
+                comment_id: oldComment.id,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `Preview updated: https://tue-datastewards.github.io/rdm-dash/pr-${{ github.event.number }}/`
+              });
+            } else {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `Preview updated: https://tue-datastewards.github.io/rdm-dash/pr-${{ github.event.number }}/`
+              });
+            }
+      - name: Delete preview comment
+        if: ${{ github.event.action == 'closed' }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            const oldComment = comments.find(comment => 
+              comment.body.includes('Preview ready:') || 
+              comment.body.includes('Preview updated:')
+            );
+            if (oldComment) {
+              await github.rest.issues.deleteComment({
+                comment_id: oldComment.id,
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+            }
+
+  cleanup-preview:
+    needs: build-site
+    if: ${{ github.event.action == 'closed' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete artifact
+        uses: actions/Delete-Artifact@v4
+        with:
+          name: github-pages-${{ github.event.number }}
