@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - closed
 
 jobs:
   build-and-deploy:
@@ -12,6 +17,8 @@ jobs:
       contents: write
       pages: write
       id-token: write
+      pull-requests: write
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
 
     steps:
       - name: Checkout
@@ -36,10 +43,101 @@ jobs:
       - name: Render site
         run: pipenv run quarto render
 
+      - name: Get PR number
+        if: github.event_name == 'pull_request'
+        id: pr-number
+        run: echo "PR_NUMBER=${{ github.event.number }}" >> $GITHUB_OUTPUT
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site/
+          retention-days: 1
+          name: pr-${{ steps.pr-number.outputs.PR_NUMBER || 'main' }}
 
       - name: Deploy to Pages
+        id: deploy
         uses: actions/deploy-pages@v4
+        with:
+          artifact-name: pr-${{ steps.pr-number.outputs.PR_NUMBER || 'main' }}
+
+      - name: Post PR comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = ${{ github.event.number }};
+            const repoOwner = context.repo.owner;
+            const repoName = context.repo.repo;
+            const artifactName = 'pr-' + prNumber;
+            
+            const comments = await github.rest.issues.listComments({
+              owner: repoOwner,
+              repo: repoName,
+              issue_number: prNumber
+            });
+            
+            const existingComment = comments.data.find(comment => 
+              comment.user.login === 'github-actions[bot]' && 
+              comment.body.includes('PR Preview Deployment')
+            );
+            
+            const previewUrl = `https://${repoOwner}.codeberg.app/rdm-dash/pr-${prNumber}`;
+            
+            const commentBody = `## PR Preview Deployment ✅\n\nYour change has been previewed at:\n\n${previewUrl}\n\n**Note:** This preview will be updated on push and cleaned up when the PR is merged or closed.`;
+            
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: repoOwner,
+                repo: repoName,
+                comment_id: existingComment.id,
+                body: commentBody
+              });
+              console.log('Updated existing comment');
+            } else {
+              await github.rest.issues.createComment({
+                owner: repoOwner,
+                repo: repoName,
+                issue_number: prNumber,
+                body: commentBody
+              });
+              console.log('Created new comment');
+            }
+
+  cleanup-preview:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    steps:
+      - name: Find and delete comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = ${{ github.event.number }};
+            const repoOwner = context.repo.owner;
+            const repoName = context.repo.repo;
+            
+            const comments = await github.rest.issues.listComments({
+              owner: repoOwner,
+              repo: repoName,
+              issue_number: prNumber
+            });
+            
+            const commentToDelete = comments.data.find(comment => 
+              comment.user.login === 'github-actions[bot]' && 
+              comment.body.includes('PR Preview Deployment')
+            );
+            
+            if (commentToDelete) {
+              await github.rest.issues.deleteComment({
+                owner: repoOwner,
+                repo: repoName,
+                comment_id: commentToDelete.id
+              });
+              console.log('Deleted comment');
+            } else {
+              console.log('No comment to delete');
+            }
