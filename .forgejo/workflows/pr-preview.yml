@@ -24,8 +24,12 @@ jobs:
         run: pip install pipenv
       - name: Install dependencies
         run: pipenv install
+      - name: Install Quarto dependencies in pipenv
+        run: pipenv install pyyaml jupyter
       - name: Render site
         run: pipenv run quarto render
+        env:
+          QUARTO_PYTHON: $(pipenv --venv)/bin/python
 
   deploy-preview:
     needs: build-site
