@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 pandas = "*"
 plotly = "*"
+jupyter = "*"
+pyyaml = "*"
+kaleido = "*"
 
 [dev-packages]
 frictionless = "*"
