@@ -24,12 +24,8 @@ jobs:
         run: pip install pipenv
       - name: Install dependencies
         run: pipenv install
-      - name: Install Quarto dependencies in pipenv
-        run: pipenv install pyyaml jupyter
       - name: Render site
         run: pipenv run quarto render
-        env:
-          QUARTO_PYTHON: $(pipenv --venv)/bin/python
 
   deploy-preview:
     needs: build-site
@@ -48,7 +44,7 @@ jobs:
         run: |
           REPO_URL="${{ forgejo.event.repository.url }}"
           PR_NUMBER="${{ forgejo.event.number }}"
-          
+
           curl -s -X POST "$REPO_URL/issues/$PR_NUMBER/comments" \
             -H "Authorization: token ${{ forgejo.token }}" \
             --json "{\"body\":\"Preview ready: https://tue-datastewards.preview.codeberg.page/rdm-dash@${PR_NUMBER}/\"}"
@@ -58,7 +54,7 @@ jobs:
         run: |
           REPO_URL="${{ forgejo.event.repository.url }}"
           PR_NUMBER="${{ forgejo.event.number }}"
-          
+
           curl -s -X GET "$REPO_URL/issues/$PR_NUMBER/comments" | \
             grep -o '"id":[0-9]*' | head -1 | cut -d: -f2 | \
             xargs -I {} curl -s -X PATCH "$REPO_URL/issues/comments/{}" \
@@ -74,7 +70,7 @@ jobs:
         run: |
           REPO_URL="${{ forgejo.event.repository.url }}"
           PR_NUMBER="${{ forgejo.event.number }}"
-          
+
           curl -s -X GET "$REPO_URL/issues/$PR_NUMBER/comments" | \
             grep -o '"id":[0-9]*' | head -1 | cut -d: -f2 | \
             xargs -I {} curl -s -X DELETE "$REPO_URL/issues/comments/{}" \
