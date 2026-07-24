@@ -1,0 +1,77 @@
+name: PR Preview Deployment
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - closed
+
+jobs:
+  build-site:
+    runs-on: codeberg-small
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up Quarto
+        uses: https://github.com/quarto-dev/quarto-actions/setup@v2
+        with:
+          version: release
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Install pipenv
+        run: pip install pipenv
+      - name: Install dependencies
+        run: pipenv install
+      - name: Render site
+        run: pipenv run quarto render
+
+  deploy-preview:
+    needs: build-site
+    if: ${{ forgejo.event.action != 'closed' }}
+    runs-on: codeberg-small
+    steps:
+      - uses: actions/git-pages@v2
+        with:
+          site: https://tue-datastewards.preview.codeberg.page/rdm-dash@${{ forgejo.event.number }}/
+          token: ${{ forgejo.token }}
+          source: _site/
+          expires: 1
+
+      - name: Post PR comment
+        if: ${{ forgejo.event.action == 'opened' }}
+        run: |
+          REPO_URL="${{ forgejo.event.repository.url }}"
+          PR_NUMBER="${{ forgejo.event.number }}"
+
+          curl -s -X POST "$REPO_URL/issues/$PR_NUMBER/comments" \
+            -H "Authorization: token ${{ forgejo.token }}" \
+            --json "{\"body\":\"Preview ready: https://tue-datastewards.preview.codeberg.page/rdm-dash@${PR_NUMBER}/\"}"
+
+      - name: Update PR comment
+        if: ${{ forgejo.event.action == 'synchronize' }}
+        run: |
+          REPO_URL="${{ forgejo.event.repository.url }}"
+          PR_NUMBER="${{ forgejo.event.number }}"
+
+          curl -s -X GET "$REPO_URL/issues/$PR_NUMBER/comments" | \
+            grep -o '"id":[0-9]*' | head -1 | cut -d: -f2 | \
+            xargs -I {} curl -s -X PATCH "$REPO_URL/issues/comments/{}" \
+              -H "Authorization: token ${{ forgejo.token }}" \
+              --json "{\"body\":\"Preview updated: https://tue-datastewards.preview.codeberg.page/rdm-dash@${PR_NUMBER}/\"}"
+
+  cleanup-preview:
+    needs: build-site
+    if: ${{ forgejo.event.action == 'closed' }}
+    runs-on: codeberg-small
+    steps:
+      - name: Delete preview comment
+        run: |
+          REPO_URL="${{ forgejo.event.repository.url }}"
+          PR_NUMBER="${{ forgejo.event.number }}"
+
+          curl -s -X GET "$REPO_URL/issues/$PR_NUMBER/comments" | \
+            grep -o '"id":[0-9]*' | head -1 | cut -d: -f2 | \
+            xargs -I {} curl -s -X DELETE "$REPO_URL/issues/comments/{}" \
+              -H "Authorization: token ${{ forgejo.token }}"
