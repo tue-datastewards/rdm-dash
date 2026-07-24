@@ -228,10 +228,9 @@ def kpi_table(df: pd.DataFrame) -> dict:
     }
 
 
-def kpi_html(df: pd.DataFrame, with_revisions: bool = False) -> str:
+def kpi_html(df: pd.DataFrame) -> str:
     """Return an HTML string for the KPI card grid."""
     k = kpi_table(df)
-    rev = revision_summary(df) if with_revisions else None
     n = k["Total DMPs"]
 
     total_desc = "Total DMPs submitted this period"
@@ -268,10 +267,6 @@ def kpi_html(df: pd.DataFrame, with_revisions: bool = False) -> str:
     ]
     for label, value, desc in pct_kpis:
         items.append(gauge_svg(value, label, desc))
-
-    if rev is not None:
-        rev_desc = f'{rev["DMPs with \u22651 revision"]} of {n} DMPs needed \u22651 revision'
-        items.append(gauge_svg(rev["% with \u22651 revision"], "\u22651 revision", rev_desc))
 
     return '<div class="kpi-grid">' + "".join(items) + "</div>"
 

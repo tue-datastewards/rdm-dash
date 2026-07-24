@@ -205,11 +205,14 @@ Sidebar-subtitle class for muted secondary text, shown in breadcrumbs.
 
 ### 6.1 KPI card generation
 
-`kpi_html(df, with_revisions=False)` generates the shared KPI grid HTML:
+`kpi_html(df)` generates the shared KPI grid HTML:
 
 - One integer card for "Total DMPs" (`kpi-card kpi-blue`)
-- Four circle gauge cards via `gauge_svg()` for: Approval, ERB, Repository, RAPS
-- Optional fifth gauge: "≥1 revision" (when `with_revisions=True`)
+- Six circle gauge cards via `gauge_svg()` for: Approval, ERB, Data sharing
+  agreement, TU/e storage, Trusted repository, RAPS
+- Each card includes a short `.kpi-desc` line (e.g. "1419 of 2174 DMPs are
+  approved"); the Total DMPs card's description also shows the DMP creation
+  date range for the current filter
 
 ### 6.2 `gauge_svg()`
 
