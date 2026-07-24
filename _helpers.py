@@ -240,7 +240,7 @@ def kpi_html(df: pd.DataFrame, with_revisions: bool = False) -> str:
         if len(dates):
             start = dates.min().strftime("%B %Y")
             end = dates.max().strftime("%B %Y")
-            total_desc = f"Total DMPs submitted this period from {start} to {end}"
+            total_desc = f"Total DMPs submitted from {start} to {end}"
 
     items = []
 
