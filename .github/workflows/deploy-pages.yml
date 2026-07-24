@@ -6,54 +6,39 @@ on:
       - main
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
+  pull-requests: write
 
 jobs:
   build-site:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: release
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.14"
+
       - name: Install pipenv
         run: pip install pipenv
+
       - name: Install dependencies
         run: pipenv install
+
       - name: Render site
         run: pipenv run quarto render
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: github-pages
-          path: _site/
-          retention-days: 1
 
-  deploy-production:
-    needs: build-site
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: https://tue-datastewards.github.io/rdm-dash/
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          name: github-pages
-          path: _site/
-      - name: Deploy to GitHub Pages
-        uses: rossjrw/pr-preview-action@v1
-        with:
-          source-dir: _site/
-          action: deploy
-          preview-branch: gh-pages
-          umbrella-dir: pr-preview
-          deploy-commit-message: Deploy production build
-          comment: false
+          folder: _site/ # The folder the action should deploy.
+          branch: gh-pages # The branch the action should deploy to.
+          clean-exclude: pr-preview # Exclude the pr-preview folder from being cleaned up before deployment.
+          force: false
