@@ -33,28 +33,7 @@ jobs:
         run: pipenv install
       - name: Render site
         run: pipenv run quarto render
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: github-pages
-          path: _site/
-          retention-days: 1
-
-  deploy-preview:
-    needs: build-site
-    runs-on: ubuntu-latest
-    if: ${{ github.event.action != 'closed' }}
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: github-pages
-          path: _site/
       - name: Deploy preview
         uses: rossjrw/pr-preview-action@v1
         with:
           source-dir: _site/
-          action: auto
-          wait-for-pages-deployment: true
-          qr-code: true
-          preview-branch: gh-pages
