@@ -42,16 +42,6 @@ for pkey, pval in h.PURPOSES:
     act = " purpose-active" if pkey == "all" else ""
     print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
     dd = h.filter_by_purpose(dmps, pval)
-    print(h.kpi_html(dd))
-    print('</div>')
-```
-
-```{python}
-#| output: asis
-for pkey, pval in h.PURPOSES:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    dd = h.filter_by_purpose(dmps, pval)
     import pandas as pd
     rows = []
     for dept in h.DEPARTMENTS:
@@ -151,7 +141,6 @@ for dept in h.DEPARTMENTS:
         act = " purpose-active" if pkey == "all" else ""
         print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
         dd = h.filter_by_purpose(dd_all, pval)
-        print(h.kpi_html(dd, dept=dept))
 
         df = h.revision_distribution(dd)
         fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")

@@ -45,16 +45,6 @@ for pkey, pval in h.PURPOSES:
     act = " purpose-active" if pkey == "all" else ""
     print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
     dd = h.filter_by_purpose(dmps, pval)
-    print(h.kpi_html(dd))
-    print('</div>')
-```
-
-```{python}
-#| output: asis
-for pkey, pval in h.PURPOSES:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    dd = h.filter_by_purpose(dmps, pval)
     df = h.approval_by_department(dd)
     fig = px.bar(df, x="Department", y="Approval rate",
                  text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
@@ -135,7 +125,6 @@ for dept in h.DEPARTMENTS:
         act = " purpose-active" if pkey == "all" else ""
         print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
         dd = h.filter_by_purpose(dd_all, pval)
-        print(h.kpi_html(dd, dept=dept))
 
         df = h.approval_by_purpose(dd)
         fig = px.bar(df, x="Purpose", y="Approval rate",
