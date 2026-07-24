@@ -36,25 +36,8 @@ dmps_edu = h.filter_by_purpose(dmps, False)
 #| output: asis
 for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
     act = " purpose-active" if pkey == "all" else ""
-    kpi = h.kpi_table(pdf)
-    rev = h.revision_summary(pdf)
-    gauges = [
-        h.gauge_svg(kpi["Approval rate"], "Approval rate"),
-        h.gauge_svg(kpi["ERB linkage rate"], "DMPs with ERB"),
-        h.gauge_svg(kpi["Data sharing agreement rate"], "Data sharing agreement"),
-        h.gauge_svg(kpi["TU/e storage rate"], "TU/e storage"),
-        h.gauge_svg(kpi["Trusted repository rate"], "Trusted repository"),
-        h.gauge_svg(kpi["RAPS archival rate"], "Archived at RAPS"),
-        h.gauge_svg(rev["% with ≥1 revision"], "DMPs with ≥1 revision"),
-    ]
-    total_card = (
-        '<div class="kpi-card kpi-blue">'
-        '<div class="kpi-label">Total DMPs</div>'
-        '<div class="kpi-value"><p>' + str(int(kpi["Total DMPs"])) + '</p></div>'
-        '</div>'
-    )
     print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    print('<div class="kpi-grid">' + total_card + "\n".join(gauges) + '</div>')
+    print(h.kpi_html(pdf, with_revisions=True))
     print('</div>')
 ```
 

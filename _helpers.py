@@ -221,6 +221,7 @@ def kpi_table(df: pd.DataFrame) -> dict:
         "TU/e storage rate": n_tue_storage / n if n else 0,
         "Repository selected": n_repo,
         "Repository selection rate": n_repo / n if n else 0,
+        "Trusted repository": n_trusted,
         "Trusted repository rate": n_trusted / n if n else 0,
         "Archived at RAPS": n_raps,
         "RAPS archival rate": n_raps / n if n else 0,
@@ -231,6 +232,15 @@ def kpi_html(df: pd.DataFrame, with_revisions: bool = False) -> str:
     """Return an HTML string for the KPI card grid."""
     k = kpi_table(df)
     rev = revision_summary(df) if with_revisions else None
+    n = k["Total DMPs"]
+
+    total_desc = "Total DMPs submitted this period"
+    if "issue_creation_time" in df.columns:
+        dates = df["issue_creation_time"].dropna()
+        if len(dates):
+            start = dates.min().strftime("%B %Y")
+            end = dates.max().strftime("%B %Y")
+            total_desc = f"Total DMPs submitted this period from {start} to {end}"
 
     items = []
 
@@ -238,22 +248,30 @@ def kpi_html(df: pd.DataFrame, with_revisions: bool = False) -> str:
         '<div class="kpi-card kpi-blue">'
         '<div class="kpi-label"><p>Total DMPs</p></div>'
         '<div class="kpi-value"><p>' + str(len(df)) + '</p></div>'
+        f'<div class="kpi-desc">{total_desc}</div>'
         '</div>'
     )
 
     pct_kpis = [
-        ("Approval rate", k["Approval rate"]),
-        ("DMPs with ERB", k["ERB linkage rate"]),
-        ("Data sharing agreement", k["Data sharing agreement rate"]),
-        ("TU/e storage", k["TU/e storage rate"]),
-        ("Trusted repository", k["Trusted repository rate"]),
-        ("Archived at RAPS", k["RAPS archival rate"]),
+        ("Approval rate", k["Approval rate"],
+         f'{k["Approved DMPs"]} of {n} DMPs are approved'),
+        ("DMPs with ERB", k["ERB linkage rate"],
+         f'{k["Linked ERB"]} of {n} DMPs are linked to an ERB'),
+        ("Data sharing agreement", k["Data sharing agreement rate"],
+         f'{k["Data sharing agreement"]} of {n} DMPs require a data sharing agreement'),
+        ("TU/e storage", k["TU/e storage rate"],
+         f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage'),
+        ("Trusted repository", k["Trusted repository rate"],
+         f'{k["Trusted repository"]} of {n} DMPs use a trusted data repository'),
+        ("Archived at RAPS", k["RAPS archival rate"],
+         f'{k["Archived at RAPS"]} of {n} DMPs are archived at RAPS'),
     ]
-    for label, value in pct_kpis:
-        items.append(gauge_svg(value, label))
+    for label, value, desc in pct_kpis:
+        items.append(gauge_svg(value, label, desc))
 
     if rev is not None:
-        items.append(gauge_svg(rev["% with \u22651 revision"], "\u22651 revision"))
+        rev_desc = f'{rev["DMPs with \u22651 revision"]} of {n} DMPs needed \u22651 revision'
+        items.append(gauge_svg(rev["% with \u22651 revision"], "\u22651 revision", rev_desc))
 
     return '<div class="kpi-grid">' + "".join(items) + "</div>"
 
@@ -433,13 +451,19 @@ def revision_summary(df: pd.DataFrame) -> dict:
     """Headline revision metrics (Q7)."""
     n = len(df)
     if not n:
-        return {"% with \u22651 revision": 0, "Avg revisions per DMP": 0}
+        return {
+            "DMPs with \u22651 revision": 0,
+            "% with \u22651 revision": 0,
+            "Avg revisions per DMP": 0,
+        }
 
     def n_revisions(seq):
         return sum(1 for s in seq if s == "Revision requested")
 
     counts = df["ordered_status_transition_list"].map(n_revisions)
+    n_rev = int((counts > 0).sum())
     return {
+        "DMPs with \u22651 revision": n_rev,
         "% with \u22651 revision": float((counts > 0).mean()),
         "Avg revisions per DMP": float(counts.mean()),
     }
@@ -627,7 +651,7 @@ def help_needed_rate(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def gauge_svg(value_float: float, label: str) -> str:
+def gauge_svg(value_float: float, label: str, description: str | None = None) -> str:
     """Return an inline SVG circle gauge for a decimal value 0-1."""
     pct = max(0.0, min(1.0, value_float))
     pct_display = f"{pct:.0%}"
@@ -639,6 +663,7 @@ def gauge_svg(value_float: float, label: str) -> str:
     offset = circumference * (1 - pct)
     ca_str = f"{round(circumference, 1)}"
     off_str = f"{round(offset, 1)}"
+    desc_html = f'<div class="kpi-desc">{description}</div>' if description else ""
     return (
         '<div class="kpi-card kpi-circle">'
         '<div class="gauge-wrap">'
@@ -657,11 +682,13 @@ def gauge_svg(value_float: float, label: str) -> str:
         '</svg>'
         '</div>'
         '<div class="kpi-label">{label}</div>'
+        '{desc_html}'
         '</div>'
     ).format(
         label=label, x=x, y=y, r=r, t=t,
         ca=ca_str, off=off_str,
         pct_display=pct_display,
+        desc_html=desc_html,
     )
 
 
