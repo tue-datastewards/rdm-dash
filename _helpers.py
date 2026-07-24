@@ -59,6 +59,19 @@ DEPT_SLUGS = {
     "Chemical Engineering and Chemistry (CE&C)": "chemical-engineering",
 }
 
+# Short abbreviation per department (used in KPI card descriptions).
+DEPT_ABBREVIATIONS = {
+    "Industrial Design (ID)": "ID",
+    "Industrial Engineering and Innovation Sciences (IE&IS)": "IE&IS",
+    "Built Environment (BE)": "BE",
+    "Mathematics and Computer Science (M&CS)": "M&CS",
+    "Biomedical Engineering (BmE)": "BmE",
+    "Mechanical Engineering (ME)": "ME",
+    "Applied Physics and Science Education (AP&SE)": "AP&SE",
+    "Electrical Engineering (EE)": "EE",
+    "Chemical Engineering and Chemistry (CE&C)": "CE&C",
+}
+
 
 # Parsing helpers -----------------------------------------------------------
 
@@ -228,10 +241,15 @@ def kpi_table(df: pd.DataFrame) -> dict:
     }
 
 
-def kpi_html(df: pd.DataFrame) -> str:
-    """Return an HTML string for the KPI card grid."""
+def kpi_html(df: pd.DataFrame, dept: str | None = None) -> str:
+    """Return an HTML string for the KPI card grid.
+
+    If ``dept`` is given (a full department name from ``DEPARTMENTS``), its
+    abbreviation is appended to each KPI description.
+    """
     k = kpi_table(df)
     n = k["Total DMPs"]
+    abbr = DEPT_ABBREVIATIONS.get(dept, dept) if dept else None
 
     total_desc = "Total DMPs submitted this period"
     if "issue_creation_time" in df.columns:
@@ -240,6 +258,8 @@ def kpi_html(df: pd.DataFrame) -> str:
             start = dates.min().strftime("%B %Y")
             end = dates.max().strftime("%B %Y")
             total_desc = f"Total DMPs submitted from {start} to {end}"
+            if abbr:
+                total_desc = f"Total DMPs submitted at {abbr} from {start} to {end}"
 
     items = []
 
@@ -251,20 +271,36 @@ def kpi_html(df: pd.DataFrame) -> str:
         '</div>'
     )
 
-    pct_kpis = [
-        ("Approval rate", k["Approval rate"],
-         f'{k["Approved DMPs"]} of {n} DMPs are approved'),
-        ("DMPs with ERB", k["ERB linkage rate"],
-         f'{k["Linked ERB"]} of {n} DMPs are linked to an ERB'),
-        ("Data sharing agreement", k["Data sharing agreement rate"],
-         f'{k["Data sharing agreement"]} of {n} DMPs require a data sharing agreement'),
-        ("TU/e storage", k["TU/e storage rate"],
-         f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage'),
-        ("Trusted repository", k["Trusted repository rate"],
-         f'{k["Trusted repository"]} of {n} DMPs use a trusted data repository'),
-        ("Archived at RAPS", k["RAPS archival rate"],
-         f'{k["Archived at RAPS"]} of {n} DMPs are archived at RAPS'),
-    ]
+    if abbr:
+        pct_kpis = [
+            ("Approval rate", k["Approval rate"],
+             f'{k["Approved DMPs"]} of {n} DMPs are approved at {abbr}'),
+            ("DMPs with ERB", k["ERB linkage rate"],
+             f'{k["Linked ERB"]} of {n} DMPs are linked to an ERB at {abbr}'),
+            ("Data sharing agreement", k["Data sharing agreement rate"],
+             f'{k["Data sharing agreement"]} of {n} DMPs require a data sharing agreement at {abbr}'),
+            ("TU/e storage", k["TU/e storage rate"],
+             f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage at {abbr}'),
+            ("Trusted repository", k["Trusted repository rate"],
+             f'{k["Trusted repository"]} of {n} DMPs use a trusted data repository at {abbr}'),
+            ("Archived at RAPS", k["RAPS archival rate"],
+             f'{k["Archived at RAPS"]} of {n} DMPs at {abbr} are archived at RAPS'),
+        ]
+    else:
+        pct_kpis = [
+            ("Approval rate", k["Approval rate"],
+             f'{k["Approved DMPs"]} of {n} DMPs are approved'),
+            ("DMPs with ERB", k["ERB linkage rate"],
+             f'{k["Linked ERB"]} of {n} DMPs are linked to an ERB'),
+            ("Data sharing agreement", k["Data sharing agreement rate"],
+             f'{k["Data sharing agreement"]} of {n} DMPs require a data sharing agreement'),
+            ("TU/e storage", k["TU/e storage rate"],
+             f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage'),
+            ("Trusted repository", k["Trusted repository rate"],
+             f'{k["Trusted repository"]} of {n} DMPs use a trusted data repository'),
+            ("Archived at RAPS", k["RAPS archival rate"],
+             f'{k["Archived at RAPS"]} of {n} DMPs are archived at RAPS'),
+        ]
     for label, value, desc in pct_kpis:
         items.append(gauge_svg(value, label, desc))
 
