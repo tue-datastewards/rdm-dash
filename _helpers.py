@@ -196,6 +196,12 @@ def kpi_table(df: pd.DataFrame) -> dict:
     n = len(df)
     approved = int(df["is_approved"].fillna(False).sum()) if n else 0
     erb_linked = int(df["has_related_erb"].fillna(False).sum()) if n else 0
+    n_sharing = int(df["data_sharing"].isin(["inside_eea", "outside_eea"]).sum()) if n else 0
+    n_tue_storage = int(
+        df["data_storage_list"].map(
+            lambda v: any(s in TUE_STORAGE for s in v)
+        ).sum()
+    ) if n else 0
     n_repo = int(df["data_repository"].map(lambda v: len(v) > 0).sum()) if n else 0
     n_trusted = int(
         df["data_repository"].map(
@@ -209,6 +215,10 @@ def kpi_table(df: pd.DataFrame) -> dict:
         "Approval rate": approved / n if n else 0,
         "Linked ERB": erb_linked,
         "ERB linkage rate": erb_linked / n if n else 0,
+        "Data sharing agreement": n_sharing,
+        "Data sharing agreement rate": n_sharing / n if n else 0,
+        "TU/e storage": n_tue_storage,
+        "TU/e storage rate": n_tue_storage / n if n else 0,
         "Repository selected": n_repo,
         "Repository selection rate": n_repo / n if n else 0,
         "Trusted repository rate": n_trusted / n if n else 0,
@@ -233,7 +243,9 @@ def kpi_html(df: pd.DataFrame, with_revisions: bool = False) -> str:
 
     pct_kpis = [
         ("Approval rate", k["Approval rate"]),
-        ("ERB linkage", k["ERB linkage rate"]),
+        ("DMPs with ERB", k["ERB linkage rate"]),
+        ("Data sharing agreement", k["Data sharing agreement rate"]),
+        ("TU/e storage", k["TU/e storage rate"]),
         ("Trusted repository", k["Trusted repository rate"]),
         ("Archived at RAPS", k["RAPS archival rate"]),
     ]

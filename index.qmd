@@ -40,7 +40,9 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     rev = h.revision_summary(pdf)
     gauges = [
         h.gauge_svg(kpi["Approval rate"], "Approval rate"),
-        h.gauge_svg(kpi["ERB linkage rate"], "ERB linkage"),
+        h.gauge_svg(kpi["ERB linkage rate"], "DMPs with ERB"),
+        h.gauge_svg(kpi["Data sharing agreement rate"], "Data sharing agreement"),
+        h.gauge_svg(kpi["TU/e storage rate"], "TU/e storage"),
         h.gauge_svg(kpi["Trusted repository rate"], "Trusted repository"),
         h.gauge_svg(kpi["RAPS archival rate"], "Archived at RAPS"),
         h.gauge_svg(rev["% with ≥1 revision"], "DMPs with ≥1 revision"),
