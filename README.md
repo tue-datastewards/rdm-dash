@@ -77,17 +77,17 @@ above the chart.
 
 Departments:
 
-| File | Department |
-|------|------------|
-| `dept-industrial-design.qmd` | Industrial Design (ID) |
-| `dept-industrial-engineering.qmd` | Industrial Engineering & Innovation Sciences (IE&IS) |
-| `dept-built-environment.qmd` | Built Environment (BE) |
-| `dept-mathematics-computer-science.qmd` | Mathematics & Computer Science (M&CS) |
-| `dept-biomedical-engineering.qmd` | Biomedical Engineering (BmE) |
-| `dept-mechanical-engineering.qmd` | Mechanical Engineering (ME) |
-| `dept-applied-physics.qmd` | Applied Physics & Science Education (AP&SE) |
-| `dept-electrical-engineering.qmd` | Electrical Engineering (EE) |
-| `dept-chemical-engineering.qmd` | Chemical Engineering & Chemistry (CE&C) |
+| File                                    | Department                                           |
+| --------------------------------------- | ---------------------------------------------------- |
+| `dept-industrial-design.qmd`            | Industrial Design (ID)                               |
+| `dept-industrial-engineering.qmd`       | Industrial Engineering & Innovation Sciences (IE&IS) |
+| `dept-built-environment.qmd`            | Built Environment (BE)                               |
+| `dept-mathematics-computer-science.qmd` | Mathematics & Computer Science (M&CS)                |
+| `dept-biomedical-engineering.qmd`       | Biomedical Engineering (BmE)                         |
+| `dept-mechanical-engineering.qmd`       | Mechanical Engineering (ME)                          |
+| `dept-applied-physics.qmd`              | Applied Physics & Science Education (APSE)           |
+| `dept-electrical-engineering.qmd`       | Electrical Engineering (EE)                          |
+| `dept-chemical-engineering.qmd`         | Chemical Engineering & Chemistry (CE&C)              |
 
 ## Data & schemas
 

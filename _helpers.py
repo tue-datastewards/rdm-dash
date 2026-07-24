@@ -67,7 +67,7 @@ DEPT_ABBREVIATIONS = {
     "Mathematics and Computer Science (M&CS)": "M&CS",
     "Biomedical Engineering (BmE)": "BmE",
     "Mechanical Engineering (ME)": "ME",
-    "Applied Physics and Science Education (AP&SE)": "AP&SE",
+    "Applied Physics and Science Education (AP&SE)": "APSE",
     "Electrical Engineering (EE)": "EE",
     "Chemical Engineering and Chemistry (CE&C)": "CE&C",
 }
