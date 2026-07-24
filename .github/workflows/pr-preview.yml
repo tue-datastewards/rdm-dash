@@ -8,9 +8,8 @@ on:
       - closed
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
+  pull-requests: write
 
 concurrency: preview-${{ github.ref }}
 
