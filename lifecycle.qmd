@@ -21,6 +21,7 @@ for dept in h.DEPARTMENTS:
     dept_data[dept] = h.filter_department(dmps, dept)
 ```
 
+<div class="filter-bar">
 ```{python}
 #| output: asis
 print(h.purpose_toggle_html())
@@ -34,6 +35,7 @@ for d in h.DEPARTMENTS:
     print(f'<option value="{h.DEPT_SLUGS[d]}">{d}</option>')
 ```
 </select>
+</div>
 
 <div class="dept-panel" id="dept-overview">
 ```{python}

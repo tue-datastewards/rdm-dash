@@ -39,11 +39,33 @@
 
 /* ---------- KPI cards ---------- */
 
+.kpi-total-row {
+  display: flex;
+  margin: 1.25rem 0 0.85rem;
+}
+
+.kpi-total-row .kpi-card {
+  width: 100%;
+  max-width: 260px;
+}
+
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.85rem;
-  margin: 1.25rem 0 1.75rem;
+  margin: 0 0 1.75rem;
+}
+
+@media (max-width: 700px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 420px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .kpi-card {
@@ -144,6 +166,28 @@
 }
 
 /* ---------- Department selector ---------- */
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.filter-bar .purpose-toggle {
+  margin-bottom: 0;
+}
+
+.filter-bar > p {
+  display: contents;
+}
+
+.filter-bar .dept-selector {
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 0;
+}
 
 .dept-selector {
   display: block;
