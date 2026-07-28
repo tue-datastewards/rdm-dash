@@ -74,6 +74,7 @@ rdm-dash/
 ├── data/
 │   ├── DMPs_*.csv       # 32 cols, ~1600 rows (gitignored)
 │   ├── ERBs_*.csv       # 20 cols, ~1200 rows (gitignored)
+│   ├── departments.json # schema.org JSON-LD with Wikidata IDs (tracked in git)
 │   ├── DMPs.schema.json # Frictionless table schema
 │   └── ERBs.schema.json # Frictionless table schema
 ├── Pipfile / Pipfile.lock
@@ -133,6 +134,19 @@ data/ERBs_2025_09_10_onwards.csv  (20 cols, foreign keys → DMPs.issue_key)
 
 Schema files are tracked in git; CSVs are gitignored.
 Frictionless schemas describe columns, types, and primary/foreign keys.
+
+### 4.3 Department metadata
+
+```data/departments.json``` uses [schema.org](https://schema.org) JSON-LD to describe TU/e as an
+``Organization`` with nine ``department`` sub-Organization entries. Each department carries a
+``PropertyValue`` identifier with ``propertyID: "wikidata"`` and the corresponding Wikidata Q ID.
+
+All department constants in ``_helpers.py`` (``DEPARTMENTS``, ``DEPT_SLUGS``, ``DEPT_ABBREVIATIONS``,
+``DEPT_WIKIDATA``) are derived from this file at import time. To change a department's name,
+Wikidata ID, or add a department, edit ``data/departments.json`` (not Python code).
+
+Wikidata IDs were sourced from the ``has part`` (P527) statements on
+`Q280824 (TU/e) <https://www.wikidata.org/wiki/Q280824>`_.
 
 ---
 
@@ -300,10 +314,11 @@ triggers on `push main`.
 | `lifecycle.qmd` | 10 section KPI blocks + bar charts |
 | `_helpers.py` | All data logic — loaders, filters, metrics, HTML builders |
 | `styles.css` | RDM purple palette, KPI gauges, navbar, sidebar styling |
+| `data/departments.json` | schema.org JSON-LD department definitions with Wikidata IDs |
 | `data/*.schema.json` | Frictionless schemas for data validation |
 | `Pipfile` | Dependencies: `pandas`, `plotly`, dev `frictionless` |
 | `.gitignore` | Keeps `.csv`, `_site/`, `.quarto/`, `.venv/` out of git |
 
 ---
 
-_Last updated: 2026-07-18_
+_Last updated: 2026-07-28_
