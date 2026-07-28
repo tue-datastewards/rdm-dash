@@ -3,3 +3,4 @@
 **/*.quarto_ipynb
 **/*.quarto_ipynb_*
 .DS_Store
+__pycache__/
