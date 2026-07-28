@@ -248,6 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#key-data-concepts" id="toc-key-data-concepts" class="nav-link" data-scroll-target="#key-data-concepts">4.1 Key data concepts</a></li>
   <li><a href="#data-schemas" id="toc-data-schemas" class="nav-link" data-scroll-target="#data-schemas">4.2 Data schemas</a></li>
+  <li><a href="#department-metadata" id="toc-department-metadata" class="nav-link" data-scroll-target="#department-metadata">4.3 Department metadata</a></li>
   </ul></li>
   <li><a href="#styling-conventions" id="toc-styling-conventions" class="nav-link" data-scroll-target="#styling-conventions">5. Styling conventions</a>
   <ul class="collapse">
@@ -367,6 +368,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ├── data/
 │   ├── DMPs_*.csv       # 32 cols, ~1600 rows (gitignored)
 │   ├── ERBs_*.csv       # 20 cols, ~1200 rows (gitignored)
+│   ├── departments.json # schema.org JSON-LD with Wikidata IDs (tracked in git)
 │   ├── DMPs.schema.json # Frictionless table schema
 │   └── ERBs.schema.json # Frictionless table schema
 ├── Pipfile / Pipfile.lock
@@ -458,6 +460,12 @@ data/ERBs_2025_09_10_onwards.csv  (20 cols, foreign keys → DMPs.issue_key)
 <section id="data-schemas" class="level3">
 <h3 class="anchored" data-anchor-id="data-schemas">4.2 Data schemas</h3>
 <p>Schema files are tracked in git; CSVs are gitignored. Frictionless schemas describe columns, types, and primary/foreign keys.</p>
+</section>
+<section id="department-metadata" class="level3">
+<h3 class="anchored" data-anchor-id="department-metadata">4.3 Department metadata</h3>
+<p><code>data/departments.json</code> uses <a href="https://schema.org">schema.org</a> JSON-LD to describe TU/e as an <code>Organization</code> with nine <code>department</code> sub-Organization entries. Each department carries a <code>PropertyValue</code> identifier with <code>propertyID: "wikidata"</code> and the corresponding Wikidata Q ID.</p>
+<p>All department constants in <code>_helpers.py</code> (<code>DEPARTMENTS</code>, <code>DEPT_SLUGS</code>, <code>DEPT_ABBREVIATIONS</code>, <code>DEPT_WIKIDATA</code>) are derived from this file at import time. To change a department’s name, Wikidata ID, or add a department, edit <code>data/departments.json</code> (not Python code).</p>
+<p>Wikidata IDs were sourced from the <code>has part</code> (P527) statements on <code>Q280824 (TU/e) &lt;https://www.wikidata.org/wiki/Q280824&gt;</code>_.</p>
 <hr>
 </section>
 </section>
@@ -703,21 +711,25 @@ data/ERBs_2025_09_10_onwards.csv</code></pre>
 <td>RDM purple palette, KPI gauges, navbar, sidebar styling</td>
 </tr>
 <tr class="odd">
+<td><code>data/departments.json</code></td>
+<td>schema.org JSON-LD department definitions with Wikidata IDs</td>
+</tr>
+<tr class="even">
 <td><code>data/*.schema.json</code></td>
 <td>Frictionless schemas for data validation</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>Pipfile</code></td>
 <td>Dependencies: <code>pandas</code>, <code>plotly</code>, dev <code>frictionless</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>.gitignore</code></td>
 <td>Keeps <code>.csv</code>, <code>_site/</code>, <code>.quarto/</code>, <code>.venv/</code> out of git</td>
 </tr>
 </tbody>
 </table>
 <hr>
-<p><em>Last updated: 2026-07-18</em></p>
+<p><em>Last updated: 2026-07-28</em></p>
 
 
 </section>
