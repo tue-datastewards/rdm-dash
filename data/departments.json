@@ -1,0 +1,93 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Eindhoven University of Technology",
+  "identifier": {
+    "@type": "PropertyValue",
+    "propertyID": "wikidata",
+    "value": "Q280824"
+  },
+  "department": [
+    {
+      "@type": "Organization",
+      "name": "Industrial Design (ID)",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "wikidata",
+        "value": "Q61662428"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Industrial Engineering and Innovation Sciences (IE&IS)",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "wikidata",
+        "value": "Q61662442"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Built Environment (BE)",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "wikidata",
+        "value": "Q61662362"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Mathematics and Computer Science (M&CS)",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "wikidata",
+        "value": "Q61662836"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Biomedical Engineering (BmE)",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "wikidata",
+        "value": "Q61662348"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Mechanical Engineering (ME)",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "wikidata",
+        "value": "Q61662819"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Applied Physics and Science Education (AP&SE)",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "wikidata",
+        "value": "Q140737347"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Electrical Engineering (EE)",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "wikidata",
+        "value": "Q61662415"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Chemical Engineering and Chemistry (CE&C)",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "wikidata",
+        "value": "Q61662509"
+      }
+    }
+  ]
+}
