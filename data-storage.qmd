@@ -97,6 +97,48 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     legend_title_text="",
 )
     print(h.render_chart(fig))
+
+    solution_titles = {
+        "all": "TU/e data storage by Department",
+        "scientific": "Scientific DMPs with TU/e data storage by Department",
+        "educational": "Educational DMPs with TU/e data storage by Department",
+    }
+    df = h.storage_solution_by_department(pdf)
+    df["Department"] = df["Department"].map(h.DEPT_ABBREVIATIONS)
+    sol_order = ["TU/e Network Drive", "SURF Research Drive",
+                 "Microsoft SharePoint/Teams", "Microsoft OneDrive"]
+    solution_colors = {
+        "TU/e Network Drive": "#742459",
+        "SURF Research Drive": "#a12d76",
+        "Microsoft SharePoint/Teams": "#64748b",
+        "Microsoft OneDrive": "#cbd5e1",
+    }
+    df["Share"] = df.groupby("Department")["DMPs"].transform(lambda s: s / s.sum())
+    df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+    fig = px.bar(df, x="Share", y="Department", color="Solution",
+                 barmode="stack", height=500,
+                 text="Share",
+                 title=solution_titles[pkey],
+                 category_orders={"Solution": sol_order},
+                 color_discrete_map=solution_colors,
+                 custom_data=df[["Label"]])
+    fig.update_traces(texttemplate="%{x:.0%}", textposition="inside")
+    fig.update_traces(hovertemplate="%{y} · %{fullData.name}<br>%{customdata[0]}<extra></extra>")
+    fig.update_layout(
+        yaxis={"categoryorder": "total ascending"},
+        xaxis={"tickformat": ".0%", "title": ""},
+        legend={
+            "orientation": "h",
+            "yanchor": "bottom",
+            "y": 1.00,
+            "xanchor": "left",
+            "x": 0,
+        },
+        margin={"t": 100},
+        legend_title_text="",
+    )
+    print(h.render_chart(fig))
+
     for dept in sorted(h.DEPARTMENTS, key=lambda d: h.DEPT_ABBREVIATIONS[d]):
         abbr = h.DEPT_ABBREVIATIONS[dept]
         print(f'<span style="font-size:0.85em;margin-right:1.5em"><b>{abbr}</b> = {dept}</span>')

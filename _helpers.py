@@ -7,6 +7,7 @@ and metric functions for the overview and per-department dashboards.
 from __future__ import annotations
 
 import json
+from collections import Counter
 from functools import cache
 from pathlib import Path
 
@@ -508,6 +509,43 @@ def storage_split(df: pd.DataFrame) -> pd.DataFrame:
         "Category": ["Using TU/e storage", "Not using TU/e storage"],
         "DMPs": [compliant, non_compliant],
     })
+
+
+# Standard TU/e storage services shown in the "TU/e data storage" chart (Q3).
+TU_E_STORAGE_SOLUTIONS = {
+    "TU/e Network Drive",
+    "Microsoft SharePoint/Teams",
+    "Microsoft OneDrive",
+    "SURF Research Drive",
+}
+
+
+def _canonical_storage_solution(item: str) -> str | None:
+    """Map a raw ``data_storage_list`` item to its canonical TU/e service name."""
+    s = " ".join(str(item).split())
+    if len(s) >= 3 and s[0:2].isdigit() and s[2] == " ":
+        s = s[3:]
+    return s if s in TU_E_STORAGE_SOLUTIONS else None
+
+
+def storage_solution_by_department(df: pd.DataFrame) -> pd.DataFrame:
+    """DMP counts per TU/e storage service and department (Q3).
+
+    A DMP can list several services, so DMP counts across rows sum to more
+    than the number of DMPs.
+    """
+    rows = []
+    for dept in DEPARTMENTS:
+        sub = filter_department(df, dept)
+        counts = Counter()
+        for services in sub["data_storage_list"]:
+            for item in services:
+                sol = _canonical_storage_solution(item)
+                if sol:
+                    counts[sol] += 1
+        for sol, n in counts.items():
+            rows.append({"Department": dept, "Solution": sol, "DMPs": n})
+    return pd.DataFrame(rows)
 
 
 def revision_distribution(df: pd.DataFrame) -> pd.DataFrame:
