@@ -121,6 +121,7 @@
 /* accent colors */
 .kpi-blue {
   --kpi-accent: #458ee1;
+  text-align: center;
 }
 .kpi-green {
   --kpi-accent: #16a34a;
