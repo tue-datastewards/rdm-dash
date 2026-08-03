@@ -99,9 +99,9 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     print(h.render_chart(fig))
 
     solution_titles = {
-        "all": "TU/e data storage by Department",
-        "scientific": "Scientific DMPs with TU/e data storage by Department",
-        "educational": "Educational DMPs with TU/e data storage by Department",
+        "all": "TU/e Data Storage Choices by Department",
+        "scientific": "Scientific DMPs with TU/e Data Storage Choices by Department",
+        "educational": "Educational DMPs with TU/e Data Storage Choices by Department",
     }
     df = h.storage_solution_by_department(pdf)
     df["Department"] = df["Department"].map(h.DEPT_ABBREVIATIONS)
@@ -138,6 +138,8 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
         legend_title_text="",
     )
     print(h.render_chart(fig))
+    print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of storage '
+          '<b>choices</b>, not of DMPs. A DMP can select multiple storage options.</i></p>')
 
     for dept in sorted(h.DEPARTMENTS, key=lambda d: h.DEPT_ABBREVIATIONS[d]):
         abbr = h.DEPT_ABBREVIATIONS[dept]
