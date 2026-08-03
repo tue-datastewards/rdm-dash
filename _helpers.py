@@ -282,21 +282,18 @@ def kpi_table(df: pd.DataFrame) -> dict:
     }
 
 
-def kpi_html(df: pd.DataFrame, dept: str | None = None) -> str:
+def kpi_html(df: pd.DataFrame, dept: str | None = None, show_trend: bool = True) -> str:
     """Return an HTML string for the KPI card grid.
 
     If ``dept`` is given (a full department name from ``DEPARTMENTS``), its
     abbreviation is appended to each KPI description.
+
+    Set ``show_trend=False`` to suppress the year-over-year trend indicator
+    (e.g. when historical data lacks a purpose breakdown).
     """
     k = kpi_table(df)
     n = k["Total DMPs"]
     abbr = DEPT_ABBREVIATIONS.get(dept, dept) if dept else None
-
-    prev_total = load_historical_dmps()
-    delta = n - prev_total
-    pct_change = delta / prev_total if prev_total else 0
-    glyph = "\u25b2" if delta >= 0 else "\u25bc"
-    trend_class = "trend-up" if delta >= 0 else "trend-down"
 
     total_desc = "Total DMPs submitted this period"
     if "issue_creation_time" in df.columns:
@@ -310,11 +307,24 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None) -> str:
 
     items = []
 
+    trend_delta = ""
+    if show_trend:
+        prev_total = load_historical_dmps()
+        delta = n - prev_total
+        pct_change = delta / prev_total if prev_total else 0
+        glyph = "\u25b2" if delta >= 0 else "\u25bc"
+        trend_class = "trend-up" if delta >= 0 else "trend-down"
+        trend_delta = (
+            f'<div class="kpi-delta">'
+            f'<span class="{trend_class}">{glyph} {abs(delta)} ({abs(pct_change):.0%})</span>'
+            f' vs 2024\u20132025</div>'
+        )
+
     total_card = (
         '<div class="kpi-card kpi-blue">'
         '<div class="kpi-label"><p>Total DMPs</p></div>'
         '<div class="kpi-value"><p>' + str(len(df)) + '</p></div>'
-        f'<div class="kpi-delta"><span class="{trend_class}">{glyph} {abs(delta)} ({abs(pct_change):.0%})</span> vs 2024\u20132025</div>'
+        f'{trend_delta}'
         f'<div class="kpi-desc">{total_desc}</div>'
         '</div>'
     )
