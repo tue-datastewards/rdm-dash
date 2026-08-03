@@ -213,7 +213,11 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     total = df["DMPs"].sum() or 1
     df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
     df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-    fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label")
+    fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label",
+                 color_discrete_map={
+                     "Using TU/e storage": "#742459",
+                     "Not using TU/e storage": "#2F3845",
+                 })
     fig.update_traces(textposition="auto")
     fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=500,
                       barmode="stack", showlegend=True, legend_title="Storage")
@@ -404,7 +408,11 @@ for dept in h.DEPARTMENTS:
         total = df["DMPs"].sum() or 1
         df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
         df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-        fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label")
+        fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label",
+                     color_discrete_map={
+                         "Using TU/e storage": "#742459",
+                         "Not using TU/e storage": "#2F3845",
+                     })
         fig.update_traces(textposition="auto")
         fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
                           showlegend=True, legend_title="Storage", title="Storage")

@@ -1,0 +1,337 @@
+---
+title: "Data Storage"
+format:
+  html:
+    page-layout: full
+    toc: false
+---
+
+```{python}
+#| tags: [hide-all]
+
+from IPython.display import HTML, display
+
+import _helpers as h
+import plotly.express as px
+import plotly.io as pio
+
+pio.templates.default = "plotly_white"
+dmps = h.load_dmps()
+erbs = h.load_erbs()
+
+dept_data = {}
+for dept in h.DEPARTMENTS:
+    dd = h.filter_department(dmps, dept)
+    de = h.department_erbs(dd, erbs)
+    dept_data[dept] = {"dmps": dd, "erbs": de}
+```
+
+<div class="filter-bar">
+```{python}
+#| output: asis
+print(h.purpose_toggle_html())
+```
+
+<select id="dept-select" class="dept-selector">
+<option value="overview">Overview (all departments)</option>
+```{python}
+#| output: asis
+for d in h.DEPARTMENTS:
+    print(f'<option value="{h.DEPT_SLUGS[d]}">{d}</option>')
+```
+</select>
+</div>
+
+<div class="dept-panel" id="dept-overview">
+
+```{python}
+#| tags: [hide-all]
+dmps_all = dmps
+dmps_sci = h.filter_by_purpose(dmps, True)
+dmps_edu = h.filter_by_purpose(dmps, False)
+```
+
+## Storage solutions {.tabset}
+
+### TU/e vs. external storage
+
+> **Q3.** To what extent do projects use **TU/e secured storage**, and
+conversely, what share of **sensitive research data** is stored **outside**
+TU/e-supported solutions?
+
+```{python}
+#| output: asis
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    import pandas as pd
+    rows = []
+    for dept in h.DEPARTMENTS:
+        sub = h.filter_department(pdf, dept)
+        total = len(sub) or 1
+        for _, r in h.storage_split(sub).iterrows():
+            rows.append({
+                "Department": h.DEPT_ABBREVIATIONS[dept],
+                "Category": r["Category"],
+                "DMPs": r["DMPs"],
+        })
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="DMPs", y="Department", color="Category",
+                 barmode="stack", height=500,
+                 text="DMPs",
+                 title="Storage solutions by department",
+                 color_discrete_map={
+                     "Using TU/e storage": "#742459",
+                     "Not using TU/e storage": "#2F3845",
+                 })
+    fig.update_layout(
+    yaxis={"categoryorder": "total ascending"},
+    legend={
+        "orientation": "h",
+        "yanchor": "bottom",
+        "y": 1.00,
+        "xanchor": "left",
+        "x": 0,
+    },
+    margin={"t": 100},
+    legend_title_text="",
+)
+    print(h.render_chart(fig))
+    for dept in sorted(h.DEPARTMENTS, key=lambda d: h.DEPT_ABBREVIATIONS[d]):
+        abbr = h.DEPT_ABBREVIATIONS[dept]
+        print(f'<span style="font-size:0.85em;margin-right:1.5em"><b>{abbr}</b> = {dept}</span>')
+    print('<br>')
+    print('</div>')
+```
+
+### Storage solution count
+
+> **Q3.** How many storage solutions do projects typically use?
+
+```{python}
+#| output: asis
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.storage_count_distribution(pdf)
+    fig = px.bar(df, x="Solutions", y="DMPs", text="DMPs", color="DMPs")
+    fig.update_layout(showlegend=False, height=500)
+    print(h.render_chart(fig))
+    print('</div>')
+```
+
+### Sensitive data outside TU/e
+
+> **Q3.** What share of **sensitive research data** is stored **outside**
+TU/e-supported solutions?
+
+```{python}
+#| output: asis
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.sensitive_data_outside_tue(pdf)
+    fig = px.bar(df, x="Category", y="DMPs", text="DMPs", color="Category")
+    fig.update_layout(showlegend=False, height=500)
+    print(h.render_chart(fig))
+    print('</div>')
+```
+
+## Repositories {.tabset}
+
+### Repository choice
+
+> **Q5.** Which repositories do researchers choose for publishing their FAIR data?
+
+```{python}
+#| output: asis
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.repository_breakdown(pdf)
+    df = df[df["Repository"] != "(none)"]
+    fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
+    fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=500)
+    print(h.render_chart(fig))
+    print('</div>')
+```
+
+### Trusted repository usage
+
+> **Q5.** To what extent do projects publish their FAIR data in a **trusted
+repository** (4TU.ResearchData, Zenodo, OSF, Figshare)?
+
+```{python}
+#| output: asis
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.trusted_repository_split(pdf)
+    total = df["DMPs"].sum() or 1
+    df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+    df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+    fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label")
+    fig.update_traces(textposition="auto")
+    fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=500,
+                      barmode="stack", showlegend=True, legend_title="Repository")
+    print(h.render_chart(fig))
+    print('</div>')
+```
+
+## Archival
+
+### Archive location
+
+> **Q6.** What share of projects **archive their data at the TU/e archive
+(RAPS)**?
+
+```{python}
+#| output: asis
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    df = h.archive_breakdown(pdf)
+    total = df["DMPs"].sum() or 1
+    df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+    df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+    fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
+    fig.update_traces(textposition="auto")
+    fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=500,
+                      barmode="stack", showlegend=True, legend_title="Location")
+    print(h.render_chart(fig))
+    print('</div>')
+```
+
+### Archive location by department
+
+> **Q6.** How does archival behaviour vary across departments?
+
+```{python}
+#| output: asis
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    import pandas as pd
+    rows = []
+    for dept in h.DEPARTMENTS:
+        sub = h.filter_department(pdf, dept)
+        for _, r in h.archive_breakdown(sub).iterrows():
+            rows.append({"Department": dept, "Location": r["Location"], "DMPs": r["DMPs"]})
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="Department", y="DMPs", color="Location", text="DMPs", barmode="stack")
+    fig.update_layout(height=500, legend_title="Location",
+                      xaxis={"categoryorder": "category ascending"})
+    print(h.render_chart(fig))
+    print('</div>')
+```
+
+</div>
+
+```{python}
+#| tags: [hide-all]
+#| output: asis
+
+for dept in h.DEPARTMENTS:
+    slug = h.DEPT_SLUGS[dept]
+    dd_all = dept_data[dept]["dmps"]
+    de = dept_data[dept]["erbs"]
+    print(f'<div class="dept-panel" id="dept-{slug}" style="display:none">')
+
+    for pkey, pval in h.PURPOSES:
+        act = " purpose-active" if pkey == "all" else ""
+        print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+        dd = h.filter_by_purpose(dd_all, pval)
+
+        print("<h3>Storage solutions</h3>")
+
+        df = h.storage_split(dd)
+        total = df["DMPs"].sum() or 1
+        df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+        fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label",
+                     color_discrete_map={
+                         "Using TU/e storage": "#742459",
+                         "Not using TU/e storage": "#2F3845",
+                     })
+        fig.update_traces(textposition="auto")
+        fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
+                          showlegend=True, legend_title="Storage", title="TU/e vs. external storage")
+        print(h.render_chart(fig))
+
+        df = h.storage_count_distribution(dd)
+        fig = px.bar(df, x="Solutions", y="DMPs", text="DMPs", color="DMPs")
+        fig.update_layout(showlegend=False, height=450, title="Storage solution count")
+        print(h.render_chart(fig))
+
+        df = h.sensitive_data_outside_tue(dd)
+        fig = px.bar(df, x="Category", y="DMPs", text="DMPs", color="Category")
+        fig.update_layout(showlegend=False, height=450, title="Sensitive data outside TU/e")
+        print(h.render_chart(fig))
+
+        print("<h3>Repositories</h3>")
+
+        df = h.repository_breakdown(dd)
+        df = df[df["Repository"] != "(none)"]
+        fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
+        fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450,
+                          title="Repository choice")
+        print(h.render_chart(fig))
+
+        df = h.trusted_repository_split(dd)
+        total = df["DMPs"].sum() or 1
+        df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+        fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label")
+        fig.update_traces(textposition="auto")
+        fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
+                          showlegend=True, legend_title="Repository", title="Trusted repository usage")
+        print(h.render_chart(fig))
+
+        print("<h3>Archival</h3>")
+
+        df = h.archive_breakdown(dd)
+        total = df["DMPs"].sum() or 1
+        df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+        fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
+        fig.update_traces(textposition="auto")
+        fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
+                          showlegend=True, legend_title="Location", title="Archive location")
+        print(h.render_chart(fig))
+
+        print('</div>')
+    print('</div>')
+```
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var sel = document.getElementById("dept-select");
+  var panels = document.querySelectorAll(".dept-panel");
+  function show(slug) {
+    panels.forEach(function (p) { p.style.display = "none"; });
+    var target = document.getElementById("dept-" + slug);
+    if (target) target.style.display = "";
+  }
+  var params = new URLSearchParams(window.location.search);
+  var init = params.get("dept");
+  if (init) { sel.value = init; show(init); }
+  else { show(sel.value); }
+  sel.addEventListener("change", function () {
+    show(this.value);
+    params.set("dept", this.value);
+    history.replaceState(null, "", "?" + params.toString());
+  });
+
+  var purposeToggle = document.querySelector(".purpose-toggle");
+  if (purposeToggle) {
+    var pBtns = purposeToggle.querySelectorAll(".purpose-btn");
+    var pPanels = document.querySelectorAll(".purpose-content");
+    function showPurpose(p) {
+      pBtns.forEach(function (b) { b.classList.toggle("active", b.dataset.purpose === p); });
+      pPanels.forEach(function (el) { el.classList.toggle("purpose-active", el.dataset.purpose === p); });
+    }
+    pBtns.forEach(function (b) { b.addEventListener("click", function () { showPurpose(this.dataset.purpose); }); });
+    showPurpose("all");
+  }
+});
+</script>

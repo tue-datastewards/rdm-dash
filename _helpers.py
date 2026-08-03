@@ -497,26 +497,20 @@ def archive_breakdown(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def storage_split(df: pd.DataFrame) -> pd.DataFrame:
-    """Split DMPs by TU/e-supported vs. external storage (Q3)."""
+    """Split DMPs by TU/e-compliant storage usage (Q3)."""
     n = len(df)
     if not n:
         return pd.DataFrame(columns=["Category", "DMPs"])
 
-    def uses_tue(v):
-        return any(s in TUE_STORAGE for s in v)
-
-    def uses_external(v):
-        return any(s not in TUE_STORAGE for s in v)
-
-    tue = int(df["data_storage_list"].map(uses_tue).sum())
-    ext = int(df["data_storage_list"].map(uses_external).sum())
-    both = int(df["data_storage_list"].map(lambda v: uses_tue(v) and uses_external(v)).sum())
-    tue_only = tue - both
-    ext_only = ext - both
-    neither = n - tue_only - ext_only - both
+    compliant = int(
+        df["data_storage_list"].map(
+            lambda v: any(s in TUE_STORAGE for s in v)
+        ).sum()
+    )
+    non_compliant = n - compliant
     return pd.DataFrame({
-        "Category": ["TU/e only", "External only", "Both", "None listed"],
-        "DMPs": [tue_only, ext_only, both, neither],
+        "Category": ["Using TU/e storage", "Not using TU/e storage"],
+        "DMPs": [compliant, non_compliant],
     })
 
 
