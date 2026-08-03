@@ -211,6 +211,12 @@ for dept in h.DEPARTMENTS:
 
         print("<h3>Storage solutions</h3>")
 
+        title_by_purpose = {
+            "all": f"DMPs with TU/e Storage Solutions<br>at {dept}",
+            "scientific": f"Scientific DMPs with TU/e Storage Solutions<br>at {dept}",
+            "educational": f"Educational DMPs with TU/e Storage Solutions<br>at {dept}",
+        }
+
         df = h.storage_split(dd)
         total = df["DMPs"].sum() or 1
         df = df.assign(Share=df["DMPs"] / total)
@@ -222,14 +228,15 @@ for dept in h.DEPARTMENTS:
         }
         fig = px.pie(df, names="Category", values="DMPs", hole=0.55)
         fig.update_traces(text=df["Label"], textposition="outside", textinfo="text",
+                          sort=False,
                           marker_colors=[storage_colors[c] for c in df["Category"]])
         fig.add_annotation(
             text=f"{storage_rate:.0%}",
             font={"size": 28, "color": "#111827"},
             showarrow=False,
         )
-        fig.update_layout(showlegend=True, legend_title="Storage",
-                          title="TU/e vs. external storage",
+        fig.update_layout(showlegend=True,
+                          title=title_by_purpose[pkey],
                           margin={"t": 80, "l": 20, "r": 20, "b": 20})
         print(h.render_chart(fig, width=500, height=450))
 
