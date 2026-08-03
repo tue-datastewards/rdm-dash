@@ -51,13 +51,8 @@ dmps_sci = h.filter_by_purpose(dmps, True)
 dmps_edu = h.filter_by_purpose(dmps, False)
 ```
 
-## Storage solutions {.tabset}
+## TU/e storage vs. external storage
 
-### TU/e vs. external storage
-
-> **Q3.** To what extent do projects use **TU/e secured storage**, and
-conversely, what share of **sensitive research data** is stored **outside**
-TU/e-supported solutions?
 
 ```{python}
 #| output: asis
@@ -79,7 +74,7 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     fig = px.bar(df, x="DMPs", y="Department", color="Category",
                  barmode="stack", height=500,
                  text="DMPs",
-                 title="Storage solutions by department",
+                 title="DMPs with TU/e Storage Solutions by Department",
                  color_discrete_map={
                      "Using TU/e storage": "#742459",
                      "Not using TU/e storage": "#FAE1F0",
