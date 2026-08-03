@@ -65,7 +65,7 @@ DMP dataset (`data/DMPs_2025_09_10_onwards.csv`) and ERB dataset
 **Sources:** DMP (`data_repository`)
 
 - **Repository selection rate** — % of DMPs with a non-empty `data_repository`
-- **Trusted-repository rate** — % selecting a trusted repo (4TU.ResearchData, Zenodo) vs. "Other..." vs. "I need advice"
+- **Trusted-repository rate** — % of DMPs using a trusted repository (4TU.ResearchData, Zenodo, OSF, Figshare); "Other...", "I need advice" and no selection all count as not using a trusted repository
 - **Repository choice breakdown** — counts per repository
 - **"I need advice" rate** — indicates need for FAIR support
 - Per purpose and per department
