@@ -213,17 +213,25 @@ for dept in h.DEPARTMENTS:
 
         df = h.storage_split(dd)
         total = df["DMPs"].sum() or 1
-        df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+        df = df.assign(Share=df["DMPs"] / total)
         df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-        fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label",
-                     color_discrete_map={
-                         "Using TU/e storage": "#742459",
-                         "Not using TU/e storage": "#FAE1F0",
-                     })
-        fig.update_traces(textposition="auto")
-        fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                          showlegend=True, legend_title="Storage", title="TU/e vs. external storage")
-        print(h.render_chart(fig))
+        storage_rate = df.loc[df["Category"] == "Using TU/e storage", "Share"].iloc[0] if len(df) else 0
+        storage_colors = {
+            "Using TU/e storage": "#742459",
+            "Not using TU/e storage": "#FAE1F0",
+        }
+        fig = px.pie(df, names="Category", values="DMPs", hole=0.55)
+        fig.update_traces(text=df["Label"], textposition="outside", textinfo="text",
+                          marker_colors=[storage_colors[c] for c in df["Category"]])
+        fig.add_annotation(
+            text=f"{storage_rate:.0%}",
+            font={"size": 28, "color": "#111827"},
+            showarrow=False,
+        )
+        fig.update_layout(showlegend=True, legend_title="Storage",
+                          title="TU/e vs. external storage",
+                          margin={"t": 80, "l": 20, "r": 20, "b": 20})
+        print(h.render_chart(fig, width=500, height=450))
 
         print("<h3>Repositories</h3>")
 
