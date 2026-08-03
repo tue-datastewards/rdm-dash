@@ -1,0 +1,227 @@
+{
+  "@context": {
+    "schema": "http://schema.org/",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "DMPs per Department per Year",
+  "schema:description": "Annual tally of Data Management Plans per department, covering one-year periods.",
+  "observation": [
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2024-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q140737347",
+        "@type": "schema:Organization",
+        "schema:name": "Applied Physics and Science Education"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 8 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2024-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662362",
+        "@type": "schema:Organization",
+        "schema:name": "Built Environment"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 16 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2024-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662348",
+        "@type": "schema:Organization",
+        "schema:name": "Biomedical Engineering"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 28 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2024-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662509",
+        "@type": "schema:Organization",
+        "schema:name": "Chemical Engineering and Chemistry"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 7 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2024-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662415",
+        "@type": "schema:Organization",
+        "schema:name": "Electrical Engineering"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 29 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2024-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662428",
+        "@type": "schema:Organization",
+        "schema:name": "Industrial Design"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 7 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2024-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662442",
+        "@type": "schema:Organization",
+        "schema:name": "Industrial Engineering and Innovation Sciences"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 9 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2024-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662836",
+        "@type": "schema:Organization",
+        "schema:name": "Mathematics and Computer Science"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 12 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2024-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662819",
+        "@type": "schema:Organization",
+        "schema:name": "Mechanical Engineering"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 21 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2025-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q140737347",
+        "@type": "schema:Organization",
+        "schema:name": "Applied Physics and Science Education"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 7 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2025-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662362",
+        "@type": "schema:Organization",
+        "schema:name": "Built Environment"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 19 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2025-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662348",
+        "@type": "schema:Organization",
+        "schema:name": "Biomedical Engineering"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 16 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2025-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662509",
+        "@type": "schema:Organization",
+        "schema:name": "Chemical Engineering and Chemistry"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 15 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2025-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662415",
+        "@type": "schema:Organization",
+        "schema:name": "Electrical Engineering"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 30 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2025-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662428",
+        "@type": "schema:Organization",
+        "schema:name": "Industrial Design"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 10 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2025-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662442",
+        "@type": "schema:Organization",
+        "schema:name": "Industrial Engineering and Innovation Sciences"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 17 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2025-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662836",
+        "@type": "schema:Organization",
+        "schema:name": "Mathematics and Computer Science"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 43 }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2025-12-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "wd:Q61662819",
+        "@type": "schema:Organization",
+        "schema:name": "Mechanical Engineering"
+      },
+      "schema:measuredProperty": { "@id": "wd:Q17085509" },
+      "schema:value": { "@type": "schema:QuantitativeValue", "schema:value": 21 }
+    }
+  ]
+}

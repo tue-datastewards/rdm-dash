@@ -13,6 +13,12 @@
       "name": "erbs",
       "path": "data/ERBs_2025_09_10_onwards.csv",
       "schema": "data/ERBs.schema.json"
+    },
+    {
+      "name": "departments",
+      "path": "data/departments.json",
+      "mediatype": "application/json",
+      "description": "TU/e departments described as schema.org Organization JSON-LD with Wikidata identifiers"
     }
   ]
 }

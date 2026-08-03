@@ -33,21 +33,10 @@ TRUSTED_REPOSITORIES = {
     "Figshare",
 }
 
-# Main single departments (each gets its own dashboard).
-DEPARTMENTS = [
-    "Industrial Design (ID)",
-    "Industrial Engineering and Innovation Sciences (IE&IS)",
-    "Built Environment (BE)",
-    "Mathematics and Computer Science (M&CS)",
-    "Biomedical Engineering (BmE)",
-    "Mechanical Engineering (ME)",
-    "Applied Physics and Science Education (AP&SE)",
-    "Electrical Engineering (EE)",
-    "Chemical Engineering and Chemistry (CE&C)",
-]
+# Department metadata loaded from data/departments.json (schema.org JSON-LD).
+DEPARTMENTS_FILE = DATA_DIR / "departments.json"
 
-# URL-friendly slug per department (used for file names).
-DEPT_SLUGS = {
+_SLUG_MAP = {
     "Industrial Design (ID)": "industrial-design",
     "Industrial Engineering and Innovation Sciences (IE&IS)": "industrial-engineering",
     "Built Environment (BE)": "built-environment",
@@ -59,8 +48,7 @@ DEPT_SLUGS = {
     "Chemical Engineering and Chemistry (CE&C)": "chemical-engineering",
 }
 
-# Short abbreviation per department (used in KPI card descriptions).
-DEPT_ABBREVIATIONS = {
+_ABBR_MAP = {
     "Industrial Design (ID)": "ID",
     "Industrial Engineering and Innovation Sciences (IE&IS)": "IE&IS",
     "Built Environment (BE)": "BE",
@@ -71,6 +59,47 @@ DEPT_ABBREVIATIONS = {
     "Electrical Engineering (EE)": "EE",
     "Chemical Engineering and Chemistry (CE&C)": "CE&C",
 }
+
+
+def _load_departments() -> dict:
+    """Load department metadata from ``DEPARTMENTS_FILE``.
+
+    Returns a dict with keys: ``names`` (list), ``slugs``, ``abbreviations``,
+    ``wikidata`` (each a dict mapping name -> value).
+    """
+    with open(DEPARTMENTS_FILE) as f:
+        data = json.load(f)
+    depts = data.get("department", [])
+    names = [d["name"] for d in depts]
+    slugs = {}
+    abbrs = {}
+    wikidata = {}
+    for d in depts:
+        name = d["name"]
+        slugs[name] = _SLUG_MAP.get(name, "")
+        abbrs[name] = _ABBR_MAP.get(name, "")
+        identifiers = d.get("identifier", {})
+        if isinstance(identifiers, dict) and identifiers.get("propertyID") == "wikidata":
+            wikidata[name] = identifiers["value"]
+        elif isinstance(identifiers, list):
+            for id_ in identifiers:
+                if isinstance(id_, dict) and id_.get("propertyID") == "wikidata":
+                    wikidata[name] = id_["value"]
+                    break
+    return {
+        "names": names,
+        "slugs": slugs,
+        "abbreviations": abbrs,
+        "wikidata": wikidata,
+    }
+
+
+_DEPARTMENT_DATA = _load_departments()
+
+DEPARTMENTS: list[str] = _DEPARTMENT_DATA["names"]
+DEPT_SLUGS: dict[str, str] = _DEPARTMENT_DATA["slugs"]
+DEPT_ABBREVIATIONS: dict[str, str] = _DEPARTMENT_DATA["abbreviations"]
+DEPT_WIKIDATA: dict[str, str] = _DEPARTMENT_DATA["wikidata"]
 
 
 # Parsing helpers -----------------------------------------------------------
