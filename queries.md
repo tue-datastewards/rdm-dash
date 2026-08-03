@@ -46,7 +46,6 @@ WHERE
 | `ordered_status_transition_list` | `revision_distribution`, `revision_summary` (Q7) |
 | `tue_department` | `filter_department` |
 | `data_storage_list` | `storage_split`, `sensitive_data_outside_tue` (Q3) |
-| `storage_solution_count` | `storage_count_distribution` (Q3) |
 | `data_repository` | `kpi_table`, `repository_breakdown`, `help_needed_rate` (Q5/Q10) |
 | `metadata_standard` | `help_needed_rate` (Q10) |
 | `processing_tools_list` | `help_needed_rate` (Q10) |

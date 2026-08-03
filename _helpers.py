@@ -611,18 +611,6 @@ def sensitive_data_outside_tue(df: pd.DataFrame) -> pd.DataFrame:
     })
 
 
-def storage_count_distribution(df: pd.DataFrame) -> pd.DataFrame:
-    """Distribution of storage solution count per DMP (Q3)."""
-    if not len(df):
-        return pd.DataFrame(columns=["Solutions", "DMPs"])
-    s = pd.to_numeric(df["storage_solution_count"], errors="coerce").fillna(0).astype(int)
-    out = s.value_counts().sort_index().reset_index()
-    out.columns = ["Solutions", "DMPs"]
-    out["Solutions"] = out["Solutions"].map(lambda v: "4+" if v >= 4 else str(v))
-    out = out.groupby("Solutions", as_index=False).sum()
-    return out
-
-
 # Q4 -------------------------------------------------------------------------
 
 def data_sharing_breakdown(df: pd.DataFrame) -> pd.DataFrame:
