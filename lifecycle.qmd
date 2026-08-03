@@ -21,6 +21,7 @@ for dept in h.DEPARTMENTS:
     dept_data[dept] = h.filter_department(dmps, dept)
 ```
 
+<div class="filter-bar">
 ```{python}
 #| output: asis
 print(h.purpose_toggle_html())
@@ -34,18 +35,9 @@ for d in h.DEPARTMENTS:
     print(f'<option value="{h.DEPT_SLUGS[d]}">{d}</option>')
 ```
 </select>
+</div>
 
 <div class="dept-panel" id="dept-overview">
-```{python}
-#| output: asis
-for pkey, pval in h.PURPOSES:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    dd = h.filter_by_purpose(dmps, pval)
-    print(h.kpi_html(dd, with_revisions=True))
-    print('</div>')
-```
-
 ```{python}
 #| output: asis
 for pkey, pval in h.PURPOSES:
@@ -151,7 +143,6 @@ for dept in h.DEPARTMENTS:
         act = " purpose-active" if pkey == "all" else ""
         print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
         dd = h.filter_by_purpose(dd_all, pval)
-        print(h.kpi_html(dd, with_revisions=True))
 
         df = h.revision_distribution(dd)
         fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")

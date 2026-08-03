@@ -4,6 +4,16 @@ Concrete metrics for each answerable research question, computed from the
 DMP dataset (`data/DMPs_2025_09_10_onwards.csv`) and ERB dataset
 (`data/ERBs_2025_09_10_onwards.csv`).
 
+## Key Performance Indicators (KPIs)
+
+1. Total Submitted Data Management Plans (DMPs)
+2. Proportion of approved DMPs
+3. Proportion of DMPs that require an ERB
+4. Percentage of DMPs that needed data sharing agreement
+5. Percentage of DMPs with safe, TU/e storage solutions
+6. Percentage of DMPs with FAIR data practices - indicating that data will be deposited in a trusted data repository (e.g., Zenodo or 4TU.ResearchData)
+7. Percentage of DMPs where the researcher archives data at RAPS (TU/e archive)
+
 ## Questions
 
 ### Q1 — Approved DMP per department

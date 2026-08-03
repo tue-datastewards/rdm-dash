@@ -15,6 +15,7 @@ import pandas as pd
 DATA_DIR = Path(__file__).parent / "data"
 DMP_FILE = DATA_DIR / "DMPs_2025_09_10_onwards.csv"
 ERB_FILE = DATA_DIR / "ERBs_2025_09_10_onwards.csv"
+HISTORICAL_DMP_FILE = DATA_DIR / "dmps-2024-2025.json"
 
 # Classification rules -------------------------------------------------------
 
@@ -174,6 +175,17 @@ def load_dmps() -> pd.DataFrame:
 
 
 @cache
+def load_historical_dmps() -> int:
+    """Total DMPs from the 2024–2025 historical JSON (sum of all observations)."""
+    with open(HISTORICAL_DMP_FILE) as f:
+        data = json.load(f)
+    return sum(
+        obs["schema:value"]["schema:value"]
+        for obs in data.get("observation", [])
+    )
+
+
+@cache
 def load_erbs() -> pd.DataFrame:
     """Load and clean the ERB export."""
     df = pd.read_csv(ERB_FILE, dtype=str)
@@ -238,6 +250,12 @@ def kpi_table(df: pd.DataFrame) -> dict:
     n = len(df)
     approved = int(df["is_approved"].fillna(False).sum()) if n else 0
     erb_linked = int(df["has_related_erb"].fillna(False).sum()) if n else 0
+    n_sharing = int(df["data_sharing"].isin(["inside_eea", "outside_eea"]).sum()) if n else 0
+    n_tue_storage = int(
+        df["data_storage_list"].map(
+            lambda v: any(s in TUE_STORAGE for s in v)
+        ).sum()
+    ) if n else 0
     n_repo = int(df["data_repository"].map(lambda v: len(v) > 0).sum()) if n else 0
     n_trusted = int(
         df["data_repository"].map(
@@ -251,41 +269,100 @@ def kpi_table(df: pd.DataFrame) -> dict:
         "Approval rate": approved / n if n else 0,
         "Linked ERB": erb_linked,
         "ERB linkage rate": erb_linked / n if n else 0,
+        "Data sharing agreement": n_sharing,
+        "Data sharing agreement rate": n_sharing / n if n else 0,
+        "TU/e storage": n_tue_storage,
+        "TU/e storage rate": n_tue_storage / n if n else 0,
         "Repository selected": n_repo,
         "Repository selection rate": n_repo / n if n else 0,
+        "Trusted repository": n_trusted,
         "Trusted repository rate": n_trusted / n if n else 0,
         "Archived at RAPS": n_raps,
         "RAPS archival rate": n_raps / n if n else 0,
     }
 
 
-def kpi_html(df: pd.DataFrame, with_revisions: bool = False) -> str:
-    """Return an HTML string for the KPI card grid."""
+def kpi_html(df: pd.DataFrame, dept: str | None = None, show_trend: bool = True) -> str:
+    """Return an HTML string for the KPI card grid.
+
+    If ``dept`` is given (a full department name from ``DEPARTMENTS``), its
+    abbreviation is appended to each KPI description.
+
+    Set ``show_trend=False`` to suppress the year-over-year trend indicator
+    (e.g. when historical data lacks a purpose breakdown).
+    """
     k = kpi_table(df)
-    rev = revision_summary(df) if with_revisions else None
+    n = k["Total DMPs"]
+    abbr = DEPT_ABBREVIATIONS.get(dept, dept) if dept else None
+
+    total_desc = "Total DMPs submitted this period"
+    if "issue_creation_time" in df.columns:
+        dates = df["issue_creation_time"].dropna()
+        if len(dates):
+            start = dates.min().strftime("%B %Y")
+            end = dates.max().strftime("%B %Y")
+            total_desc = f"Total DMPs submitted from {start} to {end}"
+            if abbr:
+                total_desc = f"Total DMPs submitted at {abbr} from {start} to {end}"
 
     items = []
 
-    items.append(
+    trend_delta = ""
+    if show_trend:
+        prev_total = load_historical_dmps()
+        delta = n - prev_total
+        pct_change = delta / prev_total if prev_total else 0
+        glyph = "\u25b2" if delta >= 0 else "\u25bc"
+        trend_class = "trend-up" if delta >= 0 else "trend-down"
+        trend_delta = (
+            f'<div class="kpi-delta">'
+            f'<span class="{trend_class}">{glyph} {abs(delta)} ({abs(pct_change):.0%})</span>'
+            f' vs 2024\u20132025</div>'
+        )
+
+    total_card = (
         '<div class="kpi-card kpi-blue">'
         '<div class="kpi-label"><p>Total DMPs</p></div>'
         '<div class="kpi-value"><p>' + str(len(df)) + '</p></div>'
+        f'{trend_delta}'
+        f'<div class="kpi-desc">{total_desc}</div>'
         '</div>'
     )
 
-    pct_kpis = [
-        ("Approval rate", k["Approval rate"]),
-        ("ERB linkage", k["ERB linkage rate"]),
-        ("Trusted repository", k["Trusted repository rate"]),
-        ("Archived at RAPS", k["RAPS archival rate"]),
-    ]
-    for label, value in pct_kpis:
-        items.append(gauge_svg(value, label))
+    if abbr:
+        pct_kpis = [
+            ("Approval rate", k["Approval rate"],
+             f'{k["Approved DMPs"]} of {n} DMPs are approved at {abbr}'),
+            ("DMPs with ERB", k["ERB linkage rate"],
+             f'{k["Linked ERB"]} of {n} DMPs are linked to an ERB at {abbr}'),
+            ("Data sharing agreement", k["Data sharing agreement rate"],
+             f'{k["Data sharing agreement"]} of {n} DMPs require a data sharing agreement at {abbr}'),
+            ("TU/e storage", k["TU/e storage rate"],
+             f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage at {abbr}'),
+            ("Trusted repository", k["Trusted repository rate"],
+             f'{k["Trusted repository"]} of {n} DMPs use a trusted data repository at {abbr}'),
+            ("Archived at RAPS", k["RAPS archival rate"],
+             f'{k["Archived at RAPS"]} of {n} DMPs at {abbr} are archived at RAPS'),
+        ]
+    else:
+        pct_kpis = [
+            ("Approval rate", k["Approval rate"],
+             f'{k["Approved DMPs"]} of {n} DMPs are approved'),
+            ("DMPs with ERB", k["ERB linkage rate"],
+             f'{k["Linked ERB"]} of {n} DMPs are linked to an ERB'),
+            ("Data sharing agreement", k["Data sharing agreement rate"],
+             f'{k["Data sharing agreement"]} of {n} DMPs require a data sharing agreement'),
+            ("TU/e storage", k["TU/e storage rate"],
+             f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage'),
+            ("Trusted repository", k["Trusted repository rate"],
+             f'{k["Trusted repository"]} of {n} DMPs use a trusted data repository'),
+            ("Archived at RAPS", k["RAPS archival rate"],
+             f'{k["Archived at RAPS"]} of {n} DMPs are archived at RAPS'),
+        ]
+    for label, value, desc in pct_kpis:
+        items.append(gauge_svg(value, label, desc))
 
-    if rev is not None:
-        items.append(gauge_svg(rev["% with \u22651 revision"], "\u22651 revision"))
-
-    return '<div class="kpi-grid">' + "".join(items) + "</div>"
+    return '<div class="kpi-header">' + total_card + '<div class="kpi-grid">' + "".join(items) + "</div></div>"
 
 
 def render_chart(fig, width: int = 900, height: int = 450) -> str:
@@ -463,13 +540,19 @@ def revision_summary(df: pd.DataFrame) -> dict:
     """Headline revision metrics (Q7)."""
     n = len(df)
     if not n:
-        return {"% with \u22651 revision": 0, "Avg revisions per DMP": 0}
+        return {
+            "DMPs with \u22651 revision": 0,
+            "% with \u22651 revision": 0,
+            "Avg revisions per DMP": 0,
+        }
 
     def n_revisions(seq):
         return sum(1 for s in seq if s == "Revision requested")
 
     counts = df["ordered_status_transition_list"].map(n_revisions)
+    n_rev = int((counts > 0).sum())
     return {
+        "DMPs with \u22651 revision": n_rev,
         "% with \u22651 revision": float((counts > 0).mean()),
         "Avg revisions per DMP": float(counts.mean()),
     }
@@ -657,7 +740,7 @@ def help_needed_rate(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def gauge_svg(value_float: float, label: str) -> str:
+def gauge_svg(value_float: float, label: str, description: str | None = None) -> str:
     """Return an inline SVG circle gauge for a decimal value 0-1."""
     pct = max(0.0, min(1.0, value_float))
     pct_display = f"{pct:.0%}"
@@ -669,6 +752,7 @@ def gauge_svg(value_float: float, label: str) -> str:
     offset = circumference * (1 - pct)
     ca_str = f"{round(circumference, 1)}"
     off_str = f"{round(offset, 1)}"
+    desc_html = f'<div class="kpi-desc">{description}</div>' if description else ""
     return (
         '<div class="kpi-card kpi-circle">'
         '<div class="gauge-wrap">'
@@ -687,11 +771,13 @@ def gauge_svg(value_float: float, label: str) -> str:
         '</svg>'
         '</div>'
         '<div class="kpi-label">{label}</div>'
+        '{desc_html}'
         '</div>'
     ).format(
         label=label, x=x, y=y, r=r, t=t,
         ca=ca_str, off=off_str,
         pct_display=pct_display,
+        desc_html=desc_html,
     )
 
 
