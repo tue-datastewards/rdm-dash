@@ -39,21 +39,27 @@
 
 /* ---------- KPI cards ---------- */
 
-.kpi-total-row {
-  display: flex;
-  margin: 1.25rem 0 0.85rem;
+.kpi-header {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 0.85rem;
+  margin: 1.25rem 0 1.75rem;
 }
 
-.kpi-total-row .kpi-card {
+.kpi-header .kpi-card.kpi-blue {
   width: 100%;
-  max-width: 260px;
 }
 
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.85rem;
-  margin: 0 0 1.75rem;
+}
+
+@media (max-width: 900px) {
+  .kpi-header {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 700px) {

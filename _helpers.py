@@ -292,13 +292,11 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None) -> str:
 
     items = []
 
-    total_row = (
-        '<div class="kpi-total-row">'
+    total_card = (
         '<div class="kpi-card kpi-blue">'
         '<div class="kpi-label"><p>Total DMPs</p></div>'
         '<div class="kpi-value"><p>' + str(len(df)) + '</p></div>'
         f'<div class="kpi-desc">{total_desc}</div>'
-        '</div>'
         '</div>'
     )
 
@@ -335,7 +333,7 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None) -> str:
     for label, value, desc in pct_kpis:
         items.append(gauge_svg(value, label, desc))
 
-    return total_row + '<div class="kpi-grid">' + "".join(items) + "</div>"
+    return '<div class="kpi-header">' + total_card + '<div class="kpi-grid">' + "".join(items) + "</div></div>"
 
 
 def render_chart(fig, width: int = 900, height: int = 450) -> str:
