@@ -82,7 +82,7 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
                  title="Storage solutions by department",
                  color_discrete_map={
                      "Using TU/e storage": "#742459",
-                     "Not using TU/e storage": "#2F3845",
+                     "Not using TU/e storage": "#FAE1F0",
                  })
     fig.update_layout(
     yaxis={"categoryorder": "total ascending"},
@@ -251,7 +251,7 @@ for dept in h.DEPARTMENTS:
         fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label",
                      color_discrete_map={
                          "Using TU/e storage": "#742459",
-                         "Not using TU/e storage": "#2F3845",
+                         "Not using TU/e storage": "#FAE1F0",
                      })
         fig.update_traces(textposition="auto")
         fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
