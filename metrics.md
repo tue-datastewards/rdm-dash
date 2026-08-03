@@ -38,15 +38,14 @@ DMP dataset (`data/DMPs_2025_09_10_onwards.csv`) and ERB dataset
 - **ERB approval rate per department** (join ERB → DMP → department)
 - **Integration timing** — `days_to_erb_link_creation` / `days_to_dmp_link_creation`
 
-### Q3 — TU/e secured storage + sensitive data outside TU/e
+### Q3 — TU/e secured storage
 
 **Status:** Partially answerable
 
-**Sources:** DMP (`data_storage_list`, `data_storage_after_list`, `has_special_category`)
+**Sources:** DMP (`data_storage_list`, `data_storage_after_list`)
 
 - **TU/e-supported storage rate** — % using TU/e Network Drive / SharePoint-Teams / SURF Research Drive
 - **External storage rate** — % "Other..."
-- **Sensitive-data-outside-TU/e rate** — `has_special_category = true` × external storage solution
 
 ### Q4 — Data sharing agreement / DA request / DPIA
 

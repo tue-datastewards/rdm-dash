@@ -104,23 +104,6 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     print('</div>')
 ```
 
-### Sensitive data outside TU/e
-
-> **Q3.** What share of **sensitive research data** is stored **outside**
-TU/e-supported solutions?
-
-```{python}
-#| output: asis
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    df = h.sensitive_data_outside_tue(pdf)
-    fig = px.bar(df, x="Category", y="DMPs", text="DMPs", color="Category")
-    fig.update_layout(showlegend=False, height=500)
-    print(h.render_chart(fig))
-    print('</div>')
-```
-
 ## Repositories {.tabset}
 
 ### Repository choice
@@ -240,11 +223,6 @@ for dept in h.DEPARTMENTS:
         fig.update_traces(textposition="auto")
         fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
                           showlegend=True, legend_title="Storage", title="TU/e vs. external storage")
-        print(h.render_chart(fig))
-
-        df = h.sensitive_data_outside_tue(dd)
-        fig = px.bar(df, x="Category", y="DMPs", text="DMPs", color="Category")
-        fig.update_layout(showlegend=False, height=450, title="Sensitive data outside TU/e")
         print(h.render_chart(fig))
 
         print("<h3>Repositories</h3>")

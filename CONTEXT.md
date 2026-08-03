@@ -208,7 +208,7 @@ Sidebar-subtitle class for muted secondary text, shown in breadcrumbs.
 | KPI | `kpi_table()`, `kpi_html()`, `gauge_svg()` — circle SVG generator |
 | Q1 | `approval_by_department()`, `dmps_by_department_purpose()` |
 | Q2 | `approval_by_department()`, `erb_breakdown()`, `erb_approval_by_department()` |
-| Q3 | `storage_split()`, `sensitive_data_outside_tue()` |
+| Q3 | `storage_split()` |
 | Q4 | `data_sharing_breakdown()`, `special_category_summary()` |
 | Q5 | `repository_breakdown()`, `trusted_repository_split()` |
 | Q6 | `archive_breakdown()` |

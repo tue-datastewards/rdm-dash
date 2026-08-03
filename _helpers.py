@@ -586,31 +586,6 @@ def erb_integration_timing(df_dmps: pd.DataFrame) -> pd.DataFrame:
     })
 
 
-# Q3 additions --------------------------------------------------------------
-
-def sensitive_data_outside_tue(df: pd.DataFrame) -> pd.DataFrame:
-    """Sensitive data stored outside TU/e-supported solutions (Q3/Q4)."""
-    n = len(df)
-    if not n:
-        return pd.DataFrame(columns=["Category", "DMPs"])
-    sensitive = df[df["has_special_category"] == True]
-
-    def uses_external(v):
-        return any(s not in TUE_STORAGE for s in v)
-
-    sc_ext = int(sensitive["data_storage_list"].map(uses_external).sum()) if len(sensitive) else 0
-    sc_tue = int(len(sensitive) - sc_ext)
-    nonsc = n - len(sensitive)
-    return pd.DataFrame({
-        "Category": [
-            "Sensitive + external storage",
-            "Sensitive + TU/e storage only",
-            "Not sensitive / unknown",
-        ],
-        "DMPs": [sc_ext, sc_tue, nonsc],
-    })
-
-
 # Q4 -------------------------------------------------------------------------
 
 def data_sharing_breakdown(df: pd.DataFrame) -> pd.DataFrame:
