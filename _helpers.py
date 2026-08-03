@@ -468,13 +468,9 @@ def trusted_repository_split(df: pd.DataFrame) -> pd.DataFrame:
     trusted = int(df["data_repository"].map(
         lambda v: any(r in TRUSTED_REPOSITORIES for r in v)
     ).sum())
-    other = int(df["data_repository"].map(
-        lambda v: len(v) > 0 and not any(r in TRUSTED_REPOSITORIES for r in v)
-    ).sum())
-    none = n - trusted - other
     return pd.DataFrame({
-        "Category": ["Trusted repository", "Other / advice", "None selected"],
-        "DMPs": [trusted, other, none],
+        "Category": ["Using Trusted Repository", "Not Using Trusted Repository"],
+        "DMPs": [trusted, n - trusted],
     })
 
 

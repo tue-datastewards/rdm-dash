@@ -104,9 +104,61 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     print('</div>')
 ```
 
-## Repositories {.tabset}
+## FAIR Data Adoption
 
-### Repository choice
+> **Q5.** To what extent do projects publish their FAIR data in a **trusted
+repository** (4TU.ResearchData, Zenodo, OSF, Figshare)?
+
+```{python}
+#| output: asis
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    import pandas as pd
+    title_by_purpose = {
+        "all": "DMPs with Trusted Repository by Department",
+        "scientific": "Scientific DMPs with Trusted Repository by Department",
+        "educational": "Educational DMPs with Trusted Repository by Department",
+    }
+    rows = []
+    for dept in h.DEPARTMENTS:
+        sub = h.filter_department(pdf, dept)
+        for _, r in h.trusted_repository_split(sub).iterrows():
+            rows.append({
+                "Department": h.DEPT_ABBREVIATIONS[dept],
+                "Category": r["Category"],
+                "DMPs": r["DMPs"],
+            })
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="DMPs", y="Department", color="Category",
+                 barmode="stack", height=500,
+                 text="DMPs",
+                 title=title_by_purpose[pkey],
+                 color_discrete_map={
+                     "Using Trusted Repository": "#742459",
+                     "Not Using Trusted Repository": "#FAE1F0",
+                 })
+    fig.update_layout(
+        yaxis={"categoryorder": "total ascending"},
+        legend={
+            "orientation": "h",
+            "yanchor": "bottom",
+            "y": 1.00,
+            "xanchor": "left",
+            "x": 0,
+        },
+        margin={"t": 100},
+        legend_title_text="",
+    )
+    print(h.render_chart(fig))
+    for dept in sorted(h.DEPARTMENTS, key=lambda d: h.DEPT_ABBREVIATIONS[d]):
+        abbr = h.DEPT_ABBREVIATIONS[dept]
+        print(f'<span style="font-size:0.85em;margin-right:1.5em"><b>{abbr}</b> = {dept}</span>')
+    print('<br>')
+    print('</div>')
+```
+
+## Repository choice
 
 > **Q5.** Which repositories do researchers choose for publishing their FAIR data?
 
@@ -119,28 +171,6 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     df = df[df["Repository"] != "(none)"]
     fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
     fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=500)
-    print(h.render_chart(fig))
-    print('</div>')
-```
-
-### Trusted repository usage
-
-> **Q5.** To what extent do projects publish their FAIR data in a **trusted
-repository** (4TU.ResearchData, Zenodo, OSF, Figshare)?
-
-```{python}
-#| output: asis
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    df = h.trusted_repository_split(pdf)
-    total = df["DMPs"].sum() or 1
-    df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-    df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-    fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label")
-    fig.update_traces(textposition="auto")
-    fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=500,
-                      barmode="stack", showlegend=True, legend_title="Repository")
     print(h.render_chart(fig))
     print('</div>')
 ```
@@ -256,7 +286,7 @@ for dept in h.DEPARTMENTS:
         fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label")
         fig.update_traces(textposition="auto")
         fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                          showlegend=True, legend_title="Repository", title="Trusted repository usage")
+                          showlegend=True, title="FAIR Data Adoption")
         print(h.render_chart(fig))
 
         print("<h3>Archival</h3>")
