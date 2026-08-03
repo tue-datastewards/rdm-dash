@@ -611,11 +611,11 @@ data/ERBs_2025_09_10_onwards.csv  (20 cols, foreign keys → DMPs.issue_key)
 </table>
 <section id="kpi-card-generation" class="level3">
 <h3 class="anchored" data-anchor-id="kpi-card-generation">6.1 KPI card generation</h3>
-<p><code>kpi_html(df, with_revisions=False)</code> generates the shared KPI grid HTML:</p>
+<p><code>kpi_html(df)</code> generates the shared KPI grid HTML:</p>
 <ul>
 <li>One integer card for “Total DMPs” (<code>kpi-card kpi-blue</code>)</li>
-<li>Four circle gauge cards via <code>gauge_svg()</code> for: Approval, ERB, Repository, RAPS</li>
-<li>Optional fifth gauge: “≥1 revision” (when <code>with_revisions=True</code>)</li>
+<li>Six circle gauge cards via <code>gauge_svg()</code> for: Approval, ERB, Data sharing agreement, TU/e storage, Trusted repository, RAPS</li>
+<li>Each card includes a short <code>.kpi-desc</code> line (e.g.&nbsp;“1419 of 2174 DMPs are approved”); the Total DMPs card’s description also shows the DMP creation date range for the current filter</li>
 </ul>
 </section>
 <section id="gauge_svg" class="level3">
