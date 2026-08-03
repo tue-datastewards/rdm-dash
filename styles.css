@@ -139,6 +139,16 @@
   --kpi-accent: #6366f1;
 }
 
+/* ─── Trend indicator (total DMPs delta) ────────── */
+.kpi-delta {
+  font-size: 0.8rem;
+  margin-top: 0.15rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+.trend-up { color: #16a34a; }
+.trend-down { color: #dc2626; }
+
 /* ─── Gauges (circle) ─────────────────────────────── */
 
 .kpi-circle {

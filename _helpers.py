@@ -15,6 +15,7 @@ import pandas as pd
 DATA_DIR = Path(__file__).parent / "data"
 DMP_FILE = DATA_DIR / "DMPs_2025_09_10_onwards.csv"
 ERB_FILE = DATA_DIR / "ERBs_2025_09_10_onwards.csv"
+HISTORICAL_DMP_FILE = DATA_DIR / "dmps-2024-2025.json"
 
 # Classification rules -------------------------------------------------------
 
@@ -174,6 +175,17 @@ def load_dmps() -> pd.DataFrame:
 
 
 @cache
+def load_historical_dmps() -> int:
+    """Total DMPs from the 2024–2025 historical JSON (sum of all observations)."""
+    with open(HISTORICAL_DMP_FILE) as f:
+        data = json.load(f)
+    return sum(
+        obs["schema:value"]["schema:value"]
+        for obs in data.get("observation", [])
+    )
+
+
+@cache
 def load_erbs() -> pd.DataFrame:
     """Load and clean the ERB export."""
     df = pd.read_csv(ERB_FILE, dtype=str)
@@ -280,6 +292,12 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None) -> str:
     n = k["Total DMPs"]
     abbr = DEPT_ABBREVIATIONS.get(dept, dept) if dept else None
 
+    prev_total = load_historical_dmps()
+    delta = n - prev_total
+    pct_change = delta / prev_total if prev_total else 0
+    glyph = "\u25b2" if delta >= 0 else "\u25bc"
+    trend_class = "trend-up" if delta >= 0 else "trend-down"
+
     total_desc = "Total DMPs submitted this period"
     if "issue_creation_time" in df.columns:
         dates = df["issue_creation_time"].dropna()
@@ -296,6 +314,7 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None) -> str:
         '<div class="kpi-card kpi-blue">'
         '<div class="kpi-label"><p>Total DMPs</p></div>'
         '<div class="kpi-value"><p>' + str(len(df)) + '</p></div>'
+        f'<div class="kpi-delta"><span class="{trend_class}">{glyph} {abs(delta)} ({abs(pct_change):.0%})</span> vs 2024\u20132025</div>'
         f'<div class="kpi-desc">{total_desc}</div>'
         '</div>'
     )
