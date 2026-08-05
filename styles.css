@@ -426,3 +426,19 @@ a:hover {
 .purpose-content.purpose-active {
   display: block;
 }
+
+.cta-btn {
+  display: inline-block;
+  padding: 10px 22px;
+  background: var(--rdm-700);
+  color: #fff;
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 150ms;
+}
+
+.cta-btn:hover {
+  background: var(--rdm-800);
+  color: #fff;
+}

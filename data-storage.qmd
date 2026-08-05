@@ -468,6 +468,21 @@ for dept in h.DEPARTMENTS:
     print('</div>')
 ```
 
+## How to improve the implementation for the next year, 2026-2027
+
+### What we can do: Boost FAIR data adoption
+
+At Data Steward Team, we started the [FAIR Data
+Clinic](https://rdm.tue.nl/docs/learning-resources/fair-clinic/) where
+researchers get personalised advice on how to make their data more FAIR.
+
+### What you can do
+
+Please feel free to reach out to the Data Steward team. We can give
+presentations about FAIR data and repositories.
+
+<a class="cta-btn" href="mailto:rdmsupport@tue.nl">Email Data Stewards</a>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   var sel = document.getElementById("dept-select");
