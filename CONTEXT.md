@@ -196,6 +196,9 @@ starting from 12 o'clock via `rotate(-90)`.
 
 Full-width slate background (`#303846`) with white text.
 Hover/active links use `--rdm-300` / `--rdm-200` purple.
+A square TU/e logo (`images/logo.svg`, purple `#742459`
+background with white logo) sits left of the title, sized via
+`.navbar .navbar-brand img.navbar-logo` (`max-height: 2rem`).
 
 ### 5.4 Sidebar
 
