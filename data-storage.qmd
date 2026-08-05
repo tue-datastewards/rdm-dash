@@ -24,6 +24,14 @@ for dept in h.DEPARTMENTS:
     dd = h.filter_department(dmps, dept)
     de = h.department_erbs(dd, erbs)
     dept_data[dept] = {"dmps": dd, "erbs": de}
+
+repo_colors = {
+    "4TU.ResearchData": "#4e183c",
+    "Zenodo": "#742459",
+    "OSF": "#a12d76",
+    "Figshare": "#f5bddd",
+}
+repo_order = ["4TU.ResearchData", "Zenodo", "OSF", "Figshare"]
 ```
 
 <div class="filter-bar">
@@ -208,11 +216,45 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
 for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
     act = " purpose-active" if pkey == "all" else ""
     print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    df = h.repository_breakdown(pdf)
-    df = df[df["Repository"] != "(none)"]
-    fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
-    fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=500)
+    import pandas as pd
+    title_by_purpose = {
+        "all": "Trusted Repository Choices by Department",
+        "scientific": "Scientific DMPs with Trusted Repository Choices by Department",
+        "educational": "Educational DMPs with Trusted Repository Choices by Department",
+    }
+    rows = []
+    for dept in h.DEPARTMENTS:
+        sub = h.filter_department(pdf, dept)
+        for _, r in h.repository_breakdown(sub).iterrows():
+            if r["Repository"] not in repo_order:
+                continue
+            rows.append({
+                "Department": h.DEPT_ABBREVIATIONS[dept],
+                "Repository": r["Repository"],
+                "Choices": r["DMPs"],
+            })
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="Choices", y="Department", color="Repository",
+                 barmode="stack", height=500,
+                 text="Choices",
+                 title=title_by_purpose[pkey],
+                 category_orders={"Repository": repo_order},
+                 color_discrete_map=repo_colors)
+    fig.update_layout(
+        yaxis={"categoryorder": "total ascending"},
+        legend={
+            "orientation": "h",
+            "yanchor": "bottom",
+            "y": 1.00,
+            "xanchor": "left",
+            "x": 0,
+        },
+        margin={"t": 100},
+        legend_title_text="",
+    )
     print(h.render_chart(fig))
+    print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Counts are repository '
+          '<b>choices</b>, not DMPs. A DMP can select multiple repositories.</i></p>')
     print('</div>')
 ```
 
@@ -316,10 +358,12 @@ for dept in h.DEPARTMENTS:
         print("<h3>Repositories</h3>")
 
         df = h.repository_breakdown(dd)
-        df = df[df["Repository"] != "(none)"]
-        fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
-        fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450,
-                          title="Repository choice")
+        df = df[df["Repository"].isin(repo_order)]
+        fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs",
+                     color="Repository", category_orders={"Repository": repo_order},
+                     color_discrete_map=repo_colors)
+        fig.update_layout(yaxis={"categoryorder": "total ascending"}, height=450,
+                          legend_title_text="", title="Repository choice")
         print(h.render_chart(fig))
 
         df = h.trusted_repository_split(dd)
