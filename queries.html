@@ -165,6 +165,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./data-storage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Storage<br><span class="sidebar-subtitle">Storage, repositories &amp; archival</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./compliance.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Policy Compliance<br><span class="sidebar-subtitle">Policy adherence metrics (Q8–Q10)</span></span></a>
   </div>
@@ -322,41 +328,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><code>data_storage_list</code></td>
-<td><code>storage_split</code>, <code>sensitive_data_outside_tue</code> (Q3)</td>
+<td><code>storage_split</code> (Q3)</td>
 </tr>
 <tr class="even">
-<td><code>storage_solution_count</code></td>
-<td><code>storage_count_distribution</code> (Q3)</td>
-</tr>
-<tr class="odd">
 <td><code>data_repository</code></td>
 <td><code>kpi_table</code>, <code>repository_breakdown</code>, <code>help_needed_rate</code> (Q5/Q10)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>metadata_standard</code></td>
 <td><code>help_needed_rate</code> (Q10)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>processing_tools_list</code></td>
 <td><code>help_needed_rate</code> (Q10)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>has_related_erb</code></td>
 <td><code>kpi_table</code> (Q2 linkage)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>is_scientific</code></td>
 <td><code>approval_by_purpose</code></td>
 </tr>
-<tr class="even">
-<td><code>has_special_category</code></td>
-<td><code>sensitive_data_outside_tue</code> (Q3/Q4)</td>
-</tr>
 <tr class="odd">
+<td><code>has_special_category</code></td>
+<td><code>special_category_summary</code> (Q4)</td>
+</tr>
+<tr class="even">
 <td><code>data_sharing</code></td>
 <td><code>data_sharing_breakdown</code> (Q4)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>archive_location</code></td>
 <td><code>kpi_table</code>, <code>archive_breakdown</code> (Q6)</td>
 </tr>
@@ -423,6 +425,16 @@ document.addEventListener('DOMContentLoaded', function() {
     sidebar.appendChild(footer);
   }
 });
+</script>
+<script>
+function updateFilterBarTop() {
+  var h = document.getElementById('quarto-header');
+  var top = h ? Math.max(0, h.getBoundingClientRect().bottom) : 0;
+  document.documentElement.style.setProperty('--filter-bar-top', top + 'px');
+}
+window.addEventListener('scroll', updateFilterBarTop, { passive: true });
+window.addEventListener('resize', updateFilterBarTop);
+updateFilterBarTop();
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

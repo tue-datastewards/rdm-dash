@@ -165,6 +165,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./data-storage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Storage<br><span class="sidebar-subtitle">Storage, repositories &amp; archival</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./compliance.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Policy Compliance<br><span class="sidebar-subtitle">Policy adherence metrics (Q8–Q10)</span></span></a>
   </div>
@@ -256,6 +262,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#kpi-cards" id="toc-kpi-cards" class="nav-link" data-scroll-target="#kpi-cards">5.2 KPI cards</a></li>
   <li><a href="#navbar" id="toc-navbar" class="nav-link" data-scroll-target="#navbar">5.3 Navbar</a></li>
   <li><a href="#sidebar" id="toc-sidebar" class="nav-link" data-scroll-target="#sidebar">5.4 Sidebar</a></li>
+  <li><a href="#plotly-chart-conventions" id="toc-plotly-chart-conventions" class="nav-link" data-scroll-target="#plotly-chart-conventions">5.5 Plotly chart conventions</a></li>
   </ul></li>
   <li><a href="#helpers.py-functions-overview" id="toc-helpers.py-functions-overview" class="nav-link" data-scroll-target="#helpers.py-functions-overview">6. <code>_helpers.py</code> — functions overview</a>
   <ul class="collapse">
@@ -355,6 +362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>rdm-dash/
 ├── _quarto.yml          # Site config: navbar, CSS, theme (cosmo), execute: echo: false
 ├── index.qmd            # Overview dashboard: 1 integer card + 5 circle gauges + charts
+├── data-storage.qmd     # Data storage, FAIR data adoption, repository &amp; archival charts
 ├── compliance.qmd       # Policy compliance: dept dropdown + 10 panels (overview + 9 depts)
 ├── lifecycle.qmd        # DMP lifecycle: 10 section-grouped KPI blocks + charts
 ├── process-eval.qmd     # Process evaluation metrics
@@ -395,26 +403,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>DMPs per dept, Compliance, Data handling, Workflow</td>
 </tr>
 <tr class="even">
+<td><strong>data-storage.qmd</strong></td>
+<td>Storage, repositories &amp; archival with dept dropdown</td>
+<td>TU/e storage donut, FAIR Data Adoption, Repository choice, Archival</td>
+</tr>
+<tr class="odd">
 <td><strong>compliance.qmd</strong></td>
 <td>Policy adherence with dept selector dropdown</td>
 <td>Dept dropdown → 9 panels (overview + 8 depts)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><strong>lifecycle.qmd</strong></td>
 <td>DMP lifecycle metrics</td>
 <td>10 section-grouped KPI blocks + charts</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><strong>process-eval.qmd</strong></td>
 <td>Process quality metrics</td>
 <td>KPI grid + charts</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><strong>communication-training.qmd</strong></td>
 <td>Outreach activities</td>
 <td>Metrics + tables</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><strong>about.qmd</strong></td>
 <td>Credits</td>
 <td>Text only</td>
@@ -422,7 +435,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <blockquote class="blockquote">
-<p><strong>Sidebar navigation</strong> is configured in <code>_quarto.yml</code>. The old <code>dept-*.qmd</code> per-department files were removed in commit <code>850cfc8</code>; department views now live inside <code>compliance.qmd</code> and <code>lifecycle.qmd</code> with a JavaScript-based dropdown selector.</p>
+<p><strong>Sidebar navigation</strong> is configured in <code>_quarto.yml</code>. The old <code>dept-*.qmd</code> per-department files were removed in commit <code>850cfc8</code>; department views now live inside <code>data-storage.qmd</code>, <code>compliance.qmd</code> and <code>lifecycle.qmd</code> with a JavaScript-based dropdown selector (<code>dept-select</code>) plus an All/Scientific/Educational purpose toggle (<code>purpose-toggle</code>) that shows/hides matching <code>.purpose-content</code> panels.</p>
 </blockquote>
 <hr>
 </section>
@@ -538,6 +551,14 @@ data/ERBs_2025_09_10_onwards.csv  (20 cols, foreign keys → DMPs.issue_key)
 <section id="sidebar" class="level3">
 <h3 class="anchored" data-anchor-id="sidebar">5.4 Sidebar</h3>
 <p>Button-style navigation with active/highlight states using RDM purple. Sidebar-subtitle class for muted secondary text, shown in breadcrumbs.</p>
+</section>
+<section id="plotly-chart-conventions" class="level3">
+<h3 class="anchored" data-anchor-id="plotly-chart-conventions">5.5 Plotly chart conventions</h3>
+<ul>
+<li><strong><code>color_discrete_map</code> is ignored for <code>px.pie</code></strong> — it is silently dropped, leaving Plotly’s default palette. Apply segment colors directly instead: <code>fig.update_traces(marker_colors=[...])</code>, ordered to match <code>df["Category"]</code>.</li>
+<li><strong><code>px.pie</code> sorts slices by value by default</strong> — add <code>sort=False</code> in <code>fig.update_traces(...)</code> to keep a fixed category order regardless of the segment sizes.</li>
+<li><strong>Donuts render squashed at the default 900px width</strong> of <code>render_chart()</code> — render pie/donut figures at ~500px (<code>h.render_chart(fig, width=500, height=450)</code>) so the circle stays circular.</li>
+</ul>
 <hr>
 </section>
 </section>
@@ -577,7 +598,7 @@ data/ERBs_2025_09_10_onwards.csv  (20 cols, foreign keys → DMPs.issue_key)
 </tr>
 <tr class="even">
 <td>Q3</td>
-<td><code>storage_split()</code>, <code>storage_count_distribution()</code>, <code>sensitive_data_outside_tue()</code></td>
+<td><code>storage_split()</code></td>
 </tr>
 <tr class="odd">
 <td>Q4</td>
@@ -585,11 +606,11 @@ data/ERBs_2025_09_10_onwards.csv  (20 cols, foreign keys → DMPs.issue_key)
 </tr>
 <tr class="even">
 <td>Q5</td>
-<td><code>repository_breakdown()</code>, <code>trusted_repository_split()</code></td>
+<td><code>repository_breakdown()</code>, <code>trusted_repository_split()</code> — returns exactly two groups: “Using Trusted Repository” / “Not Using Trusted Repository”</td>
 </tr>
 <tr class="odd">
 <td>Q6</td>
-<td><code>archive_breakdown()</code></td>
+<td><code>archive_breakdown()</code>, <code>archive_split()</code> — binary TU/e archive (RAPS) usage</td>
 </tr>
 <tr class="even">
 <td>Q7</td>
@@ -645,6 +666,9 @@ data/ERBs_2025_09_10_onwards.csv</code></pre>
 <h3 class="anchored" data-anchor-id="preview">7.3 Preview</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pipenv</span> run quarto preview</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Opens <code>http://localhost:8080</code>. Changes to <code>.qmd</code>, <code>_quarto.yml</code>, and <code>styles.css</code> trigger live rebuilds.</p>
+<blockquote class="blockquote">
+<p><strong>No manual re-render by default.</strong> The live preview rebuilds automatically on save, so changes to <code>.qmd</code>, <code>_quarto.yml</code>, and <code>styles.css</code> do not require running <code>quarto render</code> afterwards. Only render (7.4) when explicitly asked or when a full <code>_site/</code> build is needed for deployment.</p>
+</blockquote>
 </section>
 <section id="full-render" class="level3">
 <h3 class="anchored" data-anchor-id="full-render">7.4 Full render</h3>
@@ -746,6 +770,16 @@ document.addEventListener('DOMContentLoaded', function() {
     sidebar.appendChild(footer);
   }
 });
+</script>
+<script>
+function updateFilterBarTop() {
+  var h = document.getElementById('quarto-header');
+  var top = h ? Math.max(0, h.getBoundingClientRect().bottom) : 0;
+  document.documentElement.style.setProperty('--filter-bar-top', top + 'px');
+}
+window.addEventListener('scroll', updateFilterBarTop, { passive: true });
+window.addEventListener('resize', updateFilterBarTop);
+updateFilterBarTop();
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

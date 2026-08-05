@@ -130,6 +130,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./data-storage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Storage<br><span class="sidebar-subtitle">Storage, repositories &amp; archival</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./compliance.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Policy Compliance<br><span class="sidebar-subtitle">Policy adherence metrics (Q8–Q10)</span></span></a>
   </div>
@@ -260,6 +266,16 @@ document.addEventListener('DOMContentLoaded', function() {
     sidebar.appendChild(footer);
   }
 });
+</script>
+<script>
+function updateFilterBarTop() {
+  var h = document.getElementById('quarto-header');
+  var top = h ? Math.max(0, h.getBoundingClientRect().bottom) : 0;
+  document.documentElement.style.setProperty('--filter-bar-top', top + 'px');
+}
+window.addEventListener('scroll', updateFilterBarTop, { passive: true });
+window.addEventListener('resize', updateFilterBarTop);
+updateFilterBarTop();
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

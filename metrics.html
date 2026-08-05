@@ -130,6 +130,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./data-storage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Storage<br><span class="sidebar-subtitle">Storage, repositories &amp; archival</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./compliance.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Policy Compliance<br><span class="sidebar-subtitle">Policy adherence metrics (Q8–Q10)</span></span></a>
   </div>
@@ -204,7 +210,7 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#q1-approved-dmp-per-department" id="toc-q1-approved-dmp-per-department" class="nav-link" data-scroll-target="#q1-approved-dmp-per-department">Q1 — Approved DMP per department</a></li>
   <li><a href="#q2-erb-approval" id="toc-q2-erb-approval" class="nav-link" data-scroll-target="#q2-erb-approval">Q2 — ERB approval</a></li>
-  <li><a href="#q3-tue-secured-storage-sensitive-data-outside-tue" id="toc-q3-tue-secured-storage-sensitive-data-outside-tue" class="nav-link" data-scroll-target="#q3-tue-secured-storage-sensitive-data-outside-tue">Q3 — TU/e secured storage + sensitive data outside TU/e</a></li>
+  <li><a href="#q3-tue-secured-storage" id="toc-q3-tue-secured-storage" class="nav-link" data-scroll-target="#q3-tue-secured-storage">Q3 — TU/e secured storage</a></li>
   <li><a href="#q4-data-sharing-agreement-da-request-dpia" id="toc-q4-data-sharing-agreement-da-request-dpia" class="nav-link" data-scroll-target="#q4-data-sharing-agreement-da-request-dpia">Q4 — Data sharing agreement / DA request / DPIA</a></li>
   <li><a href="#q5-fair-data-publication-in-trusted-repository" id="toc-q5-fair-data-publication-in-trusted-repository" class="nav-link" data-scroll-target="#q5-fair-data-publication-in-trusted-repository">Q5 — FAIR data publication in trusted repository</a></li>
   <li><a href="#q6-archive-at-tue-archive-raps" id="toc-q6-archive-at-tue-archive-raps" class="nav-link" data-scroll-target="#q6-archive-at-tue-archive-raps">Q6 — Archive at TU/e archive (RAPS)</a></li>
@@ -263,15 +269,13 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Integration timing</strong> — <code>days_to_erb_link_creation</code> / <code>days_to_dmp_link_creation</code></li>
 </ul>
 </section>
-<section id="q3-tue-secured-storage-sensitive-data-outside-tue" class="level3">
-<h3 class="anchored" data-anchor-id="q3-tue-secured-storage-sensitive-data-outside-tue">Q3 — TU/e secured storage + sensitive data outside TU/e</h3>
+<section id="q3-tue-secured-storage" class="level3">
+<h3 class="anchored" data-anchor-id="q3-tue-secured-storage">Q3 — TU/e secured storage</h3>
 <p><strong>Status:</strong> Partially answerable</p>
-<p><strong>Sources:</strong> DMP (<code>data_storage_list</code>, <code>data_storage_after_list</code>, <code>storage_solution_count</code>, <code>has_special_category</code>)</p>
+<p><strong>Sources:</strong> DMP (<code>data_storage_list</code>, <code>data_storage_after_list</code>)</p>
 <ul>
 <li><strong>TU/e-supported storage rate</strong> — % using TU/e Network Drive / SharePoint-Teams / SURF Research Drive</li>
 <li><strong>External storage rate</strong> — % “Other…”</li>
-<li><strong>Sensitive-data-outside-TU/e rate</strong> — <code>has_special_category = true</code> × external storage solution</li>
-<li><strong>Storage solution count distribution</strong> — <code>storage_solution_count</code></li>
 </ul>
 </section>
 <section id="q4-data-sharing-agreement-da-request-dpia" class="level3">
@@ -291,7 +295,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Sources:</strong> DMP (<code>data_repository</code>)</p>
 <ul>
 <li><strong>Repository selection rate</strong> — % of DMPs with a non-empty <code>data_repository</code></li>
-<li><strong>Trusted-repository rate</strong> — % selecting a trusted repo (4TU.ResearchData, Zenodo) vs.&nbsp;“Other…” vs.&nbsp;“I need advice”</li>
+<li><strong>Trusted-repository rate</strong> — % of DMPs using a trusted repository (4TU.ResearchData, Zenodo, OSF, Figshare); “Other…”, “I need advice” and no selection all count as not using a trusted repository</li>
 <li><strong>Repository choice breakdown</strong> — counts per repository</li>
 <li><strong>“I need advice” rate</strong> — indicates need for FAIR support</li>
 <li>Per purpose and per department</li>
@@ -377,6 +381,16 @@ document.addEventListener('DOMContentLoaded', function() {
     sidebar.appendChild(footer);
   }
 });
+</script>
+<script>
+function updateFilterBarTop() {
+  var h = document.getElementById('quarto-header');
+  var top = h ? Math.max(0, h.getBoundingClientRect().bottom) : 0;
+  document.documentElement.style.setProperty('--filter-bar-top', top + 'px');
+}
+window.addEventListener('scroll', updateFilterBarTop, { passive: true });
+window.addEventListener('resize', updateFilterBarTop);
+updateFilterBarTop();
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
