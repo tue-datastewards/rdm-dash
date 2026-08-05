@@ -373,13 +373,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="erbs" class="level2">
 <h2 class="anchored" data-anchor-id="erbs">ERBs</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  related_dmp,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  is_approved,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  ordered_status_transition_list</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  rdi_tst.cockpit.erb_gold_fact_dedup</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  issue_creation_time <span class="op">&gt;=</span> <span class="st">'2025-09-01'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  issue_key,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  issue_creation_time,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  related_dmp,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  is_approved,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  ordered_status_transition_list</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  rdi_tst.cockpit.erb_gold_fact_dedup</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  issue_creation_time <span class="op">&gt;=</span> <span class="st">'2025-09-01'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="columns-used-by-1" class="level3">
 <h3 class="anchored" data-anchor-id="columns-used-by-1">Columns used by</h3>
 <table class="caption-top table">
@@ -390,6 +392,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </thead>
 <tbody>
+<tr class="odd">
+<td><code>issue_key</code></td>
+<td>Primary key; ERB ticket identifier</td>
+</tr>
+<tr class="even">
+<td><code>issue_creation_time</code></td>
+<td>Reporting-period filter (<code>&gt;= '2025-09-01'</code>)</td>
+</tr>
 <tr class="odd">
 <td><code>related_dmp</code></td>
 <td><code>department_erbs</code>, <code>erb_approval_by_department</code> (Q2)</td>
@@ -407,7 +417,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="columns-excluded-1" class="level3">
 <h3 class="anchored" data-anchor-id="columns-excluded-1">Columns excluded</h3>
-<p><code>issue_key</code>, <code>issue_title</code>, <code>issue_creation_time</code>, <code>latest_status_time</code>, <code>status_history</code>, <code>days_to_first_approval</code>, <code>tue_department</code>, <code>dmp_link_creation_date</code>, <code>has_related_dmp</code>, <code>days_to_dmp_link_creation</code>, <code>ever_approved</code>, <code>approval_count</code>, <code>gold_processed_at</code>, <code>is_scientific</code>, <code>has_special_category</code>, <code>data_sharing</code>, <code>archive_location</code>, <code>reporter_email</code>.</p>
+<p><code>issue_title</code>, <code>latest_status_time</code>, <code>status_history</code>, <code>days_to_first_approval</code>, <code>tue_department</code>, <code>dmp_link_creation_date</code>, <code>has_related_dmp</code>, <code>days_to_dmp_link_creation</code>, <code>ever_approved</code>, <code>approval_count</code>, <code>gold_processed_at</code>, <code>is_scientific</code>, <code>has_special_category</code>, <code>data_sharing</code>, <code>archive_location</code>, <code>reporter_email</code>.</p>
 
 
 </section>
