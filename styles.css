@@ -363,6 +363,12 @@ h4 {
   border-bottom: none;
 }
 
+.navbar .navbar-brand img.navbar-logo {
+  max-height: 2rem;
+  width: auto;
+  margin-right: 0.6rem;
+}
+
 .navbar a,
 .navbar .nav-link,
 .navbar .navbar-brand,

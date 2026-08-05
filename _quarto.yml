@@ -27,6 +27,8 @@ website:
             text: Data Queries
       - about.qmd
   navbar:
+    logo: images/logo.svg
+    logo-alt: "TU/e logo"
     left:
       - href: index.qmd
         text: Home
