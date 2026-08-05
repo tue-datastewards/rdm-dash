@@ -51,7 +51,7 @@ dmps_sci = h.filter_by_purpose(dmps, True)
 dmps_edu = h.filter_by_purpose(dmps, False)
 ```
 
-## TU/e storage vs. external storage
+## Data Storage Location
 
 
 ```{python}
@@ -283,7 +283,7 @@ for dept in h.DEPARTMENTS:
         print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
         dd = h.filter_by_purpose(dd_all, pval)
 
-        print("<h3>Storage solutions</h3>")
+        print("<h2>Data Storage Location</h2>")
 
         title_by_purpose = {
             "all": f"DMPs with TU/e Storage Solutions<br>at {dept}",
