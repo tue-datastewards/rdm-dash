@@ -1,0 +1,522 @@
+---
+title: "Data Storage"
+format:
+  html:
+    page-layout: full
+    toc: false
+---
+
+```{python}
+#| tags: [hide-all]
+
+from IPython.display import HTML, display
+
+import _helpers as h
+import plotly.express as px
+import plotly.io as pio
+
+pio.templates.default = "plotly_white"
+dmps = h.load_dmps()
+erbs = h.load_erbs()
+
+dept_data = {}
+for dept in h.DEPARTMENTS:
+    dd = h.filter_department(dmps, dept)
+    de = h.department_erbs(dd, erbs)
+    dept_data[dept] = {"dmps": dd, "erbs": de}
+
+repo_colors = {
+    "4TU.ResearchData": "#4e183c",
+    "Zenodo": "#742459",
+    "OSF": "#a12d76",
+    "Figshare": "#f5bddd",
+}
+repo_order = ["4TU.ResearchData", "Zenodo", "OSF", "Figshare"]
+```
+
+<div class="filter-bar">
+```{python}
+#| output: asis
+print(h.purpose_toggle_html())
+```
+
+<select id="dept-select" class="dept-selector">
+<option value="overview">All departments</option>
+```{python}
+#| output: asis
+for d in h.DEPARTMENTS:
+    print(f'<option value="{h.DEPT_SLUGS[d]}">{d}</option>')
+```
+</select>
+</div>
+
+<div class="dept-panel" id="dept-overview">
+
+```{python}
+#| tags: [hide-all]
+dmps_all = dmps
+dmps_sci = h.filter_by_purpose(dmps, True)
+dmps_edu = h.filter_by_purpose(dmps, False)
+```
+
+## Data Storage Location
+
+
+```{python}
+#| output: asis
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    import pandas as pd
+    title_by_purpose = {
+        "all": "DMPs with TU/e Storage Solutions by Department",
+        "scientific": "Scientific DMPs with TU/e Storage Solutions by Department",
+        "educational": "Educational DMPs with TU/e Storage Solutions by Department",
+    }
+    rows = []
+    for dept in h.DEPARTMENTS:
+        sub = h.filter_department(pdf, dept)
+        total = len(sub) or 1
+        for _, r in h.storage_split(sub).iterrows():
+            rows.append({
+                "Department": h.DEPT_ABBREVIATIONS[dept],
+                "Category": r["Category"],
+                "DMPs": r["DMPs"],
+        })
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="DMPs", y="Department", color="Category",
+                 barmode="stack", height=500,
+                 text="DMPs",
+                 title=title_by_purpose[pkey],
+                 color_discrete_map={
+                     "Using TU/e storage": "#742459",
+                     "Not using TU/e storage": "#FAE1F0",
+                 })
+    fig.update_layout(
+    yaxis={"categoryorder": "total ascending"},
+    legend={
+        "orientation": "h",
+        "yanchor": "bottom",
+        "y": 1.00,
+        "xanchor": "left",
+        "x": 0,
+    },
+    margin={"t": 100},
+    legend_title_text="",
+)
+    print(h.render_chart(fig))
+    print('<p style="font-size:0.85em;color:#6b7280"><i>Note: TU/e storage solutions include TU/e Network Drive, SURF Research Drive, Microsoft SharePoint/Teams, and Microsoft OneDrive.</i></p>')
+    print(h.render_department_abbreviations())
+
+    print('<details class="storage-details"><summary>Breakdown: TU/e Data Storage Choices by Department</summary>')
+
+    solution_titles = {
+        "all": "TU/e Data Storage Choices by Department",
+        "scientific": "Scientific DMPs with TU/e Data Storage Choices by Department",
+        "educational": "Educational DMPs with TU/e Data Storage Choices by Department",
+    }
+    df = h.storage_solution_by_department(pdf)
+    df["Department"] = df["Department"].map(h.DEPT_ABBREVIATIONS)
+    sol_order = ["TU/e Network Drive", "SURF Research Drive",
+                 "Microsoft SharePoint/Teams", "Microsoft OneDrive"]
+    solution_colors = {
+        "TU/e Network Drive": "#742459",
+        "SURF Research Drive": "#a12d76",
+        "Microsoft SharePoint/Teams": "#367DB3",
+        "Microsoft OneDrive": "#4BAFD9",
+    }
+    df["Share"] = df.groupby("Department")["DMPs"].transform(lambda s: s / s.sum())
+    df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+    fig = px.bar(df, x="Share", y="Department", color="Solution",
+                 barmode="stack", height=500,
+                 text="Share",
+                 title=solution_titles[pkey],
+                 category_orders={"Solution": sol_order},
+                 color_discrete_map=solution_colors,
+                 custom_data=df[["Label"]])
+    fig.update_traces(texttemplate="%{x:.0%}", textposition="inside")
+    fig.update_traces(hovertemplate="%{y} · %{fullData.name}<br>%{customdata[0]}<extra></extra>")
+    fig.update_layout(
+        yaxis={"categoryorder": "total ascending"},
+        xaxis={"tickformat": ".0%", "title": ""},
+        legend={
+            "orientation": "h",
+            "yanchor": "bottom",
+            "y": 1.00,
+            "xanchor": "left",
+            "x": 0,
+        },
+        margin={"t": 100},
+        legend_title_text="",
+    )
+    print(h.render_chart(fig))
+    print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of storage '
+          '<b>choices</b>, not of DMPs. A DMP can select multiple storage options.</i></p>')
+    print(h.render_department_abbreviations())
+    print('</details>')
+    print('<br>')
+    print('</div>')
+```
+
+## FAIR Data Adoption
+
+
+```{python}
+#| output: asis
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    import pandas as pd
+    title_by_purpose = {
+        "all": "DMPs with Trusted Repository by Department",
+        "scientific": "Scientific DMPs with Trusted Repository by Department",
+        "educational": "Educational DMPs with Trusted Repository by Department",
+    }
+    rows = []
+    for dept in h.DEPARTMENTS:
+        sub = h.filter_department(pdf, dept)
+        for _, r in h.trusted_repository_split(sub).iterrows():
+            rows.append({
+                "Department": h.DEPT_ABBREVIATIONS[dept],
+                "Category": r["Category"],
+                "DMPs": r["DMPs"],
+            })
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="DMPs", y="Department", color="Category",
+                 barmode="stack", height=500,
+                 text="DMPs",
+                 title=title_by_purpose[pkey],
+                 color_discrete_map={
+                     "Using Trusted Repository": "#742459",
+                     "Not Using Trusted Repository": "#FAE1F0",
+                 })
+    fig.update_layout(
+        yaxis={"categoryorder": "total ascending"},
+        legend={
+            "orientation": "h",
+            "yanchor": "bottom",
+            "y": 1.00,
+            "xanchor": "left",
+            "x": 0,
+        },
+        margin={"t": 100},
+        legend_title_text="",
+    )
+    print(h.render_chart(fig))
+    print(h.render_department_abbreviations())
+    print('<br>')
+    print('</div>')
+```
+
+
+
+```{python}
+#| output: asis
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    import pandas as pd
+    title_by_purpose = {
+        "all": "Trusted Repository Choices by Department",
+        "scientific": "Scientific DMPs with Trusted Repository Choices by Department",
+        "educational": "Educational DMPs with Trusted Repository Choices by Department",
+    }
+    rows = []
+    for dept in h.DEPARTMENTS:
+        sub = h.filter_department(pdf, dept)
+        for _, r in h.repository_breakdown(sub).iterrows():
+            if r["Repository"] not in repo_order:
+                continue
+            rows.append({
+                "Department": h.DEPT_ABBREVIATIONS[dept],
+                "Repository": r["Repository"],
+                "Choices": r["DMPs"],
+            })
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="Choices", y="Department", color="Repository",
+                 barmode="stack", height=500,
+                 text="Choices",
+                 title=title_by_purpose[pkey],
+                 category_orders={"Repository": repo_order},
+                 color_discrete_map=repo_colors)
+    fig.update_layout(
+        yaxis={"categoryorder": "total ascending"},
+        legend={
+            "orientation": "h",
+            "yanchor": "bottom",
+            "y": 1.00,
+            "xanchor": "left",
+            "x": 0,
+        },
+        margin={"t": 100},
+        legend_title_text="",
+    )
+    print('<details class="storage-details"><summary>Breakdown: Trusted Repository Choices by Department</summary>')
+    print(h.render_chart(fig))
+    print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Counts are repository '
+          '<b>choices</b>, not DMPs. A DMP can select multiple repositories. Data only include choices indicating a use of a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
+    print(h.render_department_abbreviations())
+    print('</details>')
+    print('</div>')
+```
+
+## Archive location
+
+
+```{python}
+#| output: asis
+title_by_purpose = {
+    "all": "DMPs indicating the use of TU/e archive (RAPS) by Department",
+    "scientific": "Scientific DMPs indicating the use of TU/e archive (RAPS) by Department",
+    "educational": "Educational DMPs indicating the use of TU/e archive (RAPS) by Department",
+}
+archive_colors = {
+    "Using TU/e archive": "#742459",
+    "Not using TU/e archive": "#FAE1F0",
+}
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    import pandas as pd
+    rows = []
+    for dept in h.DEPARTMENTS:
+        sub = h.filter_department(pdf, dept)
+        for _, r in h.archive_split(sub).iterrows():
+            rows.append({"Department": h.DEPT_ABBREVIATIONS[dept], "Category": r["Category"], "DMPs": r["DMPs"]})
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="DMPs", y="Department", color="Category",
+                 barmode="stack", text="DMPs", title=title_by_purpose[pkey],
+                 color_discrete_map=archive_colors)
+    fig.update_layout(
+        yaxis={"categoryorder": "total ascending"},
+        legend={
+            "orientation": "h",
+            "yanchor": "bottom",
+            "y": 1.00,
+            "xanchor": "left",
+            "x": 0,
+        },
+        margin={"t": 100},
+        legend_title_text="",
+    )
+    print(h.render_chart(fig))
+    print(h.render_department_abbreviations())
+    print('</div>')
+```
+
+</div>
+
+```{python}
+#| tags: [hide-all]
+#| output: asis
+
+for dept in h.DEPARTMENTS:
+    slug = h.DEPT_SLUGS[dept]
+    dd_all = dept_data[dept]["dmps"]
+    de = dept_data[dept]["erbs"]
+    print(f'<div class="dept-panel" id="dept-{slug}" style="display:none">')
+
+    for pkey, pval in h.PURPOSES:
+        act = " purpose-active" if pkey == "all" else ""
+        print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+        dd = h.filter_by_purpose(dd_all, pval)
+
+        print("<h2>Data Storage Location</h2>")
+
+        title_by_purpose = {
+            "all": f"DMPs with TU/e Storage Solutions<br>at {dept}",
+            "scientific": f"Scientific DMPs with TU/e Storage Solutions<br>at {dept}",
+            "educational": f"Educational DMPs with TU/e Storage Solutions<br>at {dept}",
+        }
+
+        df = h.storage_split(dd)
+        total = df["DMPs"].sum() or 1
+        df = df.assign(Share=df["DMPs"] / total)
+        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+        storage_rate = df.loc[df["Category"] == "Using TU/e storage", "Share"].iloc[0] if len(df) else 0
+        storage_colors = {
+            "Using TU/e storage": "#742459",
+            "Not using TU/e storage": "#FAE1F0",
+        }
+        fig = px.pie(df, names="Category", values="DMPs", hole=0.55)
+        fig.update_traces(text=df["Label"], textposition="outside", textinfo="text",
+                          sort=False,
+                          marker_colors=[storage_colors[c] for c in df["Category"]])
+        fig.add_annotation(
+            text=f"{storage_rate:.0%}",
+            font={"size": 28, "color": "#111827"},
+            showarrow=False,
+        )
+        fig.update_layout(showlegend=True,
+                          title=title_by_purpose[pkey],
+                          margin={"t": 80, "l": 20, "r": 20, "b": 20})
+        print(h.render_chart(fig, width=500, height=450))
+
+        print(f'<details class="storage-details"><summary>TU/e Data Storage Choices at {dept}</summary>')
+
+        df = h.storage_solution_by_department(dd)
+        df = df[df["Department"] == dept]
+        df = df.set_index("Solution")["DMPs"].reindex(sol_order, fill_value=0).reset_index(name="DMPs")
+        df["Share"] = df["DMPs"] / (df["DMPs"].sum() or 1)
+        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+        df["Department"] = h.DEPT_ABBREVIATIONS[dept]
+        short_map = {
+            "TU/e Network Drive": "Network Drive",
+            "SURF Research Drive": "SURF Drive",
+            "Microsoft SharePoint/Teams": "SharePoint/Teams",
+            "Microsoft OneDrive": "OneDrive",
+        }
+        df["Short"] = df["Solution"].map(short_map)
+        fig = px.bar(df, x="Share", y="Department", color="Solution",
+                     barmode="stack", orientation="h",
+                     text=df["Short"], height=240,
+                     category_orders={"Solution": sol_order},
+                     color_discrete_map=solution_colors,
+                     custom_data=df[["Label", "DMPs"]])
+        fig.update_traces(texttemplate="%{text}<br>%{customdata[1]} (%{x:.0%})", textposition="inside",
+                          textangle=0, insidetextanchor="middle",
+                          hovertemplate="%{y} · %{fullData.name}<br>%{customdata[0]}<extra></extra>")
+        fig.update_layout(yaxis_title="",
+                          xaxis={"tickformat": ".0%", "title": "", "range": [0, 1]},
+                          legend={"orientation": "h", "yanchor": "bottom", "y": 1.00,
+                                  "xanchor": "left", "x": 0},
+                          legend_title_text="",
+                          margin={"t": 100},
+                          title=f"TU/e Data Storage Choices at {dept}")
+        print(h.render_chart(fig))
+        print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of storage '
+              '<b>choices</b>, not of DMPs. A DMP can select multiple storage options.</i></p>')
+        print('</details>')
+
+        print("<h2>FAIR Data Adoption</h2>")
+
+        df = h.trusted_repository_split(dd)
+        total = df["DMPs"].sum() or 1
+        df = df.assign(Share=df["DMPs"] / total)
+        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+        trusted_rate = df.loc[df["Category"] == "Using Trusted Repository", "Share"].iloc[0] if len(df) else 0
+        trusted_colors = {
+            "Using Trusted Repository": "#742459",
+            "Not Using Trusted Repository": "#FAE1F0",
+        }
+        fig = px.pie(df, names="Category", values="DMPs", hole=0.55)
+        fig.update_traces(text=df["Label"], textposition="outside", textinfo="text",
+                          sort=False,
+                          marker_colors=[trusted_colors[c] for c in df["Category"]])
+        fig.add_annotation(
+            text=f"{trusted_rate:.0%}",
+            font={"size": 28, "color": "#111827"},
+            showarrow=False,
+        )
+        fig.update_layout(showlegend=True,
+                          title=f"DMPs indicating a use of a trusted repository for FAIR data <br>at {dept}",
+                          margin={"t": 80, "l": 20, "r": 20, "b": 20})
+        print(h.render_chart(fig, width=500, height=450))
+
+        print(f'<details class="storage-details"><summary>Trusted Repository Choices at {dept}</summary>')
+
+        df = h.repository_breakdown(dd)
+        df = df[df["Repository"].isin(repo_order)]
+        df = df.set_index("Repository")["DMPs"].reindex(repo_order, fill_value=0).reset_index(name="DMPs")
+        df["Share"] = df["DMPs"] / (df["DMPs"].sum() or 1)
+        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+        df["Department"] = h.DEPT_ABBREVIATIONS[dept]
+        df["Short"] = df["Repository"].map({"4TU.ResearchData": "4TU"})
+        df["Short"] = df["Short"].fillna(df["Repository"])
+        fig = px.bar(df, x="Share", y="Department", color="Repository",
+                     barmode="stack", orientation="h",
+                     text=df["Short"], height=240,
+                     category_orders={"Repository": repo_order},
+                     color_discrete_map=repo_colors,
+                     custom_data=df[["Label", "DMPs"]])
+        fig.update_traces(texttemplate="%{text}<br>%{customdata[1]} (%{x:.0%})", textposition="inside",
+                          textangle=0, insidetextanchor="middle",
+                          hovertemplate="%{y} · %{fullData.name}<br>%{customdata[0]}<extra></extra>")
+        fig.update_layout(yaxis_title="",
+                          xaxis={"tickformat": ".0%", "title": "", "range": [0, 1]},
+                          legend={"orientation": "h", "yanchor": "bottom", "y": 1.00,
+                                  "xanchor": "left", "x": 0},
+                          legend_title_text="",
+                          margin={"t": 100},
+                          title=f"Trusted repository choice in {dept}")
+        print(h.render_chart(fig))
+        print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of repository '
+              '<b>choices</b>, not of DMPs. A DMP can select multiple repositories. Data only include choices indicating a use of a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
+        print('</details>')
+
+        print("<h2>Archive location</h2>")
+
+        df = h.archive_split(dd)
+        total = df["DMPs"].sum() or 1
+        df = df.assign(Share=df["DMPs"] / total)
+        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+        archive_rate = df.loc[df["Category"] == "Using TU/e archive", "Share"].iloc[0] if len(df) else 0
+        archive_colors = {
+            "Using TU/e archive": "#742459",
+            "Not using TU/e archive": "#FAE1F0",
+        }
+        fig = px.pie(df, names="Category", values="DMPs", hole=0.55)
+        fig.update_traces(text=df["Label"], textposition="outside", textinfo="text",
+                          sort=False,
+                          marker_colors=[archive_colors[c] for c in df["Category"]])
+        fig.add_annotation(
+            text=f"{archive_rate:.0%}",
+            font={"size": 28, "color": "#111827"},
+            showarrow=False,
+        )
+        fig.update_layout(showlegend=True,
+                          title=f"DMPs indicating the use of TU/e archive (RAPS)<br>at {dept}",
+                          margin={"t": 80, "l": 20, "r": 20, "b": 20})
+        print(h.render_chart(fig, width=500, height=450))
+
+        print('</div>')
+    print('</div>')
+```
+
+## How to improve the implementation for the next year, 2026-2027
+
+### What we can do: Boost FAIR data adoption
+
+At Data Steward Team, we started the [FAIR Data
+Clinic](https://rdm.tue.nl/docs/learning-resources/fair-clinic/) where
+researchers get personalised advice on how to make their data more FAIR.
+
+### What you can do
+
+Please feel free to reach out to the Data Steward team. We can give
+presentations about FAIR data and repositories.
+
+<a class="cta-btn" href="mailto:rdmsupport@tue.nl">Email Data Stewards</a>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var sel = document.getElementById("dept-select");
+  var panels = document.querySelectorAll(".dept-panel");
+  function show(slug) {
+    panels.forEach(function (p) { p.style.display = "none"; });
+    var target = document.getElementById("dept-" + slug);
+    if (target) target.style.display = "";
+  }
+  var params = new URLSearchParams(window.location.search);
+  var init = params.get("dept");
+  if (init) { sel.value = init; show(init); }
+  else { show(sel.value); }
+  sel.addEventListener("change", function () {
+    show(this.value);
+    params.set("dept", this.value);
+    history.replaceState(null, "", "?" + params.toString());
+  });
+
+  var purposeToggle = document.querySelector(".purpose-toggle");
+  if (purposeToggle) {
+    var pBtns = purposeToggle.querySelectorAll(".purpose-btn");
+    var pPanels = document.querySelectorAll(".purpose-content");
+    function showPurpose(p) {
+      pBtns.forEach(function (b) { b.classList.toggle("active", b.dataset.purpose === p); });
+      pPanels.forEach(function (el) { el.classList.toggle("purpose-active", el.dataset.purpose === p); });
+    }
+    pBtns.forEach(function (b) { b.addEventListener("click", function () { showPurpose(this.dataset.purpose); }); });
+    showPurpose("all");
+  }
+});
+</script>

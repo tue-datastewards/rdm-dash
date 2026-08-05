@@ -61,6 +61,7 @@ Manual setup needed in Codeberg UI: **Settings → Pages → enable**;
 rdm-dash/
 ├── _quarto.yml          # Site config: navbar, CSS, theme (cosmo), execute: echo: false
 ├── index.qmd            # Overview dashboard: 1 integer card + 5 circle gauges + charts
+├── data-storage.qmd     # Data storage, FAIR data adoption, repository & archival charts
 ├── compliance.qmd       # Policy compliance: dept dropdown + 10 panels (overview + 9 depts)
 ├── lifecycle.qmd        # DMP lifecycle: 10 section-grouped KPI blocks + charts
 ├── process-eval.qmd     # Process evaluation metrics
@@ -86,6 +87,7 @@ rdm-dash/
 | Page | Description | Key sections |
 |------|-------------|--------------|
 | **index.qmd** | Overview dashboard (all departments) | DMPs per dept, Compliance, Data handling, Workflow |
+| **data-storage.qmd** | Storage, repositories & archival with dept dropdown | TU/e storage donut, FAIR Data Adoption, Repository choice, Archival |
 | **compliance.qmd** | Policy adherence with dept selector dropdown | Dept dropdown → 9 panels (overview + 8 depts) |
 | **lifecycle.qmd** | DMP lifecycle metrics | 10 section-grouped KPI blocks + charts |
 | **process-eval.qmd** | Process quality metrics | KPI grid + charts |
@@ -94,8 +96,11 @@ rdm-dash/
 
 > **Sidebar navigation** is configured in `_quarto.yml`.
 > The old `dept-*.qmd` per-department files were removed in commit
-> `850cfc8`; department views now live inside `compliance.qmd` and
-> `lifecycle.qmd` with a JavaScript-based dropdown selector.
+> `850cfc8`; department views now live inside `data-storage.qmd`,
+> `compliance.qmd` and `lifecycle.qmd` with a JavaScript-based dropdown
+> selector (`dept-select`) plus an All/Scientific/Educational purpose
+> toggle (`purpose-toggle`) that shows/hides matching `.purpose-content`
+> panels.
 
 ---
 
@@ -197,6 +202,18 @@ Hover/active links use `--rdm-300` / `--rdm-200` purple.
 Button-style navigation with active/highlight states using RDM purple.
 Sidebar-subtitle class for muted secondary text, shown in breadcrumbs.
 
+### 5.5 Plotly chart conventions
+
+- **`color_discrete_map` is ignored for `px.pie`** — it is silently dropped,
+  leaving Plotly's default palette. Apply segment colors directly instead:
+  `fig.update_traces(marker_colors=[...])`, ordered to match `df["Category"]`.
+- **`px.pie` sorts slices by value by default** — add `sort=False` in
+  `fig.update_traces(...)` to keep a fixed category order regardless of the
+  segment sizes.
+- **Donuts render squashed at the default 900px width** of `render_chart()` —
+  render pie/donut figures at ~500px (`h.render_chart(fig, width=500,
+  height=450)`) so the circle stays circular.
+
 ---
 
 ## 6. `_helpers.py` — functions overview
@@ -208,10 +225,10 @@ Sidebar-subtitle class for muted secondary text, shown in breadcrumbs.
 | KPI | `kpi_table()`, `kpi_html()`, `gauge_svg()` — circle SVG generator |
 | Q1 | `approval_by_department()`, `dmps_by_department_purpose()` |
 | Q2 | `approval_by_department()`, `erb_breakdown()`, `erb_approval_by_department()` |
-| Q3 | `storage_split()`, `storage_count_distribution()`, `sensitive_data_outside_tue()` |
+| Q3 | `storage_split()` |
 | Q4 | `data_sharing_breakdown()`, `special_category_summary()` |
-| Q5 | `repository_breakdown()`, `trusted_repository_split()` |
-| Q6 | `archive_breakdown()` |
+| Q5 | `repository_breakdown()`, `trusted_repository_split()` — returns exactly two groups: "Using Trusted Repository" / "Not Using Trusted Repository" |
+| Q6 | `archive_breakdown()`, `archive_split()` — binary TU/e archive (RAPS) usage |
 | Q7 | `revision_distribution()`, `revision_summary()` |
 | Q8 | `days_to_first_submission()` |
 | Q9 | `first_response_time()` |
@@ -270,6 +287,11 @@ pipenv run quarto preview
 
 Opens `http://localhost:8080`.
 Changes to `.qmd`, `_quarto.yml`, and `styles.css` trigger live rebuilds.
+
+> **No manual re-render by default.** The live preview rebuilds automatically
+> on save, so changes to `.qmd`, `_quarto.yml`, and `styles.css` do not require
+> running `quarto render` afterwards. Only render (7.4) when explicitly asked
+> or when a full `_site/` build is needed for deployment.
 
 ### 7.4 Full render
 

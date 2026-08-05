@@ -7,6 +7,7 @@ and metric functions for the overview and per-department dashboards.
 from __future__ import annotations
 
 import json
+from collections import Counter
 from functools import cache
 from pathlib import Path
 
@@ -468,13 +469,9 @@ def trusted_repository_split(df: pd.DataFrame) -> pd.DataFrame:
     trusted = int(df["data_repository"].map(
         lambda v: any(r in TRUSTED_REPOSITORIES for r in v)
     ).sum())
-    other = int(df["data_repository"].map(
-        lambda v: len(v) > 0 and not any(r in TRUSTED_REPOSITORIES for r in v)
-    ).sum())
-    none = n - trusted - other
     return pd.DataFrame({
-        "Category": ["Trusted repository", "Other / advice", "None selected"],
-        "DMPs": [trusted, other, none],
+        "Category": ["Using Trusted Repository", "Not Using Trusted Repository"],
+        "DMPs": [trusted, n - trusted],
     })
 
 
@@ -496,28 +493,73 @@ def archive_breakdown(df: pd.DataFrame) -> pd.DataFrame:
     return counts
 
 
+def archive_split(df: pd.DataFrame) -> pd.DataFrame:
+    """Split DMPs by TU/e archive (RAPS) archival usage (Q6)."""
+    n = len(df)
+    if not n:
+        return pd.DataFrame(columns=["Category", "DMPs"])
+    using = int((df["archive_location"] == "tue_archive").sum())
+    return pd.DataFrame({
+        "Category": ["Using TU/e archive", "Not using TU/e archive"],
+        "DMPs": [using, n - using],
+    })
+
+
 def storage_split(df: pd.DataFrame) -> pd.DataFrame:
-    """Split DMPs by TU/e-supported vs. external storage (Q3)."""
+    """Split DMPs by TU/e-compliant storage usage (Q3)."""
     n = len(df)
     if not n:
         return pd.DataFrame(columns=["Category", "DMPs"])
 
-    def uses_tue(v):
-        return any(s in TUE_STORAGE for s in v)
-
-    def uses_external(v):
-        return any(s not in TUE_STORAGE for s in v)
-
-    tue = int(df["data_storage_list"].map(uses_tue).sum())
-    ext = int(df["data_storage_list"].map(uses_external).sum())
-    both = int(df["data_storage_list"].map(lambda v: uses_tue(v) and uses_external(v)).sum())
-    tue_only = tue - both
-    ext_only = ext - both
-    neither = n - tue_only - ext_only - both
+    compliant = int(
+        df["data_storage_list"].map(
+            lambda v: any(s in TUE_STORAGE for s in v)
+        ).sum()
+    )
+    non_compliant = n - compliant
     return pd.DataFrame({
-        "Category": ["TU/e only", "External only", "Both", "None listed"],
-        "DMPs": [tue_only, ext_only, both, neither],
+        "Category": ["Using TU/e storage", "Not using TU/e storage"],
+        "DMPs": [compliant, non_compliant],
     })
+
+
+# Standard TU/e storage services shown in the "TU/e data storage" chart (Q3).
+TU_E_STORAGE_SOLUTIONS = {
+    "TU/e Network Drive",
+    "Microsoft SharePoint/Teams",
+    "Microsoft OneDrive",
+    "SURF Research Drive",
+}
+
+
+def _canonical_storage_solution(item: str) -> str | None:
+    """Map a raw ``data_storage_list`` item to its canonical TU/e service name."""
+    s = " ".join(str(item).split())
+    if len(s) >= 3 and s[0:2].isdigit() and s[2] == " ":
+        s = s[3:]
+    return s if s in TU_E_STORAGE_SOLUTIONS else None
+
+
+def storage_solution_by_department(df: pd.DataFrame) -> pd.DataFrame:
+    """DMP counts per TU/e storage service and department (Q3).
+
+    A DMP can list several services, so DMP counts across rows sum to more
+    than the number of DMPs.
+    """
+    if not len(df):
+        return pd.DataFrame(columns=["Department", "Solution", "DMPs"])
+    rows = []
+    for dept in DEPARTMENTS:
+        sub = filter_department(df, dept)
+        counts = Counter()
+        for services in sub["data_storage_list"]:
+            for item in services:
+                sol = _canonical_storage_solution(item)
+                if sol:
+                    counts[sol] += 1
+        for sol, n in counts.items():
+            rows.append({"Department": dept, "Solution": sol, "DMPs": n})
+    return pd.DataFrame(rows)
 
 
 def revision_distribution(df: pd.DataFrame) -> pd.DataFrame:
@@ -590,43 +632,6 @@ def erb_integration_timing(df_dmps: pd.DataFrame) -> pd.DataFrame:
         "Metric": ["Median", "Mean", "25th pct", "75th pct"],
         "Value": [s.median(), s.mean(), s.quantile(0.25), s.quantile(0.75)],
     })
-
-
-# Q3 additions --------------------------------------------------------------
-
-def sensitive_data_outside_tue(df: pd.DataFrame) -> pd.DataFrame:
-    """Sensitive data stored outside TU/e-supported solutions (Q3/Q4)."""
-    n = len(df)
-    if not n:
-        return pd.DataFrame(columns=["Category", "DMPs"])
-    sensitive = df[df["has_special_category"] == True]
-
-    def uses_external(v):
-        return any(s not in TUE_STORAGE for s in v)
-
-    sc_ext = int(sensitive["data_storage_list"].map(uses_external).sum()) if len(sensitive) else 0
-    sc_tue = int(len(sensitive) - sc_ext)
-    nonsc = n - len(sensitive)
-    return pd.DataFrame({
-        "Category": [
-            "Sensitive + external storage",
-            "Sensitive + TU/e storage only",
-            "Not sensitive / unknown",
-        ],
-        "DMPs": [sc_ext, sc_tue, nonsc],
-    })
-
-
-def storage_count_distribution(df: pd.DataFrame) -> pd.DataFrame:
-    """Distribution of storage solution count per DMP (Q3)."""
-    if not len(df):
-        return pd.DataFrame(columns=["Solutions", "DMPs"])
-    s = pd.to_numeric(df["storage_solution_count"], errors="coerce").fillna(0).astype(int)
-    out = s.value_counts().sort_index().reset_index()
-    out.columns = ["Solutions", "DMPs"]
-    out["Solutions"] = out["Solutions"].map(lambda v: "4+" if v >= 4 else str(v))
-    out = out.groupby("Solutions", as_index=False).sum()
-    return out
 
 
 # Q4 -------------------------------------------------------------------------
@@ -806,3 +811,11 @@ def purpose_toggle_html() -> str:
         + "\n".join(buttons)
         + "\n</div>"
     )
+
+# Render department abbreviations -----------------------------------------------------------
+def render_department_abbreviations(font_size: str = "0.85em") -> str:
+    parts = []
+    for dept in sorted(DEPARTMENTS, key=lambda d: DEPT_ABBREVIATIONS[d]):
+        abbr = DEPT_ABBREVIATIONS[dept]
+        parts.append(f'<b>{abbr}</b> = {dept}')
+    return f'<p style="font-size:{font_size};color:#6b7280"><i>{"</i>, <i>".join(parts)}</i></p>'

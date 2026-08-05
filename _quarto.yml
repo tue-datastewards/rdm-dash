@@ -7,6 +7,8 @@ website:
     contents:
       - href: index.qmd
         text: "Overview<br><span class='sidebar-subtitle'>Dashboard home & key metrics</span>"
+      - href: data-storage.qmd
+        text: "Data Storage<br><span class='sidebar-subtitle'>Storage, repositories & archival</span>"
       - href: compliance.qmd
         text: "Policy Compliance<br><span class='sidebar-subtitle'>Policy adherence metrics (Q8–Q10)</span>"
       - href: lifecycle.qmd

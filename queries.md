@@ -45,14 +45,13 @@ WHERE
 | `status_history` | `days_to_first_submission` (Q8), `first_response_time` (Q9) |
 | `ordered_status_transition_list` | `revision_distribution`, `revision_summary` (Q7) |
 | `tue_department` | `filter_department` |
-| `data_storage_list` | `storage_split`, `sensitive_data_outside_tue` (Q3) |
-| `storage_solution_count` | `storage_count_distribution` (Q3) |
+| `data_storage_list` | `storage_split` (Q3) |
 | `data_repository` | `kpi_table`, `repository_breakdown`, `help_needed_rate` (Q5/Q10) |
 | `metadata_standard` | `help_needed_rate` (Q10) |
 | `processing_tools_list` | `help_needed_rate` (Q10) |
 | `has_related_erb` | `kpi_table` (Q2 linkage) |
 | `is_scientific` | `approval_by_purpose` |
-| `has_special_category` | `sensitive_data_outside_tue` (Q3/Q4) |
+| `has_special_category` | `special_category_summary` (Q4) |
 | `data_sharing` | `data_sharing_breakdown` (Q4) |
 | `archive_location` | `kpi_table`, `archive_breakdown` (Q6) |
 
