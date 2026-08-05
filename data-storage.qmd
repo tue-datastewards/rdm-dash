@@ -108,7 +108,7 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     print('<p style="font-size:0.85em;color:#6b7280"><i>Note: TU/e storage solutions include TU/e Network Drive, SURF Research Drive, Microsoft SharePoint/Teams, and Microsoft OneDrive.</i></p>')
     print(h.render_department_abbreviations())
 
-    print('<details class="storage-details"><summary>Show Breakdowns of TU/e Data Storage Choices by Department</summary>')
+    print('<details class="storage-details"><summary>Breakdown: TU/e Data Storage Choices by Department</summary>')
 
     solution_titles = {
         "all": "TU/e Data Storage Choices by Department",
@@ -160,8 +160,6 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
 
 ## FAIR Data Adoption
 
-> **Q5.** To what extent do projects publish their FAIR data in a **trusted
-repository** (4TU.ResearchData, Zenodo, OSF, Figshare)?
 
 ```{python}
 #| output: asis
@@ -253,7 +251,7 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
         margin={"t": 100},
         legend_title_text="",
     )
-    print('<details class="storage-details"><summary>Show Breakdowns of Trusted Repository Choices by Department</summary>')
+    print('<details class="storage-details"><summary>Breakdown: Trusted Repository Choices by Department</summary>')
     print(h.render_chart(fig))
     print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Counts are repository '
           '<b>choices</b>, not DMPs. A DMP can select multiple repositories. Data only include choices indicating a use of a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
@@ -264,7 +262,6 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
 
 ## Archive location
 
-> **Q6.** How does archival behaviour vary across departments?
 
 ```{python}
 #| output: asis
