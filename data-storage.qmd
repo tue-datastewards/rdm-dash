@@ -371,13 +371,15 @@ for dept in h.DEPARTMENTS:
                      text=df["Short"], height=240,
                      category_orders={"Solution": sol_order},
                      color_discrete_map=solution_colors,
-                     custom_data=df[["Label"]])
-        fig.update_traces(texttemplate="%{text}<br>%{x:.0%}", textposition="inside",
+                     custom_data=df[["Label", "DMPs"]])
+        fig.update_traces(texttemplate="%{text}<br>%{customdata[1]} (%{x:.0%})", textposition="inside",
                           textangle=0, insidetextanchor="middle",
                           hovertemplate="%{y} · %{fullData.name}<br>%{customdata[0]}<extra></extra>")
         fig.update_layout(yaxis_title="",
                           xaxis={"tickformat": ".0%", "title": "", "range": [0, 1]},
-                          showlegend=False,
+                          legend={"orientation": "h", "yanchor": "bottom", "y": 1.00,
+                                  "xanchor": "left", "x": 0},
+                          legend_title_text="",
                           margin={"t": 100},
                           title=f"TU/e Data Storage Choices at {dept}")
         print(h.render_chart(fig))
@@ -411,16 +413,31 @@ for dept in h.DEPARTMENTS:
 
         df = h.repository_breakdown(dd)
         df = df[df["Repository"].isin(repo_order)]
-        df = df.rename(columns={"DMPs": "Choices"})
-        fig = px.bar(df, x="Choices", y="Repository", orientation="h", text="Choices",
-                     color="Repository", category_orders={"Repository": repo_order},
-                     color_discrete_map=repo_colors)
-        fig.update_layout(yaxis={"categoryorder": "total ascending"}, height=450,
-                          legend_title_text="", showlegend=False,
+        df = df.set_index("Repository")["DMPs"].reindex(repo_order, fill_value=0).reset_index(name="DMPs")
+        df["Share"] = df["DMPs"] / (df["DMPs"].sum() or 1)
+        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+        df["Department"] = h.DEPT_ABBREVIATIONS[dept]
+        df["Short"] = df["Repository"].map({"4TU.ResearchData": "4TU"})
+        df["Short"] = df["Short"].fillna(df["Repository"])
+        fig = px.bar(df, x="Share", y="Department", color="Repository",
+                     barmode="stack", orientation="h",
+                     text=df["Short"], height=240,
+                     category_orders={"Repository": repo_order},
+                     color_discrete_map=repo_colors,
+                     custom_data=df[["Label", "DMPs"]])
+        fig.update_traces(texttemplate="%{text}<br>%{customdata[1]} (%{x:.0%})", textposition="inside",
+                          textangle=0, insidetextanchor="middle",
+                          hovertemplate="%{y} · %{fullData.name}<br>%{customdata[0]}<extra></extra>")
+        fig.update_layout(yaxis_title="",
+                          xaxis={"tickformat": ".0%", "title": "", "range": [0, 1]},
+                          legend={"orientation": "h", "yanchor": "bottom", "y": 1.00,
+                                  "xanchor": "left", "x": 0},
+                          legend_title_text="",
+                          margin={"t": 100},
                           title=f"Trusted repository choice in {dept}")
         print(h.render_chart(fig))
-        print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Counts are repository '
-              '<b>choices</b>, not DMPs. A DMP can select multiple repositories. Data only include choices indicating a use of a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
+        print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of repository '
+              '<b>choices</b>, not of DMPs. A DMP can select multiple repositories. Data only include choices indicating a use of a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
 
         print("<h2>Archive location</h2>")
 
