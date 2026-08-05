@@ -442,3 +442,27 @@ a:hover {
   background: var(--rdm-800);
   color: #fff;
 }
+
+/* ---------- Details / summary (storage choices) ---------- */
+
+details.storage-details {
+  margin: 1rem 0;
+}
+
+details.storage-details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--rdm-700);
+  padding: 0.5rem 0.75rem;
+  background: var(--rdm-50);
+  border: 1px solid var(--rdm-100);
+  border-radius: 6px;
+}
+
+details.storage-details summary:hover {
+  background: var(--rdm-100);
+}
+
+details.storage-details[open] summary {
+  margin-bottom: 0.75rem;
+}

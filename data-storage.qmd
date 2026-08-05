@@ -106,6 +106,8 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
 )
     print(h.render_chart(fig))
 
+    print('<details class="storage-details"><summary>Show Breakdowns of TU/e Data Storage Choices by Department</summary>')
+
     solution_titles = {
         "all": "TU/e Data Storage Choices by Department",
         "scientific": "Scientific DMPs with TU/e Data Storage Choices by Department",
@@ -148,6 +150,7 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     print(h.render_chart(fig))
     print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of storage '
           '<b>choices</b>, not of DMPs. A DMP can select multiple storage options.</i></p>')
+    print('</details>')
 
 
     print(h.render_department_abbreviations())
@@ -353,6 +356,8 @@ for dept in h.DEPARTMENTS:
                           margin={"t": 80, "l": 20, "r": 20, "b": 20})
         print(h.render_chart(fig, width=500, height=450))
 
+        print(f'<details class="storage-details"><summary>TU/e Data Storage Choices at {dept}</summary>')
+
         df = h.storage_solution_by_department(dd)
         df = df[df["Department"] == dept]
         df = df.set_index("Solution")["DMPs"].reindex(sol_order, fill_value=0).reset_index(name="DMPs")
@@ -385,6 +390,7 @@ for dept in h.DEPARTMENTS:
         print(h.render_chart(fig))
         print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of storage '
               '<b>choices</b>, not of DMPs. A DMP can select multiple storage options.</i></p>')
+        print('</details>')
 
         print("<h2>FAIR Data Adoption</h2>")
 
