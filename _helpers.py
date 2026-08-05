@@ -817,5 +817,5 @@ def render_department_abbreviations(font_size: str = "0.85em") -> str:
     parts = []
     for dept in sorted(DEPARTMENTS, key=lambda d: DEPT_ABBREVIATIONS[d]):
         abbr = DEPT_ABBREVIATIONS[dept]
-        parts.append(f'<span style="margin-right:1.5em"><b>{abbr}</b> = {dept}</span>')
-    return f'<p style="font-size:{font_size};color:#6b7280"><i>{"".join(parts)}</i></p>'
+        parts.append(f'<b>{abbr}</b> = {dept}')
+    return f'<p style="font-size:{font_size};color:#6b7280"><i>{"</i>, <i>".join(parts)}</i></p>'
