@@ -254,7 +254,7 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     )
     print(h.render_chart(fig))
     print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Counts are repository '
-          '<b>choices</b>, not DMPs. A DMP can select multiple repositories.</i></p>')
+          '<b>choices</b>, not DMPs. A DMP can select multiple repositories. Data only include choices indicating a use of a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
     print(h.render_department_abbreviations())
     print('</div>')
 ```
