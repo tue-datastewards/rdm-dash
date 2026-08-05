@@ -68,6 +68,8 @@ WHERE
 
 ```sql
 SELECT
+  issue_key,
+  issue_creation_time,
   related_dmp,
   is_approved,
   ordered_status_transition_list
@@ -81,13 +83,15 @@ WHERE
 
 | Column | Metric / function |
 | --- | --- |
+| `issue_key` | Primary key; ERB ticket identifier |
+| `issue_creation_time` | Reporting-period filter (`>= '2025-09-01'`) |
 | `related_dmp` | `department_erbs`, `erb_approval_by_department` (Q2) |
 | `is_approved` | `erb_approval_by_department` (Q2) |
 | `ordered_status_transition_list` | `erb_breakdown` (Q2 decisions) |
 
 ### Columns excluded
 
-`issue_key`, `issue_title`, `issue_creation_time`, `latest_status_time`,
+`issue_title`, `latest_status_time`,
 `status_history`, `days_to_first_approval`, `tue_department`,
 `dmp_link_creation_date`, `has_related_dmp`, `days_to_dmp_link_creation`,
 `ever_approved`, `approval_count`, `gold_processed_at`, `is_scientific`,
