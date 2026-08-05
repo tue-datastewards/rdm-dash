@@ -370,13 +370,26 @@ for dept in h.DEPARTMENTS:
 
         df = h.trusted_repository_split(dd)
         total = df["DMPs"].sum() or 1
-        df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+        df = df.assign(Share=df["DMPs"] / total)
         df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-        fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label")
-        fig.update_traces(textposition="auto")
-        fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                          showlegend=True, title="FAIR Data Adoption")
-        print(h.render_chart(fig))
+        trusted_rate = df.loc[df["Category"] == "Using Trusted Repository", "Share"].iloc[0] if len(df) else 0
+        trusted_colors = {
+            "Using Trusted Repository": "#742459",
+            "Not Using Trusted Repository": "#FAE1F0",
+        }
+        fig = px.pie(df, names="Category", values="DMPs", hole=0.55)
+        fig.update_traces(text=df["Label"], textposition="outside", textinfo="text",
+                          sort=False,
+                          marker_colors=[trusted_colors[c] for c in df["Category"]])
+        fig.add_annotation(
+            text=f"{trusted_rate:.0%}",
+            font={"size": 28, "color": "#111827"},
+            showarrow=False,
+        )
+        fig.update_layout(showlegend=True,
+                          title=f"DMPs indicating a use of a trusted repository for FAIR data <br>at {dept}",
+                          margin={"t": 80, "l": 20, "r": 20, "b": 20})
+        print(h.render_chart(fig, width=500, height=450))
 
         print("<h3>Archival</h3>")
 
