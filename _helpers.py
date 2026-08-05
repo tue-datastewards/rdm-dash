@@ -493,6 +493,18 @@ def archive_breakdown(df: pd.DataFrame) -> pd.DataFrame:
     return counts
 
 
+def archive_split(df: pd.DataFrame) -> pd.DataFrame:
+    """Split DMPs by TU/e archive (RAPS) archival usage (Q6)."""
+    n = len(df)
+    if not n:
+        return pd.DataFrame(columns=["Category", "DMPs"])
+    using = int((df["archive_location"] == "tue_archive").sum())
+    return pd.DataFrame({
+        "Category": ["Using TU/e archive", "Not using TU/e archive"],
+        "DMPs": [using, n - using],
+    })
+
+
 def storage_split(df: pd.DataFrame) -> pd.DataFrame:
     """Split DMPs by TU/e-compliant storage usage (Q3)."""
     n = len(df)

@@ -228,7 +228,7 @@ Sidebar-subtitle class for muted secondary text, shown in breadcrumbs.
 | Q3 | `storage_split()` |
 | Q4 | `data_sharing_breakdown()`, `special_category_summary()` |
 | Q5 | `repository_breakdown()`, `trusted_repository_split()` — returns exactly two groups: "Using Trusted Repository" / "Not Using Trusted Repository" |
-| Q6 | `archive_breakdown()` |
+| Q6 | `archive_breakdown()`, `archive_split()` — binary TU/e archive (RAPS) usage |
 | Q7 | `revision_distribution()`, `revision_summary()` |
 | Q8 | `days_to_first_submission()` |
 | Q9 | `first_response_time()` |

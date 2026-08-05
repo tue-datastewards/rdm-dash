@@ -260,36 +260,21 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     print('</div>')
 ```
 
-## Archival
-
-### Archive location
-
-> **Q6.** What share of projects **archive their data at the TU/e archive
-(RAPS)**?
-
-```{python}
-#| output: asis
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    df = h.archive_breakdown(pdf)
-    total = df["DMPs"].sum() or 1
-    df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-    df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-    fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
-    fig.update_traces(textposition="auto")
-    fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=500,
-                      barmode="stack", showlegend=True, legend_title="Location")
-    print(h.render_chart(fig))
-    print('</div>')
-```
-
-### Archive location by department
+## Archive location
 
 > **Q6.** How does archival behaviour vary across departments?
 
 ```{python}
 #| output: asis
+title_by_purpose = {
+    "all": "DMPs indicating the use of TU/e archive (RAPS) by Department",
+    "scientific": "Scientific DMPs indicating the use of TU/e archive (RAPS) by Department",
+    "educational": "Educational DMPs indicating the use of TU/e archive (RAPS) by Department",
+}
+archive_colors = {
+    "Using TU/e archive": "#742459",
+    "Not using TU/e archive": "#FAE1F0",
+}
 for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
     act = " purpose-active" if pkey == "all" else ""
     print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
@@ -297,13 +282,26 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     rows = []
     for dept in h.DEPARTMENTS:
         sub = h.filter_department(pdf, dept)
-        for _, r in h.archive_breakdown(sub).iterrows():
-            rows.append({"Department": dept, "Location": r["Location"], "DMPs": r["DMPs"]})
+        for _, r in h.archive_split(sub).iterrows():
+            rows.append({"Department": h.DEPT_ABBREVIATIONS[dept], "Category": r["Category"], "DMPs": r["DMPs"]})
     df = pd.DataFrame(rows)
-    fig = px.bar(df, x="Department", y="DMPs", color="Location", text="DMPs", barmode="stack")
-    fig.update_layout(height=500, legend_title="Location",
-                      xaxis={"categoryorder": "category ascending"})
+    fig = px.bar(df, x="DMPs", y="Department", color="Category",
+                 barmode="stack", text="DMPs", title=title_by_purpose[pkey],
+                 color_discrete_map=archive_colors)
+    fig.update_layout(
+        yaxis={"categoryorder": "total ascending"},
+        legend={
+            "orientation": "h",
+            "yanchor": "bottom",
+            "y": 1.00,
+            "xanchor": "left",
+            "x": 0,
+        },
+        margin={"t": 100},
+        legend_title_text="",
+    )
     print(h.render_chart(fig))
+    print(h.render_department_abbreviations())
     print('</div>')
 ```
 
@@ -395,17 +393,30 @@ for dept in h.DEPARTMENTS:
         print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Counts are repository '
               '<b>choices</b>, not DMPs. A DMP can select multiple repositories. Data only include choices indicating a use of a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
 
-        print("<h3>Archival</h3>")
+        print("<h3>Archive location</h3>")
 
-        df = h.archive_breakdown(dd)
+        df = h.archive_split(dd)
         total = df["DMPs"].sum() or 1
-        df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
+        df = df.assign(Share=df["DMPs"] / total)
         df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-        fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
-        fig.update_traces(textposition="auto")
-        fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                          showlegend=True, legend_title="Location", title="Archive location")
-        print(h.render_chart(fig))
+        archive_rate = df.loc[df["Category"] == "Using TU/e archive", "Share"].iloc[0] if len(df) else 0
+        archive_colors = {
+            "Using TU/e archive": "#742459",
+            "Not using TU/e archive": "#FAE1F0",
+        }
+        fig = px.pie(df, names="Category", values="DMPs", hole=0.55)
+        fig.update_traces(text=df["Label"], textposition="outside", textinfo="text",
+                          sort=False,
+                          marker_colors=[archive_colors[c] for c in df["Category"]])
+        fig.add_annotation(
+            text=f"{archive_rate:.0%}",
+            font={"size": 28, "color": "#111827"},
+            showarrow=False,
+        )
+        fig.update_layout(showlegend=True,
+                          title=f"DMPs indicating the use of TU/e archive (RAPS)<br>at {dept}",
+                          margin={"t": 80, "l": 20, "r": 20, "b": 20})
+        print(h.render_chart(fig, width=500, height=450))
 
         print('</div>')
     print('</div>')
