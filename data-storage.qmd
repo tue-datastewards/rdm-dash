@@ -356,7 +356,7 @@ for dept in h.DEPARTMENTS:
 
         
 
-        print("<h3>Repositories</h3>")
+        print("<h2>FAIR Data Adoption</h2>")
 
         df = h.repository_breakdown(dd)
         df = df[df["Repository"].isin(repo_order)]
@@ -364,7 +364,7 @@ for dept in h.DEPARTMENTS:
                      color="Repository", category_orders={"Repository": repo_order},
                      color_discrete_map=repo_colors)
         fig.update_layout(yaxis={"categoryorder": "total ascending"}, height=450,
-                          legend_title_text="", title="Repository choice")
+                          legend_title_text="", title=f"Trusted repository choice in {dept}")
         print(h.render_chart(fig))
 
         df = h.trusted_repository_split(dd)
