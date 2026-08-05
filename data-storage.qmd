@@ -359,15 +359,6 @@ for dept in h.DEPARTMENTS:
 
         print("<h2>FAIR Data Adoption</h2>")
 
-        df = h.repository_breakdown(dd)
-        df = df[df["Repository"].isin(repo_order)]
-        fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs",
-                     color="Repository", category_orders={"Repository": repo_order},
-                     color_discrete_map=repo_colors)
-        fig.update_layout(yaxis={"categoryorder": "total ascending"}, height=450,
-                          legend_title_text="", title=f"Trusted repository choice in {dept}")
-        print(h.render_chart(fig))
-
         df = h.trusted_repository_split(dd)
         total = df["DMPs"].sum() or 1
         df = df.assign(Share=df["DMPs"] / total)
@@ -390,6 +381,19 @@ for dept in h.DEPARTMENTS:
                           title=f"DMPs indicating a use of a trusted repository for FAIR data <br>at {dept}",
                           margin={"t": 80, "l": 20, "r": 20, "b": 20})
         print(h.render_chart(fig, width=500, height=450))
+
+        df = h.repository_breakdown(dd)
+        df = df[df["Repository"].isin(repo_order)]
+        df = df.rename(columns={"DMPs": "Choices"})
+        fig = px.bar(df, x="Choices", y="Repository", orientation="h", text="Choices",
+                     color="Repository", category_orders={"Repository": repo_order},
+                     color_discrete_map=repo_colors)
+        fig.update_layout(yaxis={"categoryorder": "total ascending"}, height=450,
+                          legend_title_text="", showlegend=False,
+                          title=f"Trusted repository choice in {dept}")
+        print(h.render_chart(fig))
+        print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Counts are repository '
+              '<b>choices</b>, not DMPs. A DMP can select multiple repositories. Data only include choices indicating a use of a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
 
         print("<h3>Archival</h3>")
 
