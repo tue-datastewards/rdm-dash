@@ -9,3 +9,13 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+<script>
+function updateFilterBarTop() {
+  var h = document.getElementById('quarto-header');
+  var top = h ? Math.max(0, h.getBoundingClientRect().bottom) : 0;
+  document.documentElement.style.setProperty('--filter-bar-top', top + 'px');
+}
+window.addEventListener('scroll', updateFilterBarTop, { passive: true });
+window.addEventListener('resize', updateFilterBarTop);
+updateFilterBarTop();
+</script>

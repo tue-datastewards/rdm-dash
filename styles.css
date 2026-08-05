@@ -190,6 +190,19 @@
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 1.25rem;
+  position: sticky;
+  top: var(--filter-bar-top, 0px);
+  z-index: 1020;
+  padding: 0.75rem 0.5rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+h2,
+h3,
+h4 {
+  scroll-margin-top: calc(var(--filter-bar-top, 0px) + 80px);
 }
 
 .filter-bar .purpose-toggle {
