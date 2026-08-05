@@ -332,7 +332,7 @@ for dept in h.DEPARTMENTS:
         print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
         dd = h.filter_by_purpose(dd_all, pval)
 
-        print(h.kpi_html(dd, dept=dept, show_trend=(pkey == "all")))
+        print(h.kpi_html(dd, dept=dept, show_trend=False))
 
         print("<h3>Compliance</h3>")
 
