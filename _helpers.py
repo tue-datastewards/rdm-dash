@@ -797,3 +797,11 @@ def purpose_toggle_html() -> str:
         + "\n".join(buttons)
         + "\n</div>"
     )
+
+# Render department abbreviations -----------------------------------------------------------
+def render_department_abbreviations(font_size: str = "0.85em") -> str:
+    parts = []
+    for dept in sorted(DEPARTMENTS, key=lambda d: DEPT_ABBREVIATIONS[d]):
+        abbr = DEPT_ABBREVIATIONS[dept]
+        parts.append(f'<span style="font-size:{font_size};margin-right:1.5em"><b>{abbr}</b> = {dept}</span>')
+    return "".join(parts)

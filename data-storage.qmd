@@ -141,9 +141,8 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of storage '
           '<b>choices</b>, not of DMPs. A DMP can select multiple storage options.</i></p>')
 
-    for dept in sorted(h.DEPARTMENTS, key=lambda d: h.DEPT_ABBREVIATIONS[d]):
-        abbr = h.DEPT_ABBREVIATIONS[dept]
-        print(f'<span style="font-size:0.85em;margin-right:1.5em"><b>{abbr}</b> = {dept}</span>')
+    print(h.render_department_abbreviations())
+
     print('<br>')
     print('</div>')
 ```
@@ -195,9 +194,7 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
         legend_title_text="",
     )
     print(h.render_chart(fig))
-    for dept in sorted(h.DEPARTMENTS, key=lambda d: h.DEPT_ABBREVIATIONS[d]):
-        abbr = h.DEPT_ABBREVIATIONS[dept]
-        print(f'<span style="font-size:0.85em;margin-right:1.5em"><b>{abbr}</b> = {dept}</span>')
+    print(h.render_department_abbreviations())
     print('<br>')
     print('</div>')
 ```
@@ -313,6 +310,8 @@ for dept in h.DEPARTMENTS:
                           title=title_by_purpose[pkey],
                           margin={"t": 80, "l": 20, "r": 20, "b": 20})
         print(h.render_chart(fig, width=500, height=450))
+
+        
 
         print("<h3>Repositories</h3>")
 
