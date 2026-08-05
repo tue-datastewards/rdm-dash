@@ -120,6 +120,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./images/logo.svg" alt="TU/e logo" class="navbar-logo light-content">
+    <img src="./images/logo.svg" alt="TU/e logo" class="navbar-logo dark-content">
+    </a>
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">RDM Dashboard</span>
     </a>
@@ -546,7 +550,7 @@ data/ERBs_2025_09_10_onwards.csv  (20 cols, foreign keys → DMPs.issue_key)
 </section>
 <section id="navbar" class="level3">
 <h3 class="anchored" data-anchor-id="navbar">5.3 Navbar</h3>
-<p>Full-width slate background (<code>#303846</code>) with white text. Hover/active links use <code>--rdm-300</code> / <code>--rdm-200</code> purple.</p>
+<p>Full-width slate background (<code>#303846</code>) with white text. Hover/active links use <code>--rdm-300</code> / <code>--rdm-200</code> purple. A square TU/e logo (<code>images/logo.svg</code>, purple <code>#742459</code> background with white logo) sits left of the title, sized via <code>.navbar .navbar-brand img.navbar-logo</code> (<code>max-height: 2rem</code>).</p>
 </section>
 <section id="sidebar" class="level3">
 <h3 class="anchored" data-anchor-id="sidebar">5.4 Sidebar</h3>
