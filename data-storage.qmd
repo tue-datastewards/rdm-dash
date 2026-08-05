@@ -110,8 +110,8 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     solution_colors = {
         "TU/e Network Drive": "#742459",
         "SURF Research Drive": "#a12d76",
-        "Microsoft SharePoint/Teams": "#64748b",
-        "Microsoft OneDrive": "#cbd5e1",
+        "Microsoft SharePoint/Teams": "#367DB3",
+        "Microsoft OneDrive": "#4BAFD9",
     }
     df["Share"] = df.groupby("Department")["DMPs"].transform(lambda s: s / s.sum())
     df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
