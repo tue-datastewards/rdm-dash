@@ -353,7 +353,36 @@ for dept in h.DEPARTMENTS:
                           margin={"t": 80, "l": 20, "r": 20, "b": 20})
         print(h.render_chart(fig, width=500, height=450))
 
-        
+        df = h.storage_solution_by_department(dd)
+        df = df[df["Department"] == dept]
+        df = df.set_index("Solution")["DMPs"].reindex(sol_order, fill_value=0).reset_index(name="DMPs")
+        df["Share"] = df["DMPs"] / (df["DMPs"].sum() or 1)
+        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+        df["Department"] = h.DEPT_ABBREVIATIONS[dept]
+        short_map = {
+            "TU/e Network Drive": "Network Drive",
+            "SURF Research Drive": "SURF Drive",
+            "Microsoft SharePoint/Teams": "SharePoint/Teams",
+            "Microsoft OneDrive": "OneDrive",
+        }
+        df["Short"] = df["Solution"].map(short_map)
+        fig = px.bar(df, x="Share", y="Department", color="Solution",
+                     barmode="stack", orientation="h",
+                     text=df["Short"], height=240,
+                     category_orders={"Solution": sol_order},
+                     color_discrete_map=solution_colors,
+                     custom_data=df[["Label"]])
+        fig.update_traces(texttemplate="%{text}<br>%{x:.0%}", textposition="inside",
+                          textangle=0, insidetextanchor="middle",
+                          hovertemplate="%{y} · %{fullData.name}<br>%{customdata[0]}<extra></extra>")
+        fig.update_layout(yaxis_title="",
+                          xaxis={"tickformat": ".0%", "title": "", "range": [0, 1]},
+                          showlegend=False,
+                          margin={"t": 100},
+                          title=f"TU/e Data Storage Choices at {dept}")
+        print(h.render_chart(fig))
+        print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of storage '
+              '<b>choices</b>, not of DMPs. A DMP can select multiple storage options.</i></p>')
 
         print("<h2>FAIR Data Adoption</h2>")
 

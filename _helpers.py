@@ -546,6 +546,8 @@ def storage_solution_by_department(df: pd.DataFrame) -> pd.DataFrame:
     A DMP can list several services, so DMP counts across rows sum to more
     than the number of DMPs.
     """
+    if not len(df):
+        return pd.DataFrame(columns=["Department", "Solution", "DMPs"])
     rows = []
     for dept in DEPARTMENTS:
         sub = filter_department(df, dept)
