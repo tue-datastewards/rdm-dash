@@ -393,7 +393,7 @@ for dept in h.DEPARTMENTS:
         print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Counts are repository '
               '<b>choices</b>, not DMPs. A DMP can select multiple repositories. Data only include choices indicating a use of a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
 
-        print("<h3>Archive location</h3>")
+        print("<h2>Archive location</h3>")
 
         df = h.archive_split(dd)
         total = df["DMPs"].sum() or 1
