@@ -169,6 +169,9 @@ def load_dmps() -> pd.DataFrame:
             df[c] = df[c].map(_parse_json_list)
     if "status_history" in df.columns:
         df["status_history_parsed"] = df["status_history"].map(_parse_json_list)
+    for c in ("days_to_first_submission", "days_to_first_response", "days_to_first_approval"):
+        if c in df.columns:
+            df[c] = pd.to_numeric(df[c], errors="coerce")
     for c in ("issue_creation_time", "latest_status_time", "erb_link_creation_date", "gold_processed_at"):
         if c in df.columns:
             df[c] = pd.to_datetime(df[c], errors="coerce", utc=True)
@@ -684,9 +687,16 @@ def _sorted_history(row) -> list:
 
 
 def days_to_first_submission(df: pd.DataFrame) -> pd.Series:
-    """Days from DMP creation to first 'Submitted' status (Q8)."""
+    """Days from DMP creation to first 'Submitted' status (Q8).
+
+    Uses the pre-computed ``days_to_first_submission`` column from the
+    Cockpit export when available; falls back to computing it from
+    ``status_history`` if the column is absent.
+    """
     if not len(df):
         return pd.Series(dtype=float)
+    if "days_to_first_submission" in df.columns:
+        return df["days_to_first_submission"].astype(float)
     out = []
     for _, row in df.iterrows():
         created = row["issue_creation_time"]
@@ -702,11 +712,14 @@ def days_to_first_submission(df: pd.DataFrame) -> pd.Series:
 def first_response_time(df: pd.DataFrame) -> pd.Series:
     """Days from first 'Submitted' to the next status transition (Q9).
 
-    The Data Steward's response is taken as the first status change after
-    'Submitted' (e.g. 'Revision requested' or 'Revised (Positive advise)').
+    Uses the pre-computed ``days_to_first_response`` column from the
+    Cockpit export when available; falls back to computing it from
+    ``status_history`` if the column is absent.
     """
     if not len(df):
         return pd.Series(dtype=float)
+    if "days_to_first_response" in df.columns:
+        return df["days_to_first_response"].astype(float)
     out = []
     for _, row in df.iterrows():
         pairs = _sorted_history(row)

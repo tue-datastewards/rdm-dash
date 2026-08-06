@@ -28,7 +28,10 @@ SELECT
   is_scientific,
   has_special_category,
   data_sharing,
-  archive_location
+  archive_location,
+  days_to_first_submission,
+  days_to_first_response,
+  days_to_first_approval
 FROM
   rdi_tst.cockpit.dmp_gold_fact_dedup
 WHERE
@@ -37,27 +40,30 @@ WHERE
 
 ### Columns used by
 
-| Column | Metric / function |
-| --- | --- |
-| `issue_key` | `department_erbs`, `erb_approval_by_department` |
-| `issue_creation_time` | `days_to_first_submission` (Q8) |
-| `is_approved` | `kpi_table`, `approval_by_department`, `approval_by_purpose` (Q1) |
-| `status_history` | `days_to_first_submission` (Q8), `first_response_time` (Q9) |
-| `ordered_status_transition_list` | `revision_distribution`, `revision_summary` (Q7) |
-| `tue_department` | `filter_department` |
-| `data_storage_list` | `storage_split` (Q3) |
-| `data_repository` | `kpi_table`, `repository_breakdown`, `help_needed_rate` (Q5/Q10) |
-| `metadata_standard` | `help_needed_rate` (Q10) |
-| `processing_tools_list` | `help_needed_rate` (Q10) |
-| `has_related_erb` | `kpi_table` (Q2 linkage) |
-| `is_scientific` | `approval_by_purpose` |
-| `has_special_category` | `special_category_summary` (Q4) |
-| `data_sharing` | `data_sharing_breakdown` (Q4) |
-| `archive_location` | `kpi_table`, `archive_breakdown` (Q6) |
+| Column                           | Metric / function                                                 |
+| -------------------------------- | ----------------------------------------------------------------- |
+| `issue_key`                      | `department_erbs`, `erb_approval_by_department`                   |
+| `issue_creation_time`            | Reporting-period filter; `kpi_html` date range; Q8 fallback        |
+| `is_approved`                    | `kpi_table`, `approval_by_department`, `approval_by_purpose` (Q1) |
+| `status_history`                 | Q8/Q9 fallback only (pre-computed columns preferred)               |
+| `ordered_status_transition_list` | `revision_distribution`, `revision_summary` (Q7)                  |
+| `tue_department`                 | `filter_department`                                               |
+| `data_storage_list`              | `storage_split` (Q3)                                              |
+| `data_repository`                | `kpi_table`, `repository_breakdown`, `help_needed_rate` (Q5/Q10)  |
+| `metadata_standard`              | `help_needed_rate` (Q10)                                          |
+| `processing_tools_list`          | `help_needed_rate` (Q10)                                          |
+| `has_related_erb`                | `kpi_table` (Q2 linkage)                                          |
+| `is_scientific`                  | `approval_by_purpose`                                             |
+| `has_special_category`           | `special_category_summary` (Q4)                                   |
+| `data_sharing`                   | `data_sharing_breakdown` (Q4)                                     |
+| `archive_location`               | `kpi_table`, `archive_breakdown` (Q6)                             |
+| `days_to_first_submission`       | `days_to_first_submission` (Q8)                                   |
+| `days_to_first_response`         | `first_response_time` (Q9)                                        |
+| `days_to_first_approval`         | reserved; not currently consumed                                  |
 
 ### Columns excluded
 
-`issue_title`, `latest_status_time`, `days_to_first_approval`,
+`issue_title`, `latest_status_time`,
 `data_volume_list`, `data_volume_tb`, `has_data_volume_info`,
 `data_storage_after_list`, `has_data_storage_info`,
 `processing_tools_count`, `processing_tools_info`, `related_erb`,
@@ -81,13 +87,13 @@ WHERE
 
 ### Columns used by
 
-| Column | Metric / function |
-| --- | --- |
-| `issue_key` | Primary key; ERB ticket identifier |
-| `issue_creation_time` | Reporting-period filter (`>= '2025-09-01'`) |
-| `related_dmp` | `department_erbs`, `erb_approval_by_department` (Q2) |
-| `is_approved` | `erb_approval_by_department` (Q2) |
-| `ordered_status_transition_list` | `erb_breakdown` (Q2 decisions) |
+| Column                           | Metric / function                                    |
+| -------------------------------- | ---------------------------------------------------- |
+| `issue_key`                      | Primary key; ERB ticket identifier                   |
+| `issue_creation_time`            | Reporting-period filter (`>= '2025-09-01'`)          |
+| `related_dmp`                    | `department_erbs`, `erb_approval_by_department` (Q2) |
+| `is_approved`                    | `erb_approval_by_department` (Q2)                    |
+| `ordered_status_transition_list` | `erb_breakdown` (Q2 decisions)                       |
 
 ### Columns excluded
 

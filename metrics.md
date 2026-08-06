@@ -96,23 +96,21 @@ DMP dataset (`data/DMPs_2025_09_10_onwards.csv`) and ERB dataset
 
 **Status:** Partially answerable
 
-**Sources:** DMP (`status_history`, `issue_creation_time`)
+**Sources:** DMP (`days_to_first_submission`)
 
-- **days_to_first_submission** — computed from first "Submitted" timestamp − `issue_creation_time`
+- **days_to_first_submission** — pre-computed in the export (first "Submitted" timestamp − `issue_creation_time`)
 - **Distribution** — median, mean, quartiles
 - Per department
-- ⚠️ _Caveat:_ not pre-computed; must derive from `status_history` timestamps
 
 ### Q9 — First response time after submission
 
 **Status:** Partially answerable
 
-**Sources:** DMP (`status_history`)
+**Sources:** DMP (`days_to_first_response`)
 
-- **days_to_first_response** — first status transition after "Submitted" − "Submitted" timestamp
+- **days_to_first_response** — pre-computed in the export (first status transition after "Submitted" − "Submitted" timestamp)
 - **Distribution** — median, mean, quartiles
 - Per department
-- ⚠️ _Caveat:_ not pre-computed; must define which transition counts as the Data Steward's response ("Revision requested"? "Revised (Positive advise)"?)
 
 ### Q10 — "I need help" during first submission
 
