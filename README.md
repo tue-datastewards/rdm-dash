@@ -30,17 +30,17 @@ Runtime dependencies: `pandas`, `plotly`. Dev dependency: `frictionless`
 
 ### Add the data
 
-The two source CSVs are **gitignored** (they contain real records). Place them
-in `data/`:
+The two source CSVs are tracked in git. To refresh them with a new export,
+place the files in `data/`:
 
 ```
-data/DMPs_2025_09_10_onwards.csv   # Data Management Plans (1667 rows × 32 cols)
-data/ERBs_2025_09_10_onwards.csv   # Ethical Review Board applications (1214 rows × 20 cols)
+data/DMPs_2025_09_10_onwards.csv   # Data Management Plans (2230 rows × 19 cols)
+data/ERBs_2025_09_10_onwards.csv   # Ethical Review Board applications (1259 rows × 5 cols)
 ```
 
 Their structure is version-controlled as [Frictionless Data](https://specs.frictionlessdata.io/)
 Table Schemas (see _Data & schemas_ below), so the columns and types are
-documented even though the data itself is not in the repo.
+documented in the repo alongside the data.
 
 ## Preview the site
 
@@ -134,11 +134,11 @@ rdm-dash/
 ├── metrics.md                   # Metrics per question
 ├── queries.md                   # Source SQL queries
 ├── datapackage.json             # Frictionless Data Package (both resources)
-├── data/                        # Source CSVs (gitignored) + Table Schemas (tracked)
-│   ├── DMPs_2025_09_10_onwards.csv   (gitignored)
-│   ├── ERBs_2025_09_10_onwards.csv   (gitignored)
-│   ├── DMPs.schema.json              (tracked)
-│   └── ERBs.schema.json              (tracked)
+├── data/                        # Source CSVs + Table Schemas (all tracked)
+│   ├── DMPs_2025_09_10_onwards.csv
+│   ├── ERBs_2025_09_10_onwards.csv
+│   ├── DMPs.schema.json
+│   └── ERBs.schema.json
 ├── Pipfile                      # Python deps: pandas, plotly (+ frictionless dev)
 ├── Pipfile.lock
 ├── LICENSE

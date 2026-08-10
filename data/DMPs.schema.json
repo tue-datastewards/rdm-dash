@@ -19,6 +19,8 @@
     { "name": "status_history", "type": "array", "title": "Status history", "description": "Full chronological status history as a JSON array of {status, timestamp} objects." },
     { "name": "ordered_status_transition_list", "type": "array", "title": "Ordered status transitions", "description": "Ordered list of status transitions (status names only), most-recent first." },
     { "name": "days_to_first_approval", "type": "number", "title": "Days to first approval", "description": "Days from DMP creation to first approval." },
+    { "name": "days_to_first_submission", "type": "number", "title": "Days to first submission", "description": "Days from DMP creation to first Submitted status." },
+    { "name": "days_to_first_response", "type": "number", "title": "Days to first response", "description": "Days from first Submitted to the next status transition (Data Steward response)." },
     { "name": "tue_department", "type": "string", "title": "TU/e department", "description": "TU/e department(s) associated with the project; comma-separated when multiple." },
     { "name": "data_volume_list", "type": "string", "title": "Data volume (bucket)", "description": "Coarse data-volume bucket.", "constraints": { "enum": ["<10 GBs", "10's of GBs", "100's of GBs", "<10 TBs", "10's TBs"] } },
     { "name": "data_volume_tb", "type": "number", "title": "Data volume (TB)", "description": "Estimated data volume in terabytes." },
