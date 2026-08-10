@@ -40,7 +40,8 @@ pipenv run quarto preview    # live-reload
 
 - `Pipfile` — declares `pandas`, `plotly`, and dev-`frictionless`.
 - `Pipfile.lock` — pinned lockfile.
-- `_site/`, `.quarto/`, `.venv/`, `data/*.csv` are **gitignored**.
+- `_site/`, `.quarto/`, `.venv/` are **gitignored**; the source CSVs in `data/`
+  are tracked in git.
 
 ### 2.2 Deployment
 
@@ -70,11 +71,11 @@ rdm-dash/
 ├── metrics.md           # Metrics per question (Q1–Q17)
 ├── queries.md           # Source SQL queries
 ├── research-questions.md    # 17 research questions, grouped by section (A–D)
-├── _helpers.py            # Shared data loading + metric functions (~640 lines)
+├── _helpers.py            # Shared data loading + metric functions (~830 lines)
 ├── styles.css             # Custom CSS (RDM Handbook purple palette, gauges, navbar, sidebar)
 ├── data/
-│   ├── DMPs_*.csv       # 32 cols, ~1600 rows (gitignored)
-│   ├── ERBs_*.csv       # 20 cols, ~1200 rows (gitignored)
+│   ├── DMPs_*.csv       # 19 cols, ~2200 rows
+│   ├── ERBs_*.csv       # 5 cols, ~1250 rows
 │   ├── departments.json # schema.org JSON-LD with Wikidata IDs (tracked in git)
 │   ├── DMPs.schema.json # Frictionless table schema
 │   └── ERBs.schema.json # Frictionless table schema
@@ -111,11 +112,12 @@ TU/e Research Cockpit
   ├── gold tables (dmp_gold_fact_dedup, erb_gold_fact_dedup)
   └── SQL filter: issue_creation_time >= '2025-09-01'
         ↓ export CSV
-data/DMPs_2025_09_10_onwards.csv  (32 cols)
-data/ERBs_2025_09_10_onwards.csv  (20 cols, foreign keys → DMPs.issue_key)
+data/DMPs_2025_09_10_onwards.csv  (19 cols)
+data/ERBs_2025_09_10_onwards.csv  (5 cols, foreign keys → DMPs.issue_key)
         ↓ _helpers.py (load_dmps, load_erbs)
   - JSON list parsing
   - Bool coercion
+  - numeric coercion (pre-computed day columns)
   - datetime coercion
   - department filtering
         ↓ metric functions
@@ -134,10 +136,13 @@ data/ERBs_2025_09_10_onwards.csv  (20 cols, foreign keys → DMPs.issue_key)
 - **Trusted repositories:** 4TU.ResearchData, Zenodo, OSF, Figshare
 - **TU/e storage:** 01 TU/e Network Drive, 02 Microsoft SharePoint/Teams, 04 SURF Research Drive
 - **Archiving:** `archive_location == "tue_archive"` = RAPS archival
+- **Pre-computed timing:** `days_to_first_submission` (Q8) and `days_to_first_response`
+  (Q9) ship pre-computed in the export; `days_to_first_approval` is reserved
+  (not currently consumed)
 
 ### 4.2 Data schemas
 
-Schema files are tracked in git; CSVs are gitignored.
+Schema files and the source CSVs are tracked in git.
 Frictionless schemas describe columns, types, and primary/foreign keys.
 
 ### 4.3 Department metadata
@@ -233,8 +238,8 @@ Sidebar-subtitle class for muted secondary text, shown in breadcrumbs.
 | Q5 | `repository_breakdown()`, `trusted_repository_split()` — returns exactly two groups: "Using Trusted Repository" / "Not Using Trusted Repository" |
 | Q6 | `archive_breakdown()`, `archive_split()` — binary TU/e archive (RAPS) usage |
 | Q7 | `revision_distribution()`, `revision_summary()` |
-| Q8 | `days_to_first_submission()` |
-| Q9 | `first_response_time()` |
+| Q8 | `days_to_first_submission()` — reads pre-computed column; `status_history` fallback |
+| Q9 | `first_response_time()` — reads pre-computed column; `status_history` fallback |
 | Q10 | `help_needed_rate()` |
 
 ### 6.1 KPI card generation
@@ -345,8 +350,8 @@ triggers on `push main`.
 | `data/departments.json` | schema.org JSON-LD department definitions with Wikidata IDs |
 | `data/*.schema.json` | Frictionless schemas for data validation |
 | `Pipfile` | Dependencies: `pandas`, `plotly`, dev `frictionless` |
-| `.gitignore` | Keeps `.csv`, `_site/`, `.quarto/`, `.venv/` out of git |
+| `.gitignore` | Keeps `_site/`, `.quarto/`, `.venv/` out of git |
 
 ---
 
-_Last updated: 2026-07-28_
+_Last updated: 2026-08-06_
