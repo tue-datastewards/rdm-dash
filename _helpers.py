@@ -819,3 +819,75 @@ def render_department_abbreviations(font_size: str = "0.85em") -> str:
         abbr = DEPT_ABBREVIATIONS[dept]
         parts.append(f'<b>{abbr}</b> = {dept}')
     return f'<p style="font-size:{font_size};color:#6b7280"><i>{"</i>, <i>".join(parts)}</i></p>'
+
+
+def process_kpi_html(df: pd.DataFrame, dept: str | None = None) -> str:
+    """Return an HTML string for the process-evaluation KPI card grid.
+
+    Three cards: revision requested rate gauge, data steward response time
+    number card, and 'I need advice' rate gauge.
+
+    If ``dept`` is given, department abbreviation is appended to descriptions.
+    """
+    n = len(df)
+    abbr = DEPT_ABBREVIATIONS.get(dept, dept) if dept else None
+
+    # Revision requested rate
+    with_rev = int(df["ordered_status_transition_list"].map(
+        lambda v: any(s == "Revision requested" for s in v)
+    ).sum()) if n else 0
+    rev_rate = with_rev / n if n else 0
+
+    # Data steward response time
+    resp = first_response_time(df).dropna()
+    median_days = resp.median() if len(resp) else None
+    mean_days = resp.mean() if len(resp) else None
+    n_resp = len(resp)
+
+    # Help needed rate
+    needs_help = int(df.apply(
+        lambda r: any(
+            "i need advice" in str(x).lower()
+            for f in _HELP_FIELDS
+            for x in r.get(f, [])
+        ),
+        axis=1,
+    ).sum()) if n else 0
+    help_rate = needs_help / n if n else 0
+
+    # Build cards
+    if abbr:
+        rev_desc = f'{with_rev} of {n} DMPs at {abbr} sent back for revision'
+    else:
+        rev_desc = f'{with_rev} of {n} DMPs sent back for revision'
+    rev_gauge = gauge_svg(rev_rate, "Revision requested rate", rev_desc)
+
+    if median_days is not None and not pd.isna(median_days):
+        desc = f"Median response time across {n_resp} DMP submissions"
+        if mean_days is not None:
+            desc += f" ({mean_days:.1f} days mean)"
+        if abbr:
+            desc = f"{desc} at {abbr}"
+        resp_card = (
+            '<div class="kpi-card kpi-blue">'
+            '<div class="kpi-label"><p>Data Steward Response Time</p></div>'
+            f'<div class="kpi-value"><p>{median_days:.1f} days</p></div>'
+            f'<div class="kpi-desc">{desc}</div>'
+            '</div>'
+        )
+    else:
+        resp_card = (
+            '<div class="kpi-card kpi-blue">'
+            '<div class="kpi-label"><p>Data Steward Response Time</p></div>'
+            '<div class="kpi-value"><p>N/A</p></div>'
+            '<div class="kpi-desc">No response time data available</div>'
+            '</div>'
+        )
+
+    if abbr:
+        help_desc = f'{needs_help} of {n} DMPs at {abbr} requested help'
+    else:
+        help_desc = f'{needs_help} of {n} DMPs requested help'
+    help_gauge = gauge_svg(help_rate, "'I need advice' at first submission", help_desc)
+
+    return '<div class="kpi-grid">' + rev_gauge + resp_card + help_gauge + '</div>'
