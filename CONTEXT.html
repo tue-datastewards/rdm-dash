@@ -346,7 +346,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><code>Pipfile</code> — declares <code>pandas</code>, <code>plotly</code>, and dev-<code>frictionless</code>.</li>
 <li><code>Pipfile.lock</code> — pinned lockfile.</li>
-<li><code>_site/</code>, <code>.quarto/</code>, <code>.venv/</code>, <code>data/*.csv</code> are <strong>gitignored</strong>.</li>
+<li><code>_site/</code>, <code>.quarto/</code>, <code>.venv/</code> are <strong>gitignored</strong>; the source CSVs in <code>data/</code> are tracked in git.</li>
 </ul>
 </section>
 <section id="deployment" class="level3">
@@ -375,11 +375,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ├── metrics.md           # Metrics per question (Q1–Q17)
 ├── queries.md           # Source SQL queries
 ├── research-questions.md    # 17 research questions, grouped by section (A–D)
-├── _helpers.py            # Shared data loading + metric functions (~640 lines)
+├── _helpers.py            # Shared data loading + metric functions (~830 lines)
 ├── styles.css             # Custom CSS (RDM Handbook purple palette, gauges, navbar, sidebar)
 ├── data/
-│   ├── DMPs_*.csv       # 32 cols, ~1600 rows (gitignored)
-│   ├── ERBs_*.csv       # 20 cols, ~1200 rows (gitignored)
+│   ├── DMPs_*.csv       # 19 cols, ~2200 rows
+│   ├── ERBs_*.csv       # 5 cols, ~1250 rows
 │   ├── departments.json # schema.org JSON-LD with Wikidata IDs (tracked in git)
 │   ├── DMPs.schema.json # Frictionless table schema
 │   └── ERBs.schema.json # Frictionless table schema
@@ -450,11 +450,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   ├── gold tables (dmp_gold_fact_dedup, erb_gold_fact_dedup)
   └── SQL filter: issue_creation_time &gt;= '2025-09-01'
         ↓ export CSV
-data/DMPs_2025_09_10_onwards.csv  (32 cols)
-data/ERBs_2025_09_10_onwards.csv  (20 cols, foreign keys → DMPs.issue_key)
+data/DMPs_2025_09_10_onwards.csv  (19 cols)
+data/ERBs_2025_09_10_onwards.csv  (5 cols, foreign keys → DMPs.issue_key)
         ↓ _helpers.py (load_dmps, load_erbs)
   - JSON list parsing
   - Bool coercion
+  - numeric coercion (pre-computed day columns)
   - datetime coercion
   - department filtering
         ↓ metric functions
@@ -472,11 +473,12 @@ data/ERBs_2025_09_10_onwards.csv  (20 cols, foreign keys → DMPs.issue_key)
 <li><strong>Trusted repositories:</strong> 4TU.ResearchData, Zenodo, OSF, Figshare</li>
 <li><strong>TU/e storage:</strong> 01 TU/e Network Drive, 02 Microsoft SharePoint/Teams, 04 SURF Research Drive</li>
 <li><strong>Archiving:</strong> <code>archive_location == "tue_archive"</code> = RAPS archival</li>
+<li><strong>Pre-computed timing:</strong> <code>days_to_first_submission</code> (Q8) and <code>days_to_first_response</code> (Q9) ship pre-computed in the export; <code>days_to_first_approval</code> is reserved (not currently consumed)</li>
 </ul>
 </section>
 <section id="data-schemas" class="level3">
 <h3 class="anchored" data-anchor-id="data-schemas">4.2 Data schemas</h3>
-<p>Schema files are tracked in git; CSVs are gitignored. Frictionless schemas describe columns, types, and primary/foreign keys.</p>
+<p>Schema files and the source CSVs are tracked in git. Frictionless schemas describe columns, types, and primary/foreign keys.</p>
 </section>
 <section id="department-metadata" class="level3">
 <h3 class="anchored" data-anchor-id="department-metadata">4.3 Department metadata</h3>
@@ -622,11 +624,11 @@ data/ERBs_2025_09_10_onwards.csv  (20 cols, foreign keys → DMPs.issue_key)
 </tr>
 <tr class="odd">
 <td>Q8</td>
-<td><code>days_to_first_submission()</code></td>
+<td><code>days_to_first_submission()</code> — reads pre-computed column; <code>status_history</code> fallback</td>
 </tr>
 <tr class="even">
 <td>Q9</td>
-<td><code>first_response_time()</code></td>
+<td><code>first_response_time()</code> — reads pre-computed column; <code>status_history</code> fallback</td>
 </tr>
 <tr class="odd">
 <td>Q10</td>
@@ -752,12 +754,12 @@ data/ERBs_2025_09_10_onwards.csv</code></pre>
 </tr>
 <tr class="even">
 <td><code>.gitignore</code></td>
-<td>Keeps <code>.csv</code>, <code>_site/</code>, <code>.quarto/</code>, <code>.venv/</code> out of git</td>
+<td>Keeps <code>_site/</code>, <code>.quarto/</code>, <code>.venv/</code> out of git</td>
 </tr>
 </tbody>
 </table>
 <hr>
-<p><em>Last updated: 2026-07-28</em></p>
+<p><em>Last updated: 2026-08-06</em></p>
 
 
 </section>

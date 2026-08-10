@@ -287,17 +287,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  is_scientific,</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  has_special_category,</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  data_sharing,</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  archive_location</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  rdi_tst.cockpit.dmp_gold_fact_dedup</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  issue_creation_time <span class="op">&gt;=</span> <span class="st">'2025-09-01'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  archive_location,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  days_to_first_submission,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  days_to_first_response,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  days_to_first_approval</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  rdi_tst.cockpit.dmp_gold_fact_dedup</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  issue_creation_time <span class="op">&gt;=</span> <span class="st">'2025-09-01'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="columns-used-by" class="level3">
 <h3 class="anchored" data-anchor-id="columns-used-by">Columns used by</h3>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 32%">
+<col style="width: 67%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -312,7 +315,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td><code>issue_creation_time</code></td>
-<td><code>days_to_first_submission</code> (Q8)</td>
+<td>Reporting-period filter; <code>kpi_html</code> date range; Q8 fallback</td>
 </tr>
 <tr class="odd">
 <td><code>is_approved</code></td>
@@ -320,7 +323,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td><code>status_history</code></td>
-<td><code>days_to_first_submission</code> (Q8), <code>first_response_time</code> (Q9)</td>
+<td>Q8/Q9 fallback only (pre-computed columns preferred)</td>
 </tr>
 <tr class="odd">
 <td><code>ordered_status_transition_list</code></td>
@@ -366,12 +369,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td><code>archive_location</code></td>
 <td><code>kpi_table</code>, <code>archive_breakdown</code> (Q6)</td>
 </tr>
+<tr class="even">
+<td><code>days_to_first_submission</code></td>
+<td><code>days_to_first_submission</code> (Q8)</td>
+</tr>
+<tr class="odd">
+<td><code>days_to_first_response</code></td>
+<td><code>first_response_time</code> (Q9)</td>
+</tr>
+<tr class="even">
+<td><code>days_to_first_approval</code></td>
+<td>reserved; not currently consumed</td>
+</tr>
 </tbody>
 </table>
 </section>
 <section id="columns-excluded" class="level3">
 <h3 class="anchored" data-anchor-id="columns-excluded">Columns excluded</h3>
-<p><code>issue_title</code>, <code>latest_status_time</code>, <code>days_to_first_approval</code>, <code>data_volume_list</code>, <code>data_volume_tb</code>, <code>has_data_volume_info</code>, <code>data_storage_after_list</code>, <code>has_data_storage_info</code>, <code>processing_tools_count</code>, <code>processing_tools_info</code>, <code>related_erb</code>, <code>erb_link_creation_date</code>, <code>days_to_erb_link_creation</code>, <code>ever_approved</code>, <code>approval_count</code>, <code>gold_processed_at</code>, <code>reporter_email</code>.</p>
+<p><code>issue_title</code>, <code>latest_status_time</code>, <code>data_volume_list</code>, <code>data_volume_tb</code>, <code>has_data_volume_info</code>, <code>data_storage_after_list</code>, <code>has_data_storage_info</code>, <code>processing_tools_count</code>, <code>processing_tools_info</code>, <code>related_erb</code>, <code>erb_link_creation_date</code>, <code>days_to_erb_link_creation</code>, <code>ever_approved</code>, <code>approval_count</code>, <code>gold_processed_at</code>, <code>reporter_email</code>.</p>
 </section>
 </section>
 <section id="erbs" class="level2">
@@ -389,6 +404,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="columns-used-by-1" class="level3">
 <h3 class="anchored" data-anchor-id="columns-used-by-1">Columns used by</h3>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 38%">
+<col style="width: 61%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Column</th>

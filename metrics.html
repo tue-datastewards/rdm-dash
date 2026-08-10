@@ -330,23 +330,21 @@ ul.task-list li input[type="checkbox"] {
 <section id="q8-time-draft-submitted" class="level3">
 <h3 class="anchored" data-anchor-id="q8-time-draft-submitted">Q8 — Time DRAFT → SUBMITTED</h3>
 <p><strong>Status:</strong> Partially answerable</p>
-<p><strong>Sources:</strong> DMP (<code>status_history</code>, <code>issue_creation_time</code>)</p>
+<p><strong>Sources:</strong> DMP (<code>days_to_first_submission</code>)</p>
 <ul>
-<li><strong>days_to_first_submission</strong> — computed from first “Submitted” timestamp − <code>issue_creation_time</code></li>
+<li><strong>days_to_first_submission</strong> — pre-computed in the export (first “Submitted” timestamp − <code>issue_creation_time</code>)</li>
 <li><strong>Distribution</strong> — median, mean, quartiles</li>
 <li>Per department</li>
-<li>⚠️ <em>Caveat:</em> not pre-computed; must derive from <code>status_history</code> timestamps</li>
 </ul>
 </section>
 <section id="q9-first-response-time-after-submission" class="level3">
 <h3 class="anchored" data-anchor-id="q9-first-response-time-after-submission">Q9 — First response time after submission</h3>
 <p><strong>Status:</strong> Partially answerable</p>
-<p><strong>Sources:</strong> DMP (<code>status_history</code>)</p>
+<p><strong>Sources:</strong> DMP (<code>days_to_first_response</code>)</p>
 <ul>
-<li><strong>days_to_first_response</strong> — first status transition after “Submitted” − “Submitted” timestamp</li>
+<li><strong>days_to_first_response</strong> — pre-computed in the export (first status transition after “Submitted” − “Submitted” timestamp)</li>
 <li><strong>Distribution</strong> — median, mean, quartiles</li>
 <li>Per department</li>
-<li>⚠️ <em>Caveat:</em> not pre-computed; must define which transition counts as the Data Steward’s response (“Revision requested”? “Revised (Positive advise)”?)</li>
 </ul>
 </section>
 <section id="q10-i-need-help-during-first-submission" class="level3">
