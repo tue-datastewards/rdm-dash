@@ -857,8 +857,9 @@ def process_kpi_html(df: pd.DataFrame, dept: str | None = None,
     ).sum()) if n else 0
     rev_rate = with_rev / n if n else 0
 
-    # Data steward response time
+    # Data steward response time (only DMPs with a response >= 1 day after submission)
     resp = first_response_time(df).dropna()
+    resp = resp[resp >= 1]
     median_days = resp.median() if len(resp) else None
     mean_days = resp.mean() if len(resp) else None
     n_resp = len(resp)
@@ -890,6 +891,14 @@ def process_kpi_html(df: pd.DataFrame, dept: str | None = None,
             desc = f"{desc} at {abbr}"
         resp_card = (
             '<div class="kpi-card kpi-blue">'
+            '<span class="info-tip" aria-label="Calculation note">'
+            '<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">'
+            '<circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"/>'
+            '<path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" '
+            'stroke-linecap="round"/></svg>'
+            '<span class="info-tip-text">Only DMPs with a response at least 1 day '
+            'after submission are included (responses under 1 day are excluded).</span>'
+            '</span>'
             '<div class="kpi-label"><p>Data Steward Response Time</p></div>'
             f'<div class="kpi-value"><p>{median_days:.1f} days</p></div>'
             f'<div class="kpi-desc">{desc}</div>'
