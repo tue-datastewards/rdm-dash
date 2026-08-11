@@ -30,7 +30,7 @@ print(h.purpose_toggle_html())
 ```
 
 <select id="dept-select" class="dept-selector">
-<option value="overview">Overview (all departments)</option>
+<option value="overview">All departments</option>
 ```{python}
 #| output: asis
 for d in h.DEPARTMENTS:
