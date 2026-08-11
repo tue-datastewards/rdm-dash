@@ -82,7 +82,7 @@ for dept in h.DEPARTMENTS:
 print(h.feedback_survey_html())
 ```
 
-> Note. Above rationgs are from the **researcher feedback survey** (n = 74
+> Note. Above ratings are from the **researcher feedback survey** (n = 74
 > respondents, collected 30 Apr -- 13 May 2026).
 
 <script>
