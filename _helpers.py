@@ -1016,7 +1016,7 @@ def feedback_bar_html(rows: pd.DataFrame, title: str, n: int) -> str:
     for level, (_, r) in reversed(list(enumerate(rows.iterrows(), start=1))):
         pct = r["Share"] * 100
         count = int(r["Count"])
-        label = f'<span class="seg-count">{count}</span>' if pct >= 9 else ""
+        label = f'<span class="seg-count">{pct:.0f}%</span>' if pct >= 9 else ""
         segs.append(
             f'<div class="feedback-seg" data-level="{level}" '
             f'style="flex-grow:{pct:.4f}" '

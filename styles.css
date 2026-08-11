@@ -201,7 +201,6 @@
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  align-self: flex-end;
   cursor: help;
   color: var(--rdm-700);
   font-weight: 600;
@@ -621,8 +620,10 @@ details.storage-details[open] summary {
 
 .feedback-bar-figure figcaption {
   display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
   margin-bottom: 0.4rem;
   font-weight: 600;
   font-size: 1.1rem;
