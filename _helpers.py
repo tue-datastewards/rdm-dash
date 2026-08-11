@@ -834,16 +834,22 @@ def render_department_abbreviations(font_size: str = "0.85em") -> str:
     return f'<p style="font-size:{font_size};color:#6b7280"><i>{"</i>, <i>".join(parts)}</i></p>'
 
 
-def process_kpi_html(df: pd.DataFrame, dept: str | None = None) -> str:
+def process_kpi_html(df: pd.DataFrame, dept: str | None = None,
+                     purpose: str | None = None) -> str:
     """Return an HTML string for the process-evaluation KPI card grid.
 
     Three cards: revision requested rate gauge, data steward response time
     number card, and 'I need advice' rate gauge.
 
-    If ``dept`` is given, department abbreviation is appended to descriptions.
+    If ``dept`` is given, the department abbreviation is appended to
+    descriptions.  If ``purpose`` is "scientific" or "educational", the study
+    type is inserted into the descriptions ("all" / None keeps the generic
+    wording).
     """
     n = len(df)
     abbr = DEPT_ABBREVIATIONS.get(dept, dept) if dept else None
+    pword = purpose if purpose in ("scientific", "educational") else None
+    ptext = f"{pword} DMPs" if pword else "DMPs"
 
     # Revision requested rate
     with_rev = int(df["ordered_status_transition_list"].map(
@@ -870,13 +876,14 @@ def process_kpi_html(df: pd.DataFrame, dept: str | None = None) -> str:
 
     # Build cards
     if abbr:
-        rev_desc = f'{with_rev} of {n} DMPs at {abbr} sent back for revision'
+        rev_desc = f'{with_rev} of {n} {ptext} at {abbr} sent back for revision'
     else:
-        rev_desc = f'{with_rev} of {n} DMPs sent back for revision'
+        rev_desc = f'{with_rev} of {n} {ptext} sent back for revision'
     rev_gauge = gauge_svg(rev_rate, "Revision requested rate", rev_desc)
 
     if median_days is not None and not pd.isna(median_days):
-        desc = f"Median response time across {n_resp} DMP submissions"
+        subj = f"{pword} DMP" if pword else "DMP"
+        desc = f"Median response time across {n_resp} {subj} submissions"
         if mean_days is not None:
             desc += f" ({mean_days:.1f} days mean)"
         if abbr:
@@ -898,9 +905,9 @@ def process_kpi_html(df: pd.DataFrame, dept: str | None = None) -> str:
         )
 
     if abbr:
-        help_desc = f'{needs_help} of {n} DMPs at {abbr} requested help'
+        help_desc = f'{needs_help} of {n} {ptext} at {abbr} requested help'
     else:
-        help_desc = f'{needs_help} of {n} DMPs requested help'
+        help_desc = f'{needs_help} of {n} {ptext} requested help'
     help_gauge = gauge_svg(help_rate, "'I need advice' at first submission", help_desc)
 
     return '<div class="kpi-grid">' + rev_gauge + resp_card + help_gauge + '</div>'
