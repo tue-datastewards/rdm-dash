@@ -42,6 +42,23 @@ Their structure is version-controlled as [Frictionless Data](https://specs.frict
 Table Schemas (see _Data & schemas_ below), so the columns and types are
 documented in the repo alongside the data.
 
+The feedback survey data is also in `data/`:
+
+```
+data/feedback-survey-responses.csv         # 74 responses, Apr–May 2026
+data/feedback-survey-schema.json           # DDI-CDI survey schema (concepts, code lists, variables)
+data/feedback-survey-dataset.jsonld        # Combined dataset: schema + coded responses
+```
+
+To regenerate the JSON-LD dataset from the CSV:
+
+```bash
+pipenv run python scripts/convert-feedback-to-cdi.py
+```
+
+The converter maps Likert labels, Yes/No, and star ratings to the schema's
+code-list values, and attaches per-response start/completion timestamps.
+
 ## Preview the site
 
 Render and serve the site locally with live reload (Quarto must run inside the
@@ -64,30 +81,21 @@ Output is written to `_site/`.
 
 ## Dashboard structure
 
-- **`index.qmd`** — overview across all departments: six KPI callouts plus
-  tabbed charts grouped into **Compliance**, **Data handling**, and
-  **Workflow**.
-- **`dept-<slug>.qmd`** × 9 — one page per department; each is a thin wrapper
-  that filters the data and `{{< include >}}`s the shared body.
-- **`_dept-content.qmd`** — the shared department dashboard body (DRY).
+- **`index.qmd`** — overview across all departments: KPI cards, circle
+  gauges, and charts for compliance, data handling, and workflow.
+- **`data-storage.qmd`** — storage, FAIR data adoption, repositories and
+  archival, with a department dropdown.
+- **`compliance.qmd`** — policy compliance with a department dropdown
+  (overview + per-department panels).
+- **`lifecycle.qmd`** — DMP lifecycle metrics (Q1–Q11) as section-grouped KPI
+  blocks.
+- **`process-eval.qmd`** — process quality metrics (Q12–Q15).
+- **`communication-training.qmd`** — outreach activities (Q16–Q17).
+- **`about.qmd`** — credits.
 - **`_helpers.py`** — data loading, cleaning, and all metric functions.
 
-Each chart displays the research question (Q1–Q10) it answers as a blockquote
+Each chart displays the research question (Q1–Q17) it answers as a blockquote
 above the chart.
-
-Departments:
-
-| File                                    | Department                                           |
-| --------------------------------------- | ---------------------------------------------------- |
-| `dept-industrial-design.qmd`            | Industrial Design (ID)                               |
-| `dept-industrial-engineering.qmd`       | Industrial Engineering & Innovation Sciences (IE&IS) |
-| `dept-built-environment.qmd`            | Built Environment (BE)                               |
-| `dept-mathematics-computer-science.qmd` | Mathematics & Computer Science (M&CS)                |
-| `dept-biomedical-engineering.qmd`       | Biomedical Engineering (BmE)                         |
-| `dept-mechanical-engineering.qmd`       | Mechanical Engineering (ME)                          |
-| `dept-applied-physics.qmd`              | Applied Physics & Science Education (APSE)           |
-| `dept-electrical-engineering.qmd`       | Electrical Engineering (EE)                          |
-| `dept-chemical-engineering.qmd`         | Chemical Engineering & Chemistry (CE&C)              |
 
 ## Data & schemas
 
@@ -109,6 +117,37 @@ and validated with the `frictionless` package:
 > 2025-09-01 cutoff and are therefore absent from the export — an expected
 > artifact of the reporting-period filter, not a schema error.
 
+### Feedback survey data
+
+The DMP feedback form responses are documented as a
+[DDI-CDI](https://github.com/ddi-cdi/ddi-cdi) JSON-LD dataset. The conversion
+preserves the survey schema (concepts, code lists, represented variables,
+skip logic) and populates it with coded responses:
+
+- [`data/feedback-survey-responses.csv`](data/feedback-survey-responses.csv) —
+  raw responses (74 rows × 9 columns, collected Apr–May 2026)
+- [`data/feedback-survey-schema.json`](data/feedback-survey-schema.json) —
+  DDI-CDI survey schema with 6 concepts, 3 code lists, 6 represented
+  variables, 7 instance variables, and conditional skip logic
+- [`data/feedback-survey-dataset.jsonld`](data/feedback-survey-dataset.jsonld) —
+  combined dataset: schema + 74 coded data points with timestamps
+
+To regenerate after updating the CSV:
+
+```bash
+pipenv run python scripts/convert-feedback-to-cdi.py
+```
+
+The converter maps Likert labels, Yes/No, and star ratings to code-list
+values, and attaches per-response `startTime` and `completionTime`.
+
+To validate the generated dataset (types, predicates, referential integrity,
+skip logic, timestamps, and cross-checks against the CSV):
+
+```bash
+pipenv run python scripts/validate-feedback-dataset.py
+```
+
 ## Reference documents
 
 Available under the navbar **Reference** menu:
@@ -124,27 +163,37 @@ Available under the navbar **Reference** menu:
 
 ```
 rdm-dash/
-├── _quarto.yml                 # Site config: navbar (Home, Departments, Reference, About), theme, code hidden
+├── _quarto.yml                 # Site config: navbar, theme, code hidden
 ├── index.qmd                   # Overview dashboard
-├── _dept-content.qmd            # Shared department dashboard body
-├── dept-*.qmd                   # 9 per-department dashboards
-├── _helpers.py                  # Data loading + metric functions
-├── styles.css                   # Custom CSS overrides
-├── research-questions.md        # 17 research questions
-├── metrics.md                   # Metrics per question
-├── queries.md                   # Source SQL queries
-├── datapackage.json             # Frictionless Data Package (both resources)
-├── data/                        # Source CSVs + Table Schemas (all tracked)
+├── data-storage.qmd            # Storage, repositories & archival
+├── compliance.qmd              # Policy compliance (dept dropdown)
+├── lifecycle.qmd               # DMP lifecycle metrics
+├── process-eval.qmd            # Process quality metrics
+├── communication-training.qmd  # Outreach activities
+├── about.qmd                   # Credits
+├── _helpers.py                 # Data loading + metric functions
+├── styles.css                  # Custom CSS overrides
+├── research-questions.md       # 17 research questions
+├── metrics.md                  # Metrics per question
+├── queries.md                  # Source SQL queries
+├── datapackage.json            # Frictionless Data Package (both resources)
+├── scripts/
+│   ├── convert-feedback-to-cdi.py    # CSV + DDI-CDI schema → JSON-LD dataset
+│   └── validate-feedback-dataset.py  # JSON-LD + CSV validator
+├── data/                       # Source data (all tracked)
 │   ├── DMPs_2025_09_10_onwards.csv
 │   ├── ERBs_2025_09_10_onwards.csv
 │   ├── DMPs.schema.json
-│   └── ERBs.schema.json
-├── Pipfile                      # Python deps: pandas, plotly (+ frictionless dev)
+│   ├── ERBs.schema.json
+│   ├── feedback-survey-responses.csv
+│   ├── feedback-survey-schema.json
+│   └── feedback-survey-dataset.jsonld
+├── Pipfile                     # Python deps: pandas, plotly (+ frictionless dev)
 ├── Pipfile.lock
 ├── LICENSE
-├── _site/                       # Built output (gitignored)
-├── .quarto/                     # Quarto cache (gitignored)
-└── .venv/                       # Python virtualenv (gitignored)
+├── _site/                      # Built output (gitignored)
+├── .quarto/                    # Quarto cache (gitignored)
+└── .venv/                      # Python virtualenv (gitignored)
 ```
 
 ## Troubleshooting

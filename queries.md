@@ -5,7 +5,7 @@ SQL queries used to generate the DMP and ERB data files in `data/`.
 Source table: `rdi_tst.cockpit` (TU/e Research Cockpit gold fact tables).
 
 The `SELECT` lists below are limited to the columns the dashboard actually
-consumes (see `_helpers.py` and the `index.qmd` / `dept-*.qmd` pages).
+consumes (see `_helpers.py` and the `.qmd` pages).
 `reporter_email` and every other unused field are omitted so the exports
 stay lean.
 
