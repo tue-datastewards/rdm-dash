@@ -1,0 +1,3340 @@
+{
+  "@context": {
+    "cdi": "http://ddialliance.org/Specification/DDI-CDI/1.0/RDF/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "tue": "https://tue.nl/rescockpit/dmp-feedback/vocab/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "id": "@id",
+    "type": "@type",
+    "label": {
+      "@id": "rdfs:label",
+      "@container": "@language"
+    },
+    "comment": {
+      "@id": "rdfs:comment",
+      "@container": "@language"
+    },
+    "Concept-name": {
+      "@id": "cdi:Concept-name",
+      "@container": "@language"
+    },
+    "Concept-definition": {
+      "@id": "cdi:Concept-definition",
+      "@container": "@language"
+    },
+    "EnumerationDomain-name": {
+      "@id": "cdi:EnumerationDomain-name",
+      "@container": "@language"
+    },
+    "MeasureComponent-name": {
+      "@id": "cdi:MeasureComponent-name",
+      "@container": "@language"
+    },
+    "PhysicalDataSet-name": {
+      "@id": "cdi:PhysicalDataSet-name",
+      "@container": "@language"
+    },
+    "PhysicalRecordSegment-name": {
+      "@id": "cdi:PhysicalRecordSegment-name",
+      "@container": "@language"
+    },
+    "Activity-name": {
+      "@id": "cdi:Activity-name",
+      "@container": "@language"
+    },
+    "ControlLogic-name": {
+      "@id": "cdi:ControlLogic-name",
+      "@container": "@language"
+    },
+    "ValueAndConceptDescription-description": {
+      "@id": "cdi:ValueAndConceptDescription-description",
+      "@container": "@language"
+    },
+    "questionText": {
+      "@id": "tue:questionText",
+      "@container": "@language"
+    },
+    "expectedCategoryLabel": {
+      "@id": "tue:expectedCategoryLabel",
+      "@container": "@language"
+    },
+    "InstanceVariable-physicalDataType": {
+      "@id": "cdi:InstanceVariable-physicalDataType",
+      "@type": "@id"
+    },
+    "ConditionalControlLogic-construct": {
+      "@id": "cdi:ConditionalControlLogic-construct",
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "id": "_:study",
+      "label": {
+        "en": "Research Cockpit: DMP Feedback Form"
+      },
+      "comment": {
+        "en": "Survey form to evaluate the usability and fundability of the Data Management Plan templates inside the Research Cockpit (version revised from Sep. 2026). When you submit this form, it will not automatically collect your details like name and email address unless you provide it yourself."
+      },
+      "tue:collectionMode": "SelfAdministeredOnline",
+      "tue:collectionPeriod": {
+        "tue:startDate": "2026-04-30",
+        "tue:endDate": "2026-05-13"
+      },
+      "tue:respondentCount": 74
+    },
+    {
+      "id": "_:c1",
+      "type": "cdi:Concept",
+      "Concept-name": {
+        "en": "Ease of finding DMP template"
+      },
+      "Concept-definition": {
+        "en": "The perceived ease with which a respondent could locate the DMP template within the TU/e Research Cockpit."
+      }
+    },
+    {
+      "id": "_:c2",
+      "type": "cdi:Concept",
+      "Concept-name": {
+        "en": "Ease of completing DMP"
+      },
+      "Concept-definition": {
+        "en": "The perceived ease of the DMP completion process."
+      }
+    },
+    {
+      "id": "_:c3",
+      "type": "cdi:Concept",
+      "Concept-name": {
+        "en": "Clarity of system instructions"
+      },
+      "Concept-definition": {
+        "en": "The perceived clarity of instructions and guidance provided by the Research Cockpit system."
+      }
+    },
+    {
+      "id": "_:c4",
+      "type": "cdi:Concept",
+      "Concept-name": {
+        "en": "Contact with data steward"
+      },
+      "Concept-definition": {
+        "en": "Whether the respondent had contact with a data steward regarding their DMP."
+      }
+    },
+    {
+      "id": "_:c5",
+      "type": "cdi:Concept",
+      "Concept-name": {
+        "en": "Helpfulness of data steward advice"
+      },
+      "Concept-definition": {
+        "en": "The perceived helpfulness of the advice provided by the data steward, rated on a 5-star scale. Only applicable when the respondent had contact with a data steward."
+      }
+    },
+    {
+      "id": "_:c6",
+      "type": "cdi:Concept",
+      "Concept-name": {
+        "en": "Suggested improvements to DMP experience"
+      },
+      "Concept-definition": {
+        "en": "Free-text suggestions from the respondent for changing anything about the DMP experience. Only applicable when the respondent had contact with a data steward."
+      }
+    },
+    {
+      "id": "_:cl_likert5",
+      "type": "cdi:CodeList",
+      "EnumerationDomain-name": {
+        "en": "5-point Likert agreement scale"
+      },
+      "cdi:CodeList_has_Code": [
+        {
+          "type": "cdi:Code",
+          "cdi:Code-identifier": "1",
+          "cdi:Code_denotes_Category": {
+            "type": "cdi:Category",
+            "Concept-name": {
+              "en": "Strongly Disagree"
+            }
+          }
+        },
+        {
+          "type": "cdi:Code",
+          "cdi:Code-identifier": "2",
+          "cdi:Code_denotes_Category": {
+            "type": "cdi:Category",
+            "Concept-name": {
+              "en": "Disagree"
+            }
+          }
+        },
+        {
+          "type": "cdi:Code",
+          "cdi:Code-identifier": "3",
+          "cdi:Code_denotes_Category": {
+            "type": "cdi:Category",
+            "Concept-name": {
+              "en": "Neutral"
+            }
+          }
+        },
+        {
+          "type": "cdi:Code",
+          "cdi:Code-identifier": "4",
+          "cdi:Code_denotes_Category": {
+            "type": "cdi:Category",
+            "Concept-name": {
+              "en": "Agree"
+            }
+          }
+        },
+        {
+          "type": "cdi:Code",
+          "cdi:Code-identifier": "5",
+          "cdi:Code_denotes_Category": {
+            "type": "cdi:Category",
+            "Concept-name": {
+              "en": "Strongly Agree"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "_:cl_yesno",
+      "type": "cdi:CodeList",
+      "EnumerationDomain-name": {
+        "en": "Yes/No response"
+      },
+      "cdi:CodeList_has_Code": [
+        {
+          "type": "cdi:Code",
+          "cdi:Code-identifier": "1",
+          "cdi:Code_denotes_Category": {
+            "type": "cdi:Category",
+            "Concept-name": {
+              "en": "Yes"
+            }
+          }
+        },
+        {
+          "type": "cdi:Code",
+          "cdi:Code-identifier": "2",
+          "cdi:Code_denotes_Category": {
+            "type": "cdi:Category",
+            "Concept-name": {
+              "en": "No"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "_:cl_stars5",
+      "type": "cdi:CodeList",
+      "EnumerationDomain-name": {
+        "en": "5-star helpfulness rating"
+      },
+      "cdi:CodeList_has_Code": [
+        {
+          "type": "cdi:Code",
+          "cdi:Code-identifier": "1",
+          "cdi:Code_denotes_Category": {
+            "type": "cdi:Category",
+            "Concept-name": {
+              "en": "1 star"
+            }
+          }
+        },
+        {
+          "type": "cdi:Code",
+          "cdi:Code-identifier": "2",
+          "cdi:Code_denotes_Category": {
+            "type": "cdi:Category",
+            "Concept-name": {
+              "en": "2 stars"
+            }
+          }
+        },
+        {
+          "type": "cdi:Code",
+          "cdi:Code-identifier": "3",
+          "cdi:Code_denotes_Category": {
+            "type": "cdi:Category",
+            "Concept-name": {
+              "en": "3 stars"
+            }
+          }
+        },
+        {
+          "type": "cdi:Code",
+          "cdi:Code-identifier": "4",
+          "cdi:Code_denotes_Category": {
+            "type": "cdi:Category",
+            "Concept-name": {
+              "en": "4 stars"
+            }
+          }
+        },
+        {
+          "type": "cdi:Code",
+          "cdi:Code-identifier": "5",
+          "cdi:Code_denotes_Category": {
+            "type": "cdi:Category",
+            "Concept-name": {
+              "en": "5 stars"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "_:cv1",
+      "type": "cdi:ConceptualVariable",
+      "Concept-name": {
+        "en": "Finding DMP template was easy"
+      },
+      "questionText": {
+        "en": "Finding the DMP template in the TU/e Research Cockpit was easy."
+      },
+      "tue:conceptReference": {
+        "id": "_:c1"
+      }
+    },
+    {
+      "id": "_:cv2",
+      "type": "cdi:ConceptualVariable",
+      "Concept-name": {
+        "en": "Completing DMP was easy"
+      },
+      "questionText": {
+        "en": "The process of completing my DMP was easy."
+      },
+      "tue:conceptReference": {
+        "id": "_:c2"
+      }
+    },
+    {
+      "id": "_:cv3",
+      "type": "cdi:ConceptualVariable",
+      "Concept-name": {
+        "en": "Instructions were clear"
+      },
+      "questionText": {
+        "en": "The instructions and guidance provided by the system were clear."
+      },
+      "tue:conceptReference": {
+        "id": "_:c3"
+      }
+    },
+    {
+      "id": "_:cv4",
+      "type": "cdi:ConceptualVariable",
+      "Concept-name": {
+        "en": "Had contact with data steward"
+      },
+      "questionText": {
+        "en": "Did you have contact with a data steward?"
+      },
+      "tue:conceptReference": {
+        "id": "_:c4"
+      }
+    },
+    {
+      "id": "_:cv5",
+      "type": "cdi:ConceptualVariable",
+      "Concept-name": {
+        "en": "Helpfulness of data steward advice"
+      },
+      "questionText": {
+        "en": "How helpful was the advice of the data steward?"
+      },
+      "tue:conceptReference": {
+        "id": "_:c5"
+      }
+    },
+    {
+      "id": "_:cv6",
+      "type": "cdi:ConceptualVariable",
+      "Concept-name": {
+        "en": "Suggested improvements to DMP experience"
+      },
+      "questionText": {
+        "en": "If you could change anything about the DMP experience, what would it be?"
+      },
+      "tue:conceptReference": {
+        "id": "_:c6"
+      }
+    },
+    {
+      "id": "_:rv1",
+      "type": "cdi:RepresentedVariable",
+      "Concept-name": {
+        "en": "Ease of finding DMP template (5-pt Likert)"
+      },
+      "tue:conceptualVariableReference": {
+        "id": "_:cv1"
+      },
+      "cdi:RepresentedVariable_takesSubstantiveValuesFrom_SubstantiveValueDomain": {
+        "id": "_:svd1",
+        "type": "cdi:SubstantiveValueDomain",
+        "cdi:ValueDomain-recommendedDataType": "Ordinal",
+        "cdi:SubstantiveValueDomain_takesValuesFrom_EnumerationDomain": {
+          "id": "_:cl_likert5"
+        }
+      }
+    },
+    {
+      "id": "_:rv2",
+      "type": "cdi:RepresentedVariable",
+      "Concept-name": {
+        "en": "Ease of completing DMP (5-pt Likert)"
+      },
+      "tue:conceptualVariableReference": {
+        "id": "_:cv2"
+      },
+      "cdi:RepresentedVariable_takesSubstantiveValuesFrom_SubstantiveValueDomain": {
+        "id": "_:svd2",
+        "type": "cdi:SubstantiveValueDomain",
+        "cdi:ValueDomain-recommendedDataType": "Ordinal",
+        "cdi:SubstantiveValueDomain_takesValuesFrom_EnumerationDomain": {
+          "id": "_:cl_likert5"
+        }
+      }
+    },
+    {
+      "id": "_:rv3",
+      "type": "cdi:RepresentedVariable",
+      "Concept-name": {
+        "en": "Clarity of instructions (5-pt Likert)"
+      },
+      "tue:conceptualVariableReference": {
+        "id": "_:cv3"
+      },
+      "cdi:RepresentedVariable_takesSubstantiveValuesFrom_SubstantiveValueDomain": {
+        "id": "_:svd3",
+        "type": "cdi:SubstantiveValueDomain",
+        "cdi:ValueDomain-recommendedDataType": "Ordinal",
+        "cdi:SubstantiveValueDomain_takesValuesFrom_EnumerationDomain": {
+          "id": "_:cl_likert5"
+        }
+      }
+    },
+    {
+      "id": "_:rv4",
+      "type": "cdi:RepresentedVariable",
+      "Concept-name": {
+        "en": "Contact with data steward (Yes/No)"
+      },
+      "tue:conceptualVariableReference": {
+        "id": "_:cv4"
+      },
+      "cdi:RepresentedVariable_takesSubstantiveValuesFrom_SubstantiveValueDomain": {
+        "id": "_:svd4",
+        "type": "cdi:SubstantiveValueDomain",
+        "cdi:ValueDomain-recommendedDataType": "Nominal",
+        "cdi:SubstantiveValueDomain_takesValuesFrom_EnumerationDomain": {
+          "id": "_:cl_yesno"
+        }
+      }
+    },
+    {
+      "id": "_:rv5",
+      "type": "cdi:RepresentedVariable",
+      "Concept-name": {
+        "en": "Helpfulness of data steward advice (5-star)"
+      },
+      "tue:conceptualVariableReference": {
+        "id": "_:cv5"
+      },
+      "cdi:RepresentedVariable_takesSubstantiveValuesFrom_SubstantiveValueDomain": {
+        "id": "_:svd5",
+        "type": "cdi:SubstantiveValueDomain",
+        "cdi:ValueDomain-recommendedDataType": "Ordinal",
+        "cdi:SubstantiveValueDomain_takesValuesFrom_EnumerationDomain": {
+          "id": "_:cl_stars5"
+        }
+      }
+    },
+    {
+      "id": "_:rv6",
+      "type": "cdi:RepresentedVariable",
+      "Concept-name": {
+        "en": "Suggested improvements to DMP experience (free text)"
+      },
+      "tue:conceptualVariableReference": {
+        "id": "_:cv6"
+      },
+      "cdi:RepresentedVariable_takesSubstantiveValuesFrom_SubstantiveValueDomain": {
+        "id": "_:svd6",
+        "type": "cdi:SubstantiveValueDomain",
+        "cdi:ValueDomain-recommendedDataType": "String",
+        "cdi:SubstantiveValueDomain_isDescribedBy_ValueAndConceptDescription": {
+          "type": "cdi:ValueAndConceptDescription",
+          "ValueAndConceptDescription-description": {
+            "en": "Free-form text response. Any UTF-8 string up to 5000 characters."
+          },
+          "cdi:ValueAndConceptDescription-regularExpression": "^[\\s\\S]{0,5000}$"
+        }
+      }
+    },
+    {
+      "id": "_:iv0",
+      "type": "cdi:InstanceVariable",
+      "Concept-name": {
+        "en": "respondent_id"
+      },
+      "InstanceVariable-physicalDataType": "xsd:integer"
+    },
+    {
+      "id": "_:iv1",
+      "type": "cdi:InstanceVariable",
+      "Concept-name": {
+        "en": "dmp_template_easy"
+      },
+      "InstanceVariable-physicalDataType": "xsd:integer",
+      "cdi:RepresentedVariable_takesSubstantiveValuesFrom_SubstantiveValueDomain": {
+        "id": "_:svd1"
+      }
+    },
+    {
+      "id": "_:iv2",
+      "type": "cdi:InstanceVariable",
+      "Concept-name": {
+        "en": "dmp_completion_easy"
+      },
+      "InstanceVariable-physicalDataType": "xsd:integer",
+      "cdi:RepresentedVariable_takesSubstantiveValuesFrom_SubstantiveValueDomain": {
+        "id": "_:svd2"
+      }
+    },
+    {
+      "id": "_:iv3",
+      "type": "cdi:InstanceVariable",
+      "Concept-name": {
+        "en": "instructions_clear"
+      },
+      "InstanceVariable-physicalDataType": "xsd:integer",
+      "cdi:RepresentedVariable_takesSubstantiveValuesFrom_SubstantiveValueDomain": {
+        "id": "_:svd3"
+      }
+    },
+    {
+      "id": "_:iv4",
+      "type": "cdi:InstanceVariable",
+      "Concept-name": {
+        "en": "contact_data_steward"
+      },
+      "InstanceVariable-physicalDataType": "xsd:integer",
+      "cdi:RepresentedVariable_takesSubstantiveValuesFrom_SubstantiveValueDomain": {
+        "id": "_:svd4"
+      }
+    },
+    {
+      "id": "_:iv5",
+      "type": "cdi:InstanceVariable",
+      "Concept-name": {
+        "en": "steward_advice_helpfulness"
+      },
+      "InstanceVariable-physicalDataType": "xsd:integer",
+      "cdi:RepresentedVariable_takesSubstantiveValuesFrom_SubstantiveValueDomain": {
+        "id": "_:svd5"
+      },
+      "cdi:RepresentedVariable_takesSentinelValuesFrom_SentinelValueDomain": {
+        "type": "cdi:SentinelValueDomain",
+        "cdi:SentinelValueDomain_isDescribedBy_ValueAndConceptDescription": {
+          "type": "cdi:ValueAndConceptDescription",
+          "ValueAndConceptDescription-description": {
+            "en": "Null when the question was not displayed (respondent answered No to Q2)."
+          }
+        }
+      }
+    },
+    {
+      "id": "_:iv6",
+      "type": "cdi:InstanceVariable",
+      "Concept-name": {
+        "en": "dmp_improvement_suggestion"
+      },
+      "InstanceVariable-physicalDataType": "xsd:string",
+      "cdi:RepresentedVariable_takesSubstantiveValuesFrom_SubstantiveValueDomain": {
+        "id": "_:svd6"
+      },
+      "cdi:RepresentedVariable_takesSentinelValuesFrom_SentinelValueDomain": {
+        "type": "cdi:SentinelValueDomain",
+        "cdi:SentinelValueDomain_isDescribedBy_ValueAndConceptDescription": {
+          "type": "cdi:ValueAndConceptDescription",
+          "ValueAndConceptDescription-description": {
+            "en": "Null when the question was not displayed (respondent answered No to Q2)."
+          }
+        }
+      }
+    },
+    {
+      "id": "_:wds1",
+      "type": "cdi:WideDataSet",
+      "cdi:DataSet_isStructuredBy_DataStructure": {
+        "type": "cdi:WideDataStructure",
+        "cdi:DataStructure_has_DataStructureComponent": [
+          {
+            "type": "cdi:IdentifierComponent",
+            "cdi:DataStructureComponent-identifier": "respondent_id",
+            "cdi:DataStructureComponent_isDefinedBy_RepresentedVariable": {
+              "id": "_:iv0"
+            }
+          },
+          {
+            "type": "cdi:MeasureComponent",
+            "MeasureComponent-name": {
+              "en": "Finding DMP template was easy"
+            },
+            "cdi:DataStructureComponent_isDefinedBy_RepresentedVariable": {
+              "id": "_:iv1"
+            }
+          },
+          {
+            "type": "cdi:MeasureComponent",
+            "MeasureComponent-name": {
+              "en": "Completing DMP was easy"
+            },
+            "cdi:DataStructureComponent_isDefinedBy_RepresentedVariable": {
+              "id": "_:iv2"
+            }
+          },
+          {
+            "type": "cdi:MeasureComponent",
+            "MeasureComponent-name": {
+              "en": "Instructions were clear"
+            },
+            "cdi:DataStructureComponent_isDefinedBy_RepresentedVariable": {
+              "id": "_:iv3"
+            }
+          },
+          {
+            "type": "cdi:MeasureComponent",
+            "MeasureComponent-name": {
+              "en": "Contact with data steward"
+            },
+            "cdi:DataStructureComponent_isDefinedBy_RepresentedVariable": {
+              "id": "_:iv4"
+            }
+          },
+          {
+            "type": "cdi:MeasureComponent",
+            "MeasureComponent-name": {
+              "en": "Helpfulness of data steward advice"
+            },
+            "cdi:DataStructureComponent_isDefinedBy_RepresentedVariable": {
+              "id": "_:iv5"
+            }
+          },
+          {
+            "type": "cdi:MeasureComponent",
+            "MeasureComponent-name": {
+              "en": "Suggested improvements to DMP experience"
+            },
+            "cdi:DataStructureComponent_isDefinedBy_RepresentedVariable": {
+              "id": "_:iv6"
+            }
+          }
+        ]
+      },
+      "cdi:DataSet_has_DataPoint": [
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "5",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:07:00",
+            "tue:completionTime": "2026-04-30T14:08:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "6",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:07:00",
+            "tue:completionTime": "2026-04-30T14:09:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "7",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:12:00",
+            "tue:completionTime": "2026-04-30T14:12:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "8",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:13:00",
+            "tue:completionTime": "2026-04-30T14:13:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "9",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:12:00",
+            "tue:completionTime": "2026-04-30T14:14:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "10",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:13:00",
+            "tue:completionTime": "2026-04-30T14:16:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "11",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:14:00",
+            "tue:completionTime": "2026-04-30T14:16:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "12",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:17:00",
+            "tue:completionTime": "2026-04-30T14:17:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "13",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:14:00",
+            "tue:completionTime": "2026-04-30T14:17:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "14",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:17:00",
+            "tue:completionTime": "2026-04-30T14:21:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "15",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:16:00",
+            "tue:completionTime": "2026-04-30T14:21:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "16",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:20:00",
+            "tue:completionTime": "2026-04-30T14:21:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "17",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:16:00",
+            "tue:completionTime": "2026-04-30T14:23:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "18",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:22:00",
+            "tue:completionTime": "2026-04-30T14:23:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "19",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:26:00",
+            "tue:completionTime": "2026-04-30T14:27:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "20",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:28:00",
+            "tue:completionTime": "2026-04-30T14:28:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "21",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:32:00",
+            "tue:completionTime": "2026-04-30T14:34:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "22",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:39:00",
+            "tue:completionTime": "2026-04-30T14:42:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "23",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:37:00",
+            "tue:completionTime": "2026-04-30T14:43:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "24",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:45:00",
+            "tue:completionTime": "2026-04-30T14:46:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "25",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:55:00",
+            "tue:completionTime": "2026-04-30T15:01:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "26",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T15:05:00",
+            "tue:completionTime": "2026-04-30T15:06:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "27",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:51:00",
+            "tue:completionTime": "2026-04-30T15:08:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "28",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T15:06:00",
+            "tue:completionTime": "2026-04-30T15:08:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "29",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T15:09:00",
+            "tue:completionTime": "2026-04-30T15:09:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "30",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T15:09:00",
+            "tue:completionTime": "2026-04-30T15:10:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "31",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T15:12:00",
+            "tue:completionTime": "2026-04-30T15:15:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "32",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:19:00",
+            "tue:completionTime": "2026-04-30T15:24:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "33",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T15:24:00",
+            "tue:completionTime": "2026-04-30T15:26:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "34",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T15:26:00",
+            "tue:completionTime": "2026-04-30T15:26:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "35",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T15:36:00",
+            "tue:completionTime": "2026-04-30T15:37:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "36",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T15:37:00",
+            "tue:completionTime": "2026-04-30T15:39:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "37",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T15:39:00",
+            "tue:completionTime": "2026-04-30T15:40:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "38",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T15:45:00",
+            "tue:completionTime": "2026-04-30T15:46:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "39",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T15:54:00",
+            "tue:completionTime": "2026-04-30T15:54:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "40",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T16:00:00",
+            "tue:completionTime": "2026-04-30T16:00:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "41",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T16:00:00",
+            "tue:completionTime": "2026-04-30T16:00:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "42",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T16:05:00",
+            "tue:completionTime": "2026-04-30T16:09:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "43",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T16:19:00",
+            "tue:completionTime": "2026-04-30T16:20:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "44",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T16:35:00",
+            "tue:completionTime": "2026-04-30T16:36:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "45",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T16:58:00",
+            "tue:completionTime": "2026-04-30T17:00:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "46",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T16:50:00",
+            "tue:completionTime": "2026-04-30T17:00:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "47",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T17:01:00",
+            "tue:completionTime": "2026-04-30T17:02:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "48",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T17:22:00",
+            "tue:completionTime": "2026-04-30T17:23:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "49",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T17:24:00",
+            "tue:completionTime": "2026-04-30T17:24:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "50",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T14:07:00",
+            "tue:completionTime": "2026-04-30T17:41:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "51",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T18:01:00",
+            "tue:completionTime": "2026-04-30T18:04:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "52",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T18:20:00",
+            "tue:completionTime": "2026-04-30T18:20:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "53",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T19:08:00",
+            "tue:completionTime": "2026-04-30T19:11:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "54",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T19:49:00",
+            "tue:completionTime": "2026-04-30T19:59:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "55",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-04-30T20:33:00",
+            "tue:completionTime": "2026-04-30T20:33:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "56",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-01T06:21:00",
+            "tue:completionTime": "2026-05-01T06:23:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "57",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-01T09:23:00",
+            "tue:completionTime": "2026-05-01T09:23:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "58",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-01T09:30:00",
+            "tue:completionTime": "2026-05-01T09:31:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "59",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-01T10:32:00",
+            "tue:completionTime": "2026-05-01T10:32:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "60",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-01T11:28:00",
+            "tue:completionTime": "2026-05-01T11:29:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "61",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-01T15:53:00",
+            "tue:completionTime": "2026-05-01T15:53:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "62",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-01T16:32:00",
+            "tue:completionTime": "2026-05-01T16:35:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "63",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-01T21:43:00",
+            "tue:completionTime": "2026-05-01T21:50:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "64",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-02T10:50:00",
+            "tue:completionTime": "2026-05-02T10:50:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "65",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-03T14:16:00",
+            "tue:completionTime": "2026-05-03T14:17:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "66",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-04T08:13:00",
+            "tue:completionTime": "2026-05-04T08:14:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "67",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-04T08:59:00",
+            "tue:completionTime": "2026-05-04T09:00:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "68",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-04T10:25:00",
+            "tue:completionTime": "2026-05-04T10:26:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "69",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-04T11:10:00",
+            "tue:completionTime": "2026-05-04T11:11:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "70",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-04T11:51:00",
+            "tue:completionTime": "2026-05-04T11:52:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "71",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-04T13:11:00",
+            "tue:completionTime": "2026-05-04T13:11:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "72",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-04T15:18:00",
+            "tue:completionTime": "2026-05-04T15:22:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "73",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-04T15:30:00",
+            "tue:completionTime": "2026-05-04T15:32:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "74",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-05T10:33:00",
+            "tue:completionTime": "2026-05-05T10:34:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "75",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-05T22:01:00",
+            "tue:completionTime": "2026-05-05T22:01:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": null
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "76",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-06T09:36:00",
+            "tue:completionTime": "2026-05-06T13:49:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 2
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "77",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-07T11:10:00",
+            "tue:completionTime": "2026-05-07T11:17:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 3
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        },
+        {
+          "type": "cdi:DataPoint",
+          "tue:identifierValue": "78",
+          "tue:responseTimestamps": {
+            "tue:startTime": "2026-05-13T14:44:00",
+            "tue:completionTime": "2026-05-13T14:45:00"
+          },
+          "tue:measureValue": [
+            {
+              "tue:variableRef": "_:iv1",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv2",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv3",
+              "tue:value": 4
+            },
+            {
+              "tue:variableRef": "_:iv4",
+              "tue:value": 1
+            },
+            {
+              "tue:variableRef": "_:iv5",
+              "tue:value": 5
+            },
+            {
+              "tue:variableRef": "_:iv6",
+              "tue:value": "REDACTED"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "_:pds1",
+      "type": "cdi:PhysicalDataSet",
+      "PhysicalDataSet-name": {
+        "en": "feedback-survey-responses.csv"
+      },
+      "cdi:PhysicalDataSet-physicalFileName": "feedback-survey-responses.csv",
+      "cdi:PhysicalDataSet_has_PhysicalRecordSegment": {
+        "type": "cdi:PhysicalRecordSegment",
+        "PhysicalRecordSegment-name": {
+          "en": "Main record segment"
+        },
+        "cdi:PhysicalRecordSegment_has_PhysicalSegmentLayout": {
+          "type": "cdi:UnitSegmentLayout",
+          "cdi:PhysicalSegmentLayout-isDelimited": true,
+          "cdi:PhysicalSegmentLayout-delimiter": ",",
+          "cdi:PhysicalSegmentLayout-hasHeader": true,
+          "cdi:PhysicalSegmentLayout-headerRowCount": 1
+        }
+      },
+      "cdi:PhysicalDataSet_has_InstanceVariable": [
+        {
+          "id": "_:iv0"
+        },
+        {
+          "id": "_:iv1"
+        },
+        {
+          "id": "_:iv2"
+        },
+        {
+          "id": "_:iv3"
+        },
+        {
+          "id": "_:iv4"
+        },
+        {
+          "id": "_:iv5"
+        },
+        {
+          "id": "_:iv6"
+        }
+      ],
+      "cdi:PhysicalDataSet_correspondsTo_DataSet": {
+        "id": "_:wds1"
+      }
+    },
+    {
+      "id": "_:proc1",
+      "type": "cdi:Activity",
+      "Activity-name": {
+        "en": "DMP Feedback Survey Administration Process"
+      },
+      "cdi:Activity-description": "Describes the survey flow, including conditional display of Q3 and Q4 based on the response to Q2.",
+      "cdi:Activity_has_Step": [
+        {
+          "id": "_:step_q1",
+          "type": "cdi:Step",
+          "Activity-name": {
+            "en": "Administer Q1 — Likert items"
+          },
+          "cdi:Activity-description": "Present the three Likert-scale statements to the respondent.",
+          "cdi:Activity-entityUsed": [
+            {
+              "id": "_:iv1"
+            },
+            {
+              "id": "_:iv2"
+            },
+            {
+              "id": "_:iv3"
+            }
+          ],
+          "cdi:Activity-entityProduced": [
+            {
+              "id": "_:iv1"
+            },
+            {
+              "id": "_:iv2"
+            },
+            {
+              "id": "_:iv3"
+            }
+          ]
+        },
+        {
+          "id": "_:step_q2",
+          "type": "cdi:Step",
+          "Activity-name": {
+            "en": "Administer Q2 — Data steward contact"
+          },
+          "cdi:Activity-description": "Present the Yes/No question about contact with a data steward.",
+          "cdi:Activity-entityUsed": [
+            {
+              "id": "_:iv4"
+            }
+          ],
+          "cdi:Activity-entityProduced": [
+            {
+              "id": "_:iv4"
+            }
+          ]
+        },
+        {
+          "id": "_:step_q3",
+          "type": "cdi:Step",
+          "Activity-name": {
+            "en": "Administer Q3 — Data steward helpfulness rating"
+          },
+          "cdi:Activity-description": "Present the 5-star rating question. This step is only executed if the ConditionalControlLogic evaluates to true (Q2 = Yes).",
+          "cdi:Activity-entityUsed": [
+            {
+              "id": "_:iv5"
+            }
+          ],
+          "cdi:Activity-entityProduced": [
+            {
+              "id": "_:iv5"
+            }
+          ]
+        },
+        {
+          "id": "_:step_q4",
+          "type": "cdi:Step",
+          "Activity-name": {
+            "en": "Administer Q4 — DMP improvement suggestion"
+          },
+          "cdi:Activity-description": "Present the free-text suggestion question. This step is only executed if the ConditionalControlLogic evaluates to true (Q2 = Yes).",
+          "cdi:Activity-entityUsed": [
+            {
+              "id": "_:iv6"
+            }
+          ],
+          "cdi:Activity-entityProduced": [
+            {
+              "id": "_:iv6"
+            }
+          ]
+        }
+      ],
+      "cdi:Activity_hasInternal_ControlLogic": {
+        "id": "_:skip_logic"
+      }
+    },
+    {
+      "id": "_:skip_logic",
+      "type": "cdi:ConditionalControlLogic",
+      "ControlLogic-name": {
+        "en": "Show Q3 and Q4 if Q2 = Yes"
+      },
+      "cdi:ControlLogic-description": "A decision point that determines whether Q3 (data steward helpfulness rating) and Q4 (DMP improvement suggestion) are presented to the respondent. The condition evaluates the response to Q2 (InstanceVariable IV4: contact_data_steward). If the value equals code 1 (Yes) from CodeList CL_YESNO, Q3 and Q4 are displayed. Otherwise, they are skipped.",
+      "ConditionalControlLogic-construct": "cdi:IfThen",
+      "cdi:ControlLogic_invokes_Activity": [
+        {
+          "id": "_:step_q3"
+        },
+        {
+          "id": "_:step_q4"
+        }
+      ],
+      "tue:condition": {
+        "tue:expression": "IV4.contact_data_steward == CodeList.CL_YESNO.Code['1']",
+        "tue:expressionLanguage": "pseudo-human-readable",
+        "tue:evaluatesVariable": {
+          "id": "_:iv4"
+        },
+        "tue:evaluatesAgainstCodeList": {
+          "id": "_:cl_yesno"
+        },
+        "tue:expectedCodeValue": "1",
+        "expectedCategoryLabel": {
+          "en": "Yes"
+        }
+      }
+    }
+  ]
+}
