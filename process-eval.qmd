@@ -85,6 +85,20 @@ print(h.feedback_survey_html())
 > Note. Above ratings are from the **researcher feedback survey** (n = 74
 > respondents, collected 30 Apr -- 13 May 2026).
 
+## How to improve the implementation for the next year, 2026-2027
+
+### What we can do: Research Cockpit DMP improvement
+
+- At the Data Steward team, we created examples for the DMP and ERB on Zenodo:
+  [https://zenodo.org/records/17375609](https://zenodo.org/records/17375609)
+- We will continue improving guidance and examples presented while completing
+  the DMP form
+
+### What you can do
+
+<a class="cta-btn" href="https://miro.com/app/board/uXjVGOKslJs=/?moveToWidget=3458764679245342526&cot=14" target="_blank">Give
+us your feedback</a>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   var sel = document.getElementById("dept-select");
