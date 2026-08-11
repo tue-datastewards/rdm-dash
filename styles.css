@@ -571,7 +571,6 @@ details.storage-details[open] summary {
   align-items: center;
   gap: 1.25rem;
   flex-wrap: wrap;
-  margin: 1.25rem 0 0.5rem;
   font-size: 0.85rem;
 }
 
@@ -615,7 +614,7 @@ details.storage-details[open] summary {
 }
 
 .feedback-bar-figure {
-  margin: 1rem 0 1.5rem;
+  margin: 1.5rem 0 0.5rem;
 }
 
 .feedback-bar-figure figcaption {

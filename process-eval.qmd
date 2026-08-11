@@ -82,9 +82,8 @@ for dept in h.DEPARTMENTS:
 print(h.feedback_survey_html())
 ```
 
-Ratings from the **researcher feedback survey** (n = 74 respondents, collected
-30 Apr -- 13 May 2026). Responses are on a 1--5 scale; segments show the share
-of respondents per level, with the number of responses per segment on the bar.
+> Note. Above rationgs are from the **researcher feedback survey** (n = 74
+> respondents, collected 30 Apr -- 13 May 2026).
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
