@@ -411,6 +411,18 @@ h4 {
 }
 
 /* Section headings */
+.sidebar-item-section {
+  border-top: none;
+  padding-top: 0.35rem;
+  margin-top: 0.35rem;
+}
+.sidebar-item-section::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin: 0 0.45rem 0.35rem;
+  background: var(--border);
+}
 .sidebar-item-section > .sidebar-item-container > .sidebar-item-toggle,
 .sidebar-item-section > .sidebar-item-container > .sidebar-item-text {
   font-weight: 600;
