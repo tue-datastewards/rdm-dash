@@ -175,6 +175,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./process-eval.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DMP Process Evaluation<br><span class="sidebar-subtitle">Process quality metrics (Q12–Q15)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./communication-training.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Communication &amp; Training<br><span class="sidebar-subtitle">Outreach activities (Q16–Q17)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./compliance.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Policy Compliance<br><span class="sidebar-subtitle">Policy adherence metrics (Q8–Q10)</span></span></a>
   </div>
@@ -183,18 +195,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="./lifecycle.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">DMP Lifecycle<br><span class="sidebar-subtitle">Data management planning (Q1–Q11)</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./process-eval.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Process Evaluation<br><span class="sidebar-subtitle">Process quality metrics (Q12–Q15)</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./communication-training.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Communication &amp; Training<br><span class="sidebar-subtitle">Outreach activities (Q16–Q17)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -268,7 +268,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Data Queries</h1>
 <p>SQL queries used to generate the DMP and ERB data files in <code>data/</code>.</p>
 <p>Source table: <code>rdi_tst.cockpit</code> (TU/e Research Cockpit gold fact tables).</p>
-<p>The <code>SELECT</code> lists below are limited to the columns the dashboard actually consumes (see <code>_helpers.py</code> and the <code>index.qmd</code> / <code>dept-*.qmd</code> pages). <code>reporter_email</code> and every other unused field are omitted so the exports stay lean.</p>
+<p>The <code>SELECT</code> lists below are limited to the columns the dashboard actually consumes (see <code>_helpers.py</code> and the <code>.qmd</code> pages). <code>reporter_email</code> and every other unused field are omitted so the exports stay lean.</p>
 <section id="dmps" class="level2">
 <h2 class="anchored" data-anchor-id="dmps">DMPs</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>

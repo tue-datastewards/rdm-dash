@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Process Evaluation – RDM Dashboard</title>
+<title>Data Management Plan (DMP) Process Evaluation – RDM Dashboard</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -114,7 +114,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./process-eval.html">Process Evaluation<br><span class="sidebar-subtitle">Process quality metrics (Q12–Q15)</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./process-eval.html">DMP Process Evaluation<br><span class="sidebar-subtitle">Process quality metrics (Q12–Q15)</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -140,6 +140,18 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./process-eval.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">DMP Process Evaluation<br><span class="sidebar-subtitle">Process quality metrics (Q12–Q15)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./communication-training.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Communication &amp; Training<br><span class="sidebar-subtitle">Outreach activities (Q16–Q17)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./compliance.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Policy Compliance<br><span class="sidebar-subtitle">Policy adherence metrics (Q8–Q10)</span></span></a>
   </div>
@@ -148,18 +160,6 @@ ul.task-list li input[type="checkbox"] {
   <div class="sidebar-item-container"> 
   <a href="./lifecycle.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">DMP Lifecycle<br><span class="sidebar-subtitle">Data management planning (Q1–Q11)</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./process-eval.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Process Evaluation<br><span class="sidebar-subtitle">Process quality metrics (Q12–Q15)</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./communication-training.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Communication &amp; Training<br><span class="sidebar-subtitle">Outreach activities (Q16–Q17)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -208,7 +208,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Process Evaluation</h1>
+<h1 class="title">Data Management Plan (DMP) Process Evaluation</h1>
 </div>
 
 
@@ -225,48 +225,1630 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="process-evaluation" class="level2">
-<h2 class="anchored" data-anchor-id="process-evaluation">Process Evaluation</h2>
-<p>These metrics are derived from the <strong>researcher survey</strong> sent to researchers who interacted with the DMP template in the Research Cockpit.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 47%">
-<col style="width: 38%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>#</th>
-<th>Question</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Q12</td>
-<td>How easy do researchers find it to <strong>locate the DMP template</strong> in the Research Cockpit?</td>
-<td>Pending</td>
-</tr>
-<tr class="even">
-<td>Q13</td>
-<td>How easy do researchers find <strong>completing the DMP</strong>?</td>
-<td>Pending</td>
-</tr>
-<tr class="odd">
-<td>Q14</td>
-<td>How clear are the <strong>instructions and guidance</strong> provided within the DMP template?</td>
-<td>Pending</td>
-</tr>
-<tr class="even">
-<td>Q15</td>
-<td>How helpful is the <strong>advice provided by Data Stewards</strong>?</td>
-<td>Pending</td>
-</tr>
-</tbody>
-</table>
-<p><em>Survey data collection is ongoing. Visualizations will be added once the dataset is available.</em></p>
+<div class="filter-bar">
+<div class="purpose-toggle">
+<p><button class="purpose-btn active" data-purpose="all">All purposes</button> <button class="purpose-btn" data-purpose="scientific">Scientific</button> <button class="purpose-btn" data-purpose="educational">Educational</button></p>
+</div>
+<p><select id="dept-select" class="dept-selector"> <option value="overview">All departments</option>
+<option value="industrial-design">Industrial Design (ID)</option> <option value="industrial-engineering">Industrial Engineering and Innovation Sciences (IE&amp;IS)</option> <option value="built-environment">Built Environment (BE)</option> <option value="mathematics-computer-science">Mathematics and Computer Science (M&amp;CS)</option> <option value="biomedical-engineering">Biomedical Engineering (BmE)</option> <option value="mechanical-engineering">Mechanical Engineering (ME)</option> <option value="applied-physics">Applied Physics and Science Education (AP&amp;SE)</option> <option value="electrical-engineering">Electrical Engineering (EE)</option> <option value="chemical-engineering">Chemical Engineering and Chemistry (CE&amp;C)</option>
+</select></p>
+</div>
+<div id="dept-overview" class="dept-panel">
+<div class="purpose-content purpose-active" data-purpose="all">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="233.0"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">29%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+640 of 2230 DMPs sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 588 DMP submissions (3.4 days mean)
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="305.5"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">7%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+145 of 2230 DMPs requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="scientific">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="184.1"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">44%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+412 of 944 scientific DMPs sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 394 scientific DMP submissions (3.4 days mean)
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="283.8"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">13%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+124 of 944 scientific DMPs requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="educational">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="228.0"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">30%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+206 of 682 educational DMPs sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 160 educational DMP submissions (3.2 days mean)
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="316.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">3%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+21 of 682 educational DMPs requested help
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="0ab73fc0" class="cell" data-tags="[&quot;hide-all&quot;]" data-execution_count="6">
+<div id="dept-industrial-design" class="dept-panel" style="display:none">
+<div class="purpose-content purpose-active" data-purpose="all">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="254.4"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">22%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+181 of 818 DMPs at ID sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 101 DMP submissions (2.7 days mean) at ID
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="318.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">2%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+20 of 818 DMPs at ID requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="scientific">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="220.2"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">33%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+74 of 227 scientific DMPs at ID sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 49 scientific DMP submissions (2.2 days mean) at ID
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="309.5"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">5%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+12 of 227 scientific DMPs at ID requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="educational">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="238.9"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">27%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+103 of 383 educational DMPs at ID sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 49 educational DMP submissions (3.1 days mean) at ID
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="319.9"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">2%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+8 of 383 educational DMPs at ID requested help
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="dept-industrial-engineering" class="dept-panel" style="display:none">
+<div class="purpose-content purpose-active" data-purpose="all">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="246.4"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">25%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+129 of 525 DMPs at IE&amp;IS sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+4.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 200 DMP submissions (3.9 days mean) at IE&amp;IS
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="300.0"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">8%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+43 of 525 DMPs at IE&amp;IS requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="scientific">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="222.6"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">32%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+80 of 251 scientific DMPs at IE&amp;IS sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+4.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 119 scientific DMP submissions (3.8 days mean) at IE&amp;IS
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="282.5"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">14%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+34 of 251 scientific DMPs at IE&amp;IS requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="educational">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="235.4"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">28%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+45 of 161 educational DMPs at IE&amp;IS sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 65 educational DMP submissions (3.3 days mean) at IE&amp;IS
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="308.5"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">6%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+9 of 161 educational DMPs at IE&amp;IS requested help
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="dept-built-environment" class="dept-panel" style="display:none">
+<div class="purpose-content purpose-active" data-purpose="all">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="235.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">28%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+68 of 244 DMPs at BE sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+1.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 64 DMP submissions (2.5 days mean) at BE
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="299.9"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">8%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+20 of 244 DMPs at BE requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="scientific">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="203.3"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">38%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+34 of 90 scientific DMPs at BE sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+1.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 32 scientific DMP submissions (2.4 days mean) at BE
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="268.6"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">18%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+16 of 90 scientific DMPs at BE requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="educational">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="205.6"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">37%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+33 of 89 educational DMPs at BE sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 30 educational DMP submissions (2.5 days mean) at BE
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="312.0"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">4%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+4 of 89 educational DMPs at BE requested help
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="dept-mathematics-computer-science" class="dept-panel" style="display:none">
+<div class="purpose-content purpose-active" data-purpose="all">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="157.3"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">52%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+98 of 189 DMPs at M&amp;CS sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+1.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 81 DMP submissions (3.5 days mean) at M&amp;CS
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="300.8"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">8%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+15 of 189 DMPs at M&amp;CS requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="scientific">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="108.0"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">67%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+79 of 118 scientific DMPs at M&amp;CS sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+1.5 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 68 scientific DMP submissions (3.4 days mean) at M&amp;CS
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="285.2"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">13%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+15 of 118 scientific DMPs at M&amp;CS requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="educational">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="104.0"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">68%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+15 of 22 educational DMPs at M&amp;CS sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+1.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 9 educational DMP submissions (4.7 days mean) at M&amp;CS
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">0%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+0 of 22 educational DMPs at M&amp;CS requested help
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="dept-biomedical-engineering" class="dept-panel" style="display:none">
+<div class="purpose-content purpose-active" data-purpose="all">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="155.8"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">52%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+45 of 86 DMPs at BmE sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.5 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 40 DMP submissions (3.9 days mean) at BmE
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="288.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">12%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+10 of 86 DMPs at BmE requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="scientific">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="87.5"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">73%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+41 of 56 scientific DMPs at BmE sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+3.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 37 scientific DMP submissions (4.1 days mean) at BmE
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="268.4"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">18%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+10 of 56 scientific DMPs at BmE requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="educational">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">0%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+0 of 1 educational DMPs at BmE sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+N/A
+</p>
+</div>
+<div class="kpi-desc">
+No response time data available
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">0%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+0 of 1 educational DMPs at BmE requested help
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="dept-mechanical-engineering" class="dept-panel" style="display:none">
+<div class="purpose-content purpose-active" data-purpose="all">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="206.2"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">37%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+38 of 103 DMPs at ME sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 31 DMP submissions (4.3 days mean) at ME
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="301.3"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">8%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+8 of 103 DMPs at ME requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="scientific">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="148.5"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">55%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+30 of 55 scientific DMPs at ME sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 24 scientific DMP submissions (4.1 days mean) at ME
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="279.2"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">15%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+8 of 55 scientific DMPs at ME requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="educational">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="150.8"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">54%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+7 of 13 educational DMPs at ME sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 6 educational DMP submissions (4.0 days mean) at ME
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">0%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+0 of 13 educational DMPs at ME requested help
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="dept-applied-physics" class="dept-panel" style="display:none">
+<div class="purpose-content purpose-active" data-purpose="all">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="183.2"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">44%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+29 of 66 DMPs at APSE sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.5 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 30 DMP submissions (3.5 days mean) at APSE
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="302.0"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">8%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+5 of 66 DMPs at APSE requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="scientific">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="106.2"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">68%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+27 of 40 scientific DMPs at APSE sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 27 scientific DMP submissions (3.4 days mean) at APSE
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="285.9"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">12%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+5 of 40 scientific DMPs at APSE requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="educational">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">0%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+0 of 0 educational DMPs at APSE sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+N/A
+</p>
+</div>
+<div class="kpi-desc">
+No response time data available
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">0%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+0 of 0 educational DMPs at APSE requested help
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="dept-electrical-engineering" class="dept-panel" style="display:none">
+<div class="purpose-content purpose-active" data-purpose="all">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="208.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">36%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+26 of 72 DMPs at EE sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 20 DMP submissions (3.5 days mean) at EE
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="258.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">21%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+15 of 72 DMPs at EE requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="scientific">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="169.9"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">48%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+24 of 50 scientific DMPs at EE sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+2.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 17 scientific DMP submissions (3.4 days mean) at EE
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="228.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">30%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+15 of 50 scientific DMPs at EE requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="educational">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">0%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+0 of 4 educational DMPs at EE sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+1.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 1 educational DMP submissions (1.0 days mean) at EE
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">0%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+0 of 4 educational DMPs at EE requested help
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="dept-chemical-engineering" class="dept-panel" style="display:none">
+<div class="purpose-content purpose-active" data-purpose="all">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="191.8"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">41%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+19 of 46 DMPs at CE&amp;C sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+1.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 19 DMP submissions (2.1 days mean) at CE&amp;C
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="277.0"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">15%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+7 of 46 DMPs at CE&amp;C requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="scientific">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="112.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">66%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+19 of 29 scientific DMPs at CE&amp;C sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<span class="info-tip" aria-label="Calculation note"><svg viewbox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Only DMPs with a response at least 1 day after submission are included (responses under 1 day are excluded).</span></span>
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+1.0 days
+</p>
+</div>
+<div class="kpi-desc">
+Median response time across 19 scientific DMP submissions (2.1 days mean) at CE&amp;C
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="247.9"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">24%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+7 of 29 scientific DMPs at CE&amp;C requested help
+</div>
+</div>
+</div>
+</div>
+<div class="purpose-content" data-purpose="educational">
+<div class="kpi-grid">
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">0%</text>
+</svg>
+</div>
+<div class="kpi-label">
+Revision requested rate
+</div>
+<div class="kpi-desc">
+0 of 1 educational DMPs at CE&amp;C sent back for revision
+</div>
+</div>
+<div class="kpi-card kpi-blue">
+<div class="kpi-label">
+<p>
+Data Steward Response Time
+</p>
+</div>
+<div class="kpi-value">
+<p>
+N/A
+</p>
+</div>
+<div class="kpi-desc">
+No response time data available
+</div>
+</div>
+<div class="kpi-card kpi-circle">
+<div class="gauge-wrap">
+<svg class="gauge-svg" viewbox="0 0 132 132" width="132" height="132">
+<circle cx="66" cy="66" r="52" fill="none" stroke="var(--rdm-100)" stroke-width="12"></circle><circle cx="66" cy="66" r="52" fill="none" stroke="var(--kpi-accent, var(--rdm-700))" stroke-width="12" stroke-linecap="round" transform="rotate(-90 66 66)" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle><text class="gauge-value" x="66" y="66" text-anchor="middle" dominant-baseline="central" style="fill:var(--slate-800,#111827);font-size:32px;font-weight:700">0%</text>
+</svg>
+</div>
+<div class="kpi-label">
+‘I need advice’ at first submission
+</div>
+<div class="kpi-desc">
+0 of 1 educational DMPs at CE&amp;C requested help
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<section id="how-researchers-rate-the-data-management-plan-dmp-process" class="level2">
+<h2 class="anchored" data-anchor-id="how-researchers-rate-the-data-management-plan-dmp-process">How researchers rate the Data Management Plan (DMP) Process</h2>
+<figure class="feedback-bar-figure figure">
+<figcaption>
+<span class="feedback-title">Finding the DMP template in the TU/e Research Cockpit was easy <span class="feedback-n">(n = 74)</span></span> <span class="feedback-positive info-tip" tabindex="0">68% positive<svg viewbox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Share of responses that were “Agree” or “Strongly Agree” (levels 4-5 of the 5-point scale).</span></span>
+</figcaption>
+<div class="feedback-bar" role="img" aria-label="Finding the DMP template in the TU/e Research Cockpit was easy">
+<div class="feedback-seg" data-level="5" style="flex-grow:22.9730" title="Strongly Agree: 17 (23%)">
+<span class="seg-count">23%</span>
+</div>
+<div class="feedback-seg" data-level="4" style="flex-grow:44.5946" title="Agree: 33 (45%)">
+<span class="seg-count">45%</span>
+</div>
+<div class="feedback-seg" data-level="3" style="flex-grow:16.2162" title="Neutral: 12 (16%)">
+<span class="seg-count">16%</span>
+</div>
+<div class="feedback-seg" data-level="2" style="flex-grow:8.1081" title="Disagree: 6 (8%)">
+
+</div>
+<div class="feedback-seg" data-level="1" style="flex-grow:8.1081" title="Strongly Disagree: 6 (8%)">
+
+</div>
+</div>
+</figure>
+<div class="feedback-legend">
+<ul>
+<li>
+<span class="legend-swatch" data-level="5"></span>Strongly Agree
+</li>
+<li>
+<span class="legend-swatch" data-level="4"></span>Agree
+</li>
+<li>
+<span class="legend-swatch" data-level="3"></span>Neutral
+</li>
+<li>
+<span class="legend-swatch" data-level="2"></span>Disagree
+</li>
+<li>
+<span class="legend-swatch" data-level="1"></span>Strongly Disagree
+</li>
+</ul>
+</div>
+<figure class="feedback-bar-figure figure">
+<figcaption>
+<span class="feedback-title">The process of completing my DMP was easy <span class="feedback-n">(n = 74)</span></span> <span class="feedback-positive info-tip" tabindex="0">68% positive<svg viewbox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Share of responses that were “Agree” or “Strongly Agree” (levels 4-5 of the 5-point scale).</span></span>
+</figcaption>
+<div class="feedback-bar" role="img" aria-label="The process of completing my DMP was easy">
+<div class="feedback-seg" data-level="5" style="flex-grow:14.8649" title="Strongly Agree: 11 (15%)">
+<span class="seg-count">15%</span>
+</div>
+<div class="feedback-seg" data-level="4" style="flex-grow:52.7027" title="Agree: 39 (53%)">
+<span class="seg-count">53%</span>
+</div>
+<div class="feedback-seg" data-level="3" style="flex-grow:20.2703" title="Neutral: 15 (20%)">
+<span class="seg-count">20%</span>
+</div>
+<div class="feedback-seg" data-level="2" style="flex-grow:9.4595" title="Disagree: 7 (9%)">
+<span class="seg-count">9%</span>
+</div>
+<div class="feedback-seg" data-level="1" style="flex-grow:2.7027" title="Strongly Disagree: 2 (3%)">
+
+</div>
+</div>
+</figure>
+<div class="feedback-legend">
+<ul>
+<li>
+<span class="legend-swatch" data-level="5"></span>Strongly Agree
+</li>
+<li>
+<span class="legend-swatch" data-level="4"></span>Agree
+</li>
+<li>
+<span class="legend-swatch" data-level="3"></span>Neutral
+</li>
+<li>
+<span class="legend-swatch" data-level="2"></span>Disagree
+</li>
+<li>
+<span class="legend-swatch" data-level="1"></span>Strongly Disagree
+</li>
+</ul>
+</div>
+<figure class="feedback-bar-figure figure">
+<figcaption>
+<span class="feedback-title">The instructions and guidance provided by the system were clear <span class="feedback-n">(n = 74)</span></span> <span class="feedback-positive info-tip" tabindex="0">51% positive<svg viewbox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Share of responses that were “Agree” or “Strongly Agree” (levels 4-5 of the 5-point scale).</span></span>
+</figcaption>
+<div class="feedback-bar" role="img" aria-label="The instructions and guidance provided by the system were clear">
+<div class="feedback-seg" data-level="5" style="flex-grow:13.5135" title="Strongly Agree: 10 (14%)">
+<span class="seg-count">14%</span>
+</div>
+<div class="feedback-seg" data-level="4" style="flex-grow:37.8378" title="Agree: 28 (38%)">
+<span class="seg-count">38%</span>
+</div>
+<div class="feedback-seg" data-level="3" style="flex-grow:28.3784" title="Neutral: 21 (28%)">
+<span class="seg-count">28%</span>
+</div>
+<div class="feedback-seg" data-level="2" style="flex-grow:12.1622" title="Disagree: 9 (12%)">
+<span class="seg-count">12%</span>
+</div>
+<div class="feedback-seg" data-level="1" style="flex-grow:8.1081" title="Strongly Disagree: 6 (8%)">
+
+</div>
+</div>
+</figure>
+<div class="feedback-legend">
+<ul>
+<li>
+<span class="legend-swatch" data-level="5"></span>Strongly Agree
+</li>
+<li>
+<span class="legend-swatch" data-level="4"></span>Agree
+</li>
+<li>
+<span class="legend-swatch" data-level="3"></span>Neutral
+</li>
+<li>
+<span class="legend-swatch" data-level="2"></span>Disagree
+</li>
+<li>
+<span class="legend-swatch" data-level="1"></span>Strongly Disagree
+</li>
+</ul>
+</div>
+<figure class="feedback-bar-figure figure">
+<figcaption>
+<span class="feedback-title">How helpful was the advice of the data steward? <span class="feedback-n">(n = 54)</span></span> <span class="feedback-positive info-tip" tabindex="0">89% positive<svg viewbox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"></circle><path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg><span class="info-tip-text">Share of respondents who rated the data steward’s advice 4 or 5 stars.</span></span>
+</figcaption>
+<div class="feedback-bar" role="img" aria-label="How helpful was the advice of the data steward?">
+<div class="feedback-seg" data-level="5" style="flex-grow:66.6667" title="5 stars: 36 (67%)">
+<span class="seg-count">67%</span>
+</div>
+<div class="feedback-seg" data-level="4" style="flex-grow:22.2222" title="4 stars: 12 (22%)">
+<span class="seg-count">22%</span>
+</div>
+<div class="feedback-seg" data-level="3" style="flex-grow:9.2593" title="3 stars: 5 (9%)">
+<span class="seg-count">9%</span>
+</div>
+<div class="feedback-seg" data-level="2" style="flex-grow:0.0000" title="2 stars: 0 (0%)">
+
+</div>
+<div class="feedback-seg" data-level="1" style="flex-grow:1.8519" title="1 star: 1 (2%)">
+
+</div>
+</div>
+</figure>
+<div class="feedback-legend">
+<ul>
+<li>
+<span class="legend-swatch" data-level="5"></span>5 stars
+</li>
+<li>
+<span class="legend-swatch" data-level="4"></span>4 stars
+</li>
+<li>
+<span class="legend-swatch" data-level="3"></span>3 stars
+</li>
+<li>
+<span class="legend-swatch" data-level="2"></span>2 stars
+</li>
+<li>
+<span class="legend-swatch" data-level="1"></span>1 star
+</li>
+</ul>
+</div>
+<blockquote class="blockquote">
+<p>Note. Above ratings are from the <strong>researcher feedback survey</strong> (n = 74 respondents, collected 30 Apr – 13 May 2026).</p>
+</blockquote>
+</section>
+<section id="how-to-improve-the-implementation-for-the-next-year-2026-2027" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-improve-the-implementation-for-the-next-year-2026-2027">How to improve the implementation for the next year, 2026-2027</h2>
+<section id="what-we-can-do-research-cockpit-dmp-improvement" class="level3">
+<h3 class="anchored" data-anchor-id="what-we-can-do-research-cockpit-dmp-improvement">What we can do: Research Cockpit DMP improvement</h3>
+<ul>
+<li>At the Data Steward team, we created examples for the DMP and ERB on Zenodo: <a href="https://zenodo.org/records/17375609">https://zenodo.org/records/17375609</a></li>
+<li>We will continue improving guidance and examples presented while completing the DMP form</li>
+</ul>
+</section>
+<section id="what-you-can-do" class="level3">
+<h3 class="anchored" data-anchor-id="what-you-can-do">What you can do</h3>
+<p><a class="cta-btn" href="https://miro.com/app/board/uXjVGOKslJs=/?moveToWidget=3458764679245342526&amp;cot=14" target="_blank">Give us your feedback</a></p>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var sel = document.getElementById("dept-select");
+  var panels = document.querySelectorAll(".dept-panel");
+  function show(slug) {
+    panels.forEach(function (p) { p.style.display = "none"; });
+    var target = document.getElementById("dept-" + slug);
+    if (target) target.style.display = "";
+  }
+  var params = new URLSearchParams(window.location.search);
+  var init = params.get("dept");
+  if (init) { sel.value = init; show(init); }
+  else { show(sel.value); }
+  sel.addEventListener("change", function () {
+    show(this.value);
+    params.set("dept", this.value);
+    history.replaceState(null, "", "?" + params.toString());
+  });
+
+  var purposeToggle = document.querySelector(".purpose-toggle");
+  if (purposeToggle) {
+    var pBtns = purposeToggle.querySelectorAll(".purpose-btn");
+    var pPanels = document.querySelectorAll(".purpose-content");
+    function showPurpose(p) {
+      pBtns.forEach(function (b) { b.classList.toggle("active", b.dataset.purpose === p); });
+      pPanels.forEach(function (el) { el.classList.toggle("purpose-active", el.dataset.purpose === p); });
+    }
+    pBtns.forEach(function (b) { b.addEventListener("click", function () { showPurpose(this.dataset.purpose); }); });
+    showPurpose("all");
+  }
+});
+</script>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
