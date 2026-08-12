@@ -37,3 +37,33 @@ print(h.render_department_abbreviations())
 print('<p style="font-size:0.85em;color:#6b7280"><i>University-wide = RDM training '
       'activities (PROOF &amp; DataBites), not tied to a single department.</i></p>')
 ```
+
+## How to improve the implementation for the next year, 2026-2027
+
+### What we can do
+
+#### Amplify RDM policy awareness
+
+- At the Data Steward team, we will continue to publish news items to inform and
+  remind researchers about the RDM policy
+- Plan more visits to the research groups to present the policy and introduce
+  their data Steward
+- We plan to organize a symposium about Research Cockpit to increase the
+  awareness
+
+#### Enhance training uptake
+
+- We have revamped the [PROOF course on Open Science and
+  RDM](https://tuenl.sharepoint.com/sites/intranet-human-resources-management/SitePages/Archive-2024/Open-Science----PhD,-PDoc.aspx)
+  to include training on how to make DMPs
+- We have created [RDM guidelines for PhD
+  supervisors](https://rdm.tue.nl/docs/category/skill-building--learning)
+- We are preparing an e-learning course about Research Data Management
+
+### What you can do
+
+You can help us by inviting us to your staff meetings. Please email
+rdmsupport@tue.nl or reach out to your data steward directly ([Find your data
+steward](https://rdm.tue.nl/docs/contact/)).
+
+<a class="cta-btn" href="mailto:rdmsupport@tue.nl">Email Data Steward Team</a>
