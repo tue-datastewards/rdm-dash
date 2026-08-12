@@ -34,6 +34,6 @@ fig.update_layout(
 )
 print(h.render_chart(fig))
 print(h.render_department_abbreviations())
-print('<p style="font-size:0.85em;color:#6b7280"><i>Cross-department = university-wide RDM training '
+print('<p style="font-size:0.85em;color:#6b7280"><i>University-wide = RDM training '
       'activities (PROOF &amp; DataBites), not tied to a single department.</i></p>')
 ```

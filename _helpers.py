@@ -1100,15 +1100,15 @@ def load_communication_efforts() -> dict:
 
 # Label used for university-wide activities attributed to all departments
 # (e.g. the PROOF & DataBites trainings) in per-department breakdowns.
-CROSS_DEPARTMENT_LABEL = "Cross-department"
+UNIVERSITY_WIDE_LABEL = "University-wide"
 
 
 def communication_attendees_by_department() -> pd.DataFrame:
-    """RDM training attendees per department, plus the cross-department total.
+    """RDM training attendees per department, plus the university-wide total.
 
     Department values come from the ``Number of RDM training attendees``
     observations; university-wide activities (attributed to all departments)
-    are included as a single ``CROSS_DEPARTMENT_LABEL`` row.
+    are included as a single ``UNIVERSITY_WIDE_LABEL`` row.
     """
     with open(COMMUNICATION_EFFORTS_FILE) as f:
         data = json.load(f)
@@ -1123,7 +1123,7 @@ def communication_attendees_by_department() -> pd.DataFrame:
             if dept in DEPARTMENTS:
                 rows.append({"Department": dept, "Attendees": val})
         elif prop == "Number of RDM training attendees for all departments":
-            rows.append({"Department": CROSS_DEPARTMENT_LABEL, "Attendees": val})
+            rows.append({"Department": UNIVERSITY_WIDE_LABEL, "Attendees": val})
     return pd.DataFrame(rows)
 
 
