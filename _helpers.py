@@ -17,6 +17,7 @@ DATA_DIR = Path(__file__).parent / "data"
 DMP_FILE = DATA_DIR / "DMPs_2025_09_10_onwards.csv"
 ERB_FILE = DATA_DIR / "ERBs_2025_09_10_onwards.csv"
 HISTORICAL_DMP_FILE = DATA_DIR / "dmps-2024-2025.json"
+FEEDBACK_SURVEY_FILE = DATA_DIR / "feedback-survey-responses.csv"
 
 # Classification rules -------------------------------------------------------
 
@@ -34,6 +35,23 @@ TRUSTED_REPOSITORIES = {
     "OSF",
     "Figshare",
 }
+
+# DMP feedback survey columns (names match the export after cleaning).
+FEEDBACK_LIKERT_COLS = [
+    "Finding the DMP template in the TU/e Research Cockpit was easy",
+    "The process of completing my DMP was easy",
+    "The instructions and guidance provided by the system were clear",
+]
+FEEDBACK_CONTACT_COL = "Did you have contact with a data steward?"
+FEEDBACK_STEWARD_COL = "How helpful was the advice of the data steward?"
+
+# Canonical response order (1..5) for both scales.
+FEEDBACK_LIKERT_ORDER = [
+    "Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree",
+]
+FEEDBACK_STAR_ORDER = [
+    "1 star", "2 stars", "3 stars", "4 stars", "5 stars",
+]
 
 # Department metadata loaded from data/departments.json (schema.org JSON-LD).
 DEPARTMENTS_FILE = DATA_DIR / "departments.json"
@@ -201,6 +219,18 @@ def load_erbs() -> pd.DataFrame:
     for c in ("issue_creation_time", "latest_status_time", "dmp_link_creation_date", "gold_processed_at"):
         if c in df.columns:
             df[c] = pd.to_datetime(df[c], errors="coerce", utc=True)
+    return df
+
+
+@cache
+def load_feedback_survey() -> pd.DataFrame:
+    """Load the DMP feedback survey responses.
+
+    The export has a UTF-8 BOM and non-breaking spaces in the header names;
+    both are cleaned up here. Column names match the survey wording.
+    """
+    df = pd.read_csv(FEEDBACK_SURVEY_FILE, encoding="utf-8-sig")
+    df.columns = [c.replace("\xa0", "").strip() for c in df.columns]
     return df
 
 
@@ -832,3 +862,206 @@ def render_department_abbreviations(font_size: str = "0.85em") -> str:
         abbr = DEPT_ABBREVIATIONS[dept]
         parts.append(f'<b>{abbr}</b> = {dept}')
     return f'<p style="font-size:{font_size};color:#6b7280"><i>{"</i>, <i>".join(parts)}</i></p>'
+
+
+def process_kpi_html(df: pd.DataFrame, dept: str | None = None,
+                     purpose: str | None = None) -> str:
+    """Return an HTML string for the process-evaluation KPI card grid.
+
+    Three cards: revision requested rate gauge, data steward response time
+    number card, and 'I need advice' rate gauge.
+
+    If ``dept`` is given, the department abbreviation is appended to
+    descriptions.  If ``purpose`` is "scientific" or "educational", the study
+    type is inserted into the descriptions ("all" / None keeps the generic
+    wording).
+    """
+    n = len(df)
+    abbr = DEPT_ABBREVIATIONS.get(dept, dept) if dept else None
+    pword = purpose if purpose in ("scientific", "educational") else None
+    ptext = f"{pword} DMPs" if pword else "DMPs"
+
+    # Revision requested rate
+    with_rev = int(df["ordered_status_transition_list"].map(
+        lambda v: any(s == "Revision requested" for s in v)
+    ).sum()) if n else 0
+    rev_rate = with_rev / n if n else 0
+
+    # Data steward response time (only DMPs with a response >= 1 day after submission)
+    resp = first_response_time(df).dropna()
+    resp = resp[resp >= 1]
+    median_days = resp.median() if len(resp) else None
+    mean_days = resp.mean() if len(resp) else None
+    n_resp = len(resp)
+
+    # Help needed rate
+    needs_help = int(df.apply(
+        lambda r: any(
+            "i need advice" in str(x).lower()
+            for f in _HELP_FIELDS
+            for x in r.get(f, [])
+        ),
+        axis=1,
+    ).sum()) if n else 0
+    help_rate = needs_help / n if n else 0
+
+    # Build cards
+    if abbr:
+        rev_desc = f'{with_rev} of {n} {ptext} at {abbr} sent back for revision'
+    else:
+        rev_desc = f'{with_rev} of {n} {ptext} sent back for revision'
+    rev_gauge = gauge_svg(rev_rate, "Revision requested rate", rev_desc)
+
+    if median_days is not None and not pd.isna(median_days):
+        subj = f"{pword} DMP" if pword else "DMP"
+        desc = f"Median response time across {n_resp} {subj} submissions"
+        if mean_days is not None:
+            desc += f" ({mean_days:.1f} days mean)"
+        if abbr:
+            desc = f"{desc} at {abbr}"
+        resp_card = (
+            '<div class="kpi-card kpi-blue">'
+            '<span class="info-tip" aria-label="Calculation note">'
+            '<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">'
+            '<circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"/>'
+            '<path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" '
+            'stroke-linecap="round"/></svg>'
+            '<span class="info-tip-text">Only DMPs with a response at least 1 day '
+            'after submission are included (responses under 1 day are excluded).</span>'
+            '</span>'
+            '<div class="kpi-label"><p>Data Steward Response Time</p></div>'
+            f'<div class="kpi-value"><p>{median_days:.1f} days</p></div>'
+            f'<div class="kpi-desc">{desc}</div>'
+            '</div>'
+        )
+    else:
+        resp_card = (
+            '<div class="kpi-card kpi-blue">'
+            '<div class="kpi-label"><p>Data Steward Response Time</p></div>'
+            '<div class="kpi-value"><p>N/A</p></div>'
+            '<div class="kpi-desc">No response time data available</div>'
+            '</div>'
+        )
+
+    if abbr:
+        help_desc = f'{needs_help} of {n} {ptext} at {abbr} requested help'
+    else:
+        help_desc = f'{needs_help} of {n} {ptext} requested help'
+    help_gauge = gauge_svg(help_rate, "'I need advice' at first submission", help_desc)
+
+    return '<div class="kpi-grid">' + rev_gauge + resp_card + help_gauge + '</div>'
+
+
+# Feedback survey -------------------------------------------------------------
+
+def feedback_breakdown() -> pd.DataFrame:
+    """Response counts and shares for the four DMP feedback survey questions.
+
+    Returns a long-form DataFrame with columns ``Aspect``, ``Response``,
+    ``Count`` and ``Share`` (0-1).  The three Likert items use the canonical
+    ``Strongly Disagree`` ... ``Strongly Agree`` order; the data steward
+    question uses ``1 star`` ... ``5 stars`` and only includes respondents who
+    had contact with a data steward.  Zero-count categories are kept so every
+    aspect spans the same 1-5 scale.
+    """
+    df = load_feedback_survey()
+    rows = []
+
+    def add(aspect: str, counts: pd.Series, order: list[str], n: int) -> None:
+        for label in order:
+            c = int(counts.get(label, 0))
+            rows.append({
+                "Aspect": aspect, "Response": label, "Count": c,
+                "Share": c / n if n else 0.0,
+            })
+
+    for col in FEEDBACK_LIKERT_COLS:
+        add(col, df[col].value_counts(), FEEDBACK_LIKERT_ORDER, len(df))
+
+    stew = df[df[FEEDBACK_STEWARD_COL].notna()]
+    n_stew = len(stew)
+    counts = stew[FEEDBACK_STEWARD_COL].astype(int).value_counts()
+    for i, label in enumerate(FEEDBACK_STAR_ORDER, start=1):
+        c = int(counts.get(i, 0))
+        rows.append({
+            "Aspect": FEEDBACK_STEWARD_COL, "Response": label, "Count": c,
+            "Share": c / n_stew if n_stew else 0.0,
+        })
+    return pd.DataFrame(rows)
+
+
+def feedback_legend_html(kind: str = "likert") -> str:
+    """Legend for a 1-5 response scale (``likert`` or ``stars``)."""
+    if kind == "stars":
+        labels = FEEDBACK_STAR_ORDER
+    else:
+        labels = FEEDBACK_LIKERT_ORDER
+    items = "".join(
+        f'<li><span class="legend-swatch" data-level="{i}"></span>{label}</li>'
+        for i, label in reversed(list(enumerate(labels, start=1)))
+    )
+    return f'<div class="feedback-legend"><ul>{items}</ul></div>'
+
+
+def feedback_bar_html(rows: pd.DataFrame, title: str, n: int) -> str:
+    """Return an HTML figure with a single horizontal stacked bar.
+
+    ``rows`` is the ``feedback_breakdown()`` slice for one aspect, already in
+    1-5 order.  Each segment is sized by its share; a count label is shown
+    only when the segment is wide enough to fit.  The figcaption reports the
+    share of positive responses (levels 4-5), with a tooltip explaining the
+    definition for the applicable scale.
+    """
+    segs = []
+    for level, (_, r) in reversed(list(enumerate(rows.iterrows(), start=1))):
+        pct = r["Share"] * 100
+        count = int(r["Count"])
+        label = f'<span class="seg-count">{pct:.0f}%</span>' if pct >= 9 else ""
+        segs.append(
+            f'<div class="feedback-seg" data-level="{level}" '
+            f'style="flex-grow:{pct:.4f}" '
+            f'title="{r["Response"]}: {count} ({pct:.0f}%)">{label}</div>'
+        )
+
+    positive = rows["Count"].iloc[-2:].sum() / n
+    if "star" in rows["Response"].iloc[0]:
+        tip = "Share of respondents who rated the data steward's advice 4 or 5 stars."
+    else:
+        tip = 'Share of responses that were "Agree" or "Strongly Agree" '
+        tip += "(levels 4-5 of the 5-point scale)."
+    positive_html = (
+        f'<span class="feedback-positive info-tip" tabindex="0">'
+        f'{positive:.0%} positive'
+        f'<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">'
+        f'<circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"/>'
+        f'<path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" '
+        f'stroke-linecap="round"/></svg>'
+        f'<span class="info-tip-text">{tip}</span></span>'
+    )
+    return (
+        f'<figure class="feedback-bar-figure">'
+        f'<figcaption>'
+        f'<span class="feedback-title">{title} <span class="feedback-n">(n = {n})</span></span> '
+        f'{positive_html}'
+        f'</figcaption>'
+        f'<div class="feedback-bar" role="img" aria-label="{title}">{"".join(segs)}</div>'
+        f'</figure>'
+    )
+
+
+def feedback_survey_html() -> str:
+    """The complete survey widget: legends plus the four stacked bars."""
+    fb = feedback_breakdown()
+    df = load_feedback_survey()
+    n = len(df)
+    n_stew = int(df[FEEDBACK_STEWARD_COL].notna().sum())
+    parts = []
+    for col in FEEDBACK_LIKERT_COLS:
+        parts.append(feedback_bar_html(fb[fb["Aspect"] == col], col, n))
+        parts.append(feedback_legend_html("likert"))
+    parts.append(feedback_bar_html(
+        fb[fb["Aspect"] == FEEDBACK_STEWARD_COL],
+        FEEDBACK_STEWARD_COL, n_stew,
+    ))
+    parts.append(feedback_legend_html("stars"))
+    return "\n".join(parts)

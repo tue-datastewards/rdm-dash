@@ -1,21 +1,133 @@
 ---
-title: "Process Evaluation"
+title: "Data Management Plan (DMP) Process Evaluation"
 format:
   html:
     page-layout: full
     toc: false
 ---
 
-## Process Evaluation
+```{python}
+#| tags: [hide-all]
 
-These metrics are derived from the **researcher survey** sent to researchers who
-interacted with the DMP template in the Research Cockpit.
+from IPython.display import HTML, display
 
-| # | Question | Status |
-|---|----------|--------|
-| Q12 | How easy do researchers find it to **locate the DMP template** in the Research Cockpit? | Pending |
-| Q13 | How easy do researchers find **completing the DMP**? | Pending |
-| Q14 | How clear are the **instructions and guidance** provided within the DMP template? | Pending |
-| Q15 | How helpful is the **advice provided by Data Stewards**? | Pending |
+import _helpers as h
 
-*Survey data collection is ongoing. Visualizations will be added once the dataset is available.*
+dmps = h.load_dmps()
+erbs = h.load_erbs()
+
+dept_data = {}
+for dept in h.DEPARTMENTS:
+    dd = h.filter_department(dmps, dept)
+    de = h.department_erbs(dd, erbs)
+    dept_data[dept] = {"dmps": dd, "erbs": de}
+```
+
+<div class="filter-bar">
+```{python}
+#| output: asis
+print(h.purpose_toggle_html())
+```
+
+<select id="dept-select" class="dept-selector">
+<option value="overview">All departments</option>
+```{python}
+#| output: asis
+for d in h.DEPARTMENTS:
+    print(f'<option value="{h.DEPT_SLUGS[d]}">{d}</option>')
+```
+</select>
+</div>
+<div class="dept-panel" id="dept-overview">
+
+```{python}
+#| tags: [hide-all]
+dmps_all = dmps
+dmps_sci = h.filter_by_purpose(dmps, True)
+dmps_edu = h.filter_by_purpose(dmps, False)
+```
+
+```{python}
+#| output: asis
+for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
+    act = " purpose-active" if pkey == "all" else ""
+    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+    print(h.process_kpi_html(pdf, purpose=pkey))
+    print('</div>')
+```
+</div>
+
+```{python}
+#| tags: [hide-all]
+#| output: asis
+
+for dept in h.DEPARTMENTS:
+    slug = h.DEPT_SLUGS[dept]
+    dd_all = dept_data[dept]["dmps"]
+    print(f'<div class="dept-panel" id="dept-{slug}" style="display:none">')
+    for pkey, pval in h.PURPOSES:
+        act = " purpose-active" if pkey == "all" else ""
+        print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
+        dd = h.filter_by_purpose(dd_all, pval)
+        print(h.process_kpi_html(dd, dept=dept, purpose=pkey))
+        print('</div>')
+    print('</div>')
+```
+
+## How researchers rate the Data Management Plan (DMP) Process
+
+```{python}
+#| output: asis
+
+print(h.feedback_survey_html())
+```
+
+> Note. Above ratings are from the **researcher feedback survey** (n = 74
+> respondents, collected 30 Apr -- 13 May 2026).
+
+## How to improve the implementation for the next year, 2026-2027
+
+### What we can do: Research Cockpit DMP improvement
+
+- At the Data Steward team, we created examples for the DMP and ERB on Zenodo:
+  [https://zenodo.org/records/17375609](https://zenodo.org/records/17375609)
+- We will continue improving guidance and examples presented while completing
+  the DMP form
+
+### What you can do
+
+<a class="cta-btn" href="https://miro.com/app/board/uXjVGOKslJs=/?moveToWidget=3458764679245342526&cot=14" target="_blank">Give
+us your feedback</a>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var sel = document.getElementById("dept-select");
+  var panels = document.querySelectorAll(".dept-panel");
+  function show(slug) {
+    panels.forEach(function (p) { p.style.display = "none"; });
+    var target = document.getElementById("dept-" + slug);
+    if (target) target.style.display = "";
+  }
+  var params = new URLSearchParams(window.location.search);
+  var init = params.get("dept");
+  if (init) { sel.value = init; show(init); }
+  else { show(sel.value); }
+  sel.addEventListener("change", function () {
+    show(this.value);
+    params.set("dept", this.value);
+    history.replaceState(null, "", "?" + params.toString());
+  });
+
+  var purposeToggle = document.querySelector(".purpose-toggle");
+  if (purposeToggle) {
+    var pBtns = purposeToggle.querySelectorAll(".purpose-btn");
+    var pPanels = document.querySelectorAll(".purpose-content");
+    function showPurpose(p) {
+      pBtns.forEach(function (b) { b.classList.toggle("active", b.dataset.purpose === p); });
+      pPanels.forEach(function (el) { el.classList.toggle("purpose-active", el.dataset.purpose === p); });
+    }
+    pBtns.forEach(function (b) { b.addEventListener("click", function () { showPurpose(this.dataset.purpose); }); });
+    showPurpose("all");
+  }
+});
+</script>
