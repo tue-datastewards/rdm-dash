@@ -1,0 +1,665 @@
+{
+  "@context": {
+    "schema": "http://schema.org/",
+    "wd": "https://www.wikidata.org/wiki/"
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "RDM Communication and Training Efforts per Department",
+  "schema:description": "Reach of RDM communication and training activities at Eindhoven University of Technology per department, for the reporting period September 2025 to August 2026. Activities counted: news items, policy roadshow sessions, RDM training sessions, and RDM training attendees. 'All departments' values are university-wide activities (RSN policy roadshow; PROOF & DataBites trainings).",
+  "schema:creator": {
+    "@type": "schema:Organization",
+    "schema:name": "TU/e Data Stewards"
+  },
+  "schema:temporalCoverage": "2025-09-01/2026-08-31",
+  "observation": [
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q280824",
+        "@type": "schema:Organization",
+        "schema:name": "Eindhoven University of Technology"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM news items",
+        "schema:unitText": "items"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 7
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q140737347",
+        "@type": "schema:Organization",
+        "schema:name": "Applied Physics and Science Education (AP&SE)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of policy roadshow sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 6
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662348",
+        "@type": "schema:Organization",
+        "schema:name": "Biomedical Engineering (BmE)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of policy roadshow sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 1
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662362",
+        "@type": "schema:Organization",
+        "schema:name": "Built Environment (BE)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of policy roadshow sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 5
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662509",
+        "@type": "schema:Organization",
+        "schema:name": "Chemical Engineering and Chemistry (CE&C)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of policy roadshow sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 2
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662415",
+        "@type": "schema:Organization",
+        "schema:name": "Electrical Engineering (EE)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of policy roadshow sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 1
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662428",
+        "@type": "schema:Organization",
+        "schema:name": "Industrial Design (ID)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of policy roadshow sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 1
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662442",
+        "@type": "schema:Organization",
+        "schema:name": "Industrial Engineering and Innovation Sciences (IE&IS)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of policy roadshow sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 3
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662836",
+        "@type": "schema:Organization",
+        "schema:name": "Mathematics and Computer Science (M&CS)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of policy roadshow sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 1
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662819",
+        "@type": "schema:Organization",
+        "schema:name": "Mechanical Engineering (ME)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of policy roadshow sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 2
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q280824",
+        "@type": "schema:Organization",
+        "schema:name": "Eindhoven University of Technology"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of policy roadshow sessions for all departments",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 1
+      },
+      "schema:description": "Attributed to all departments: RSN."
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q280824",
+        "@type": "schema:Organization",
+        "schema:name": "Eindhoven University of Technology"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Total number of policy roadshow sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 23
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q140737347",
+        "@type": "schema:Organization",
+        "schema:name": "Applied Physics and Science Education (AP&SE)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 1
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662348",
+        "@type": "schema:Organization",
+        "schema:name": "Biomedical Engineering (BmE)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 2
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662362",
+        "@type": "schema:Organization",
+        "schema:name": "Built Environment (BE)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 6
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662509",
+        "@type": "schema:Organization",
+        "schema:name": "Chemical Engineering and Chemistry (CE&C)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 1
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662415",
+        "@type": "schema:Organization",
+        "schema:name": "Electrical Engineering (EE)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 0
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662428",
+        "@type": "schema:Organization",
+        "schema:name": "Industrial Design (ID)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 4
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662442",
+        "@type": "schema:Organization",
+        "schema:name": "Industrial Engineering and Innovation Sciences (IE&IS)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 3
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662836",
+        "@type": "schema:Organization",
+        "schema:name": "Mathematics and Computer Science (M&CS)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 4
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662819",
+        "@type": "schema:Organization",
+        "schema:name": "Mechanical Engineering (ME)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 0
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q280824",
+        "@type": "schema:Organization",
+        "schema:name": "Eindhoven University of Technology"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training sessions for all departments",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 10
+      },
+      "schema:description": "Attributed to all departments: PROOF & DataBites."
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q280824",
+        "@type": "schema:Organization",
+        "schema:name": "Eindhoven University of Technology"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Total number of RDM training sessions",
+        "schema:unitText": "sessions"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 31
+      },
+      "schema:description": "Total computed as the sum of department and all-departments counts"
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q140737347",
+        "@type": "schema:Organization",
+        "schema:name": "Applied Physics and Science Education (AP&SE)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training attendees",
+        "schema:unitText": "attendees"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 23
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662348",
+        "@type": "schema:Organization",
+        "schema:name": "Biomedical Engineering (BmE)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training attendees",
+        "schema:unitText": "attendees"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 27
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662362",
+        "@type": "schema:Organization",
+        "schema:name": "Built Environment (BE)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training attendees",
+        "schema:unitText": "attendees"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 70
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662509",
+        "@type": "schema:Organization",
+        "schema:name": "Chemical Engineering and Chemistry (CE&C)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training attendees",
+        "schema:unitText": "attendees"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 11
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662415",
+        "@type": "schema:Organization",
+        "schema:name": "Electrical Engineering (EE)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training attendees",
+        "schema:unitText": "attendees"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 0
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662428",
+        "@type": "schema:Organization",
+        "schema:name": "Industrial Design (ID)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training attendees",
+        "schema:unitText": "attendees"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 30
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662442",
+        "@type": "schema:Organization",
+        "schema:name": "Industrial Engineering and Innovation Sciences (IE&IS)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training attendees",
+        "schema:unitText": "attendees"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 74
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662836",
+        "@type": "schema:Organization",
+        "schema:name": "Mathematics and Computer Science (M&CS)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training attendees",
+        "schema:unitText": "attendees"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 55
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q61662819",
+        "@type": "schema:Organization",
+        "schema:name": "Mechanical Engineering (ME)"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training attendees",
+        "schema:unitText": "attendees"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 0
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q280824",
+        "@type": "schema:Organization",
+        "schema:name": "Eindhoven University of Technology"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Number of RDM training attendees for all departments",
+        "schema:unitText": "attendees"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 201
+      }
+    },
+    {
+      "@type": "schema:Observation",
+      "schema:observationDate": "2026-08-31",
+      "schema:observationPeriod": "P1Y",
+      "schema:observationAbout": {
+        "@id": "https://www.wikidata.org/wiki/Q280824",
+        "@type": "schema:Organization",
+        "schema:name": "Eindhoven University of Technology"
+      },
+      "schema:measuredProperty": {
+        "@type": "schema:PropertyValue",
+        "schema:name": "Total number of RDM training attendees",
+        "schema:unitText": "attendees"
+      },
+      "schema:value": {
+        "@type": "schema:QuantitativeValue",
+        "schema:value": 491
+      }
+    }
+  ]
+}
