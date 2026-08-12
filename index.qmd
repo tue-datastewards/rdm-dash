@@ -9,7 +9,6 @@ format:
 
 ```{python}
 #| tags: [hide-all]
-from IPython.display import HTML, display
 
 import _helpers as h
 import plotly.express as px
@@ -17,13 +16,10 @@ import plotly.io as pio
 
 pio.templates.default = "plotly_white"
 dmps = h.load_dmps()
-erbs = h.load_erbs()
 
 dept_data = {}
 for dept in h.DEPARTMENTS:
-    dd = h.filter_department(dmps, dept)
-    de = h.department_erbs(dd, erbs)
-    dept_data[dept] = {"dmps": dd, "erbs": de}
+    dept_data[dept] = h.filter_department(dmps, dept)
 ```
 
 <div class="filter-bar">
@@ -99,232 +95,16 @@ print(h.render_chart(fig))
 
 :::
 
-## Compliance
-
-
-### Approval by department
-
-> **Q1.** What share of research projects have an **approved Data Management
-> Plan (DMP)**, broken down **per department**?
-
-```{python}
-#| output: asis
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    df = h.approval_by_department(pdf)
-    fig = px.bar(df, x="Approval rate", y="Department", orientation="h",
-                 text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-                 hover_data=["DMPs", "Approved"], color="Approval rate",
-                 color_continuous_scale="Blues")
-    fig.update_layout(yaxis={"categoryorder": "total ascending"},
-                      xaxis_tickformat="0%", coloraxis_showscale=False, height=500)
-    print(h.render_chart(fig))
-    print('</div>')
-```
-
-### ERB approval by department
-
-> **Q2.** What share of projects require **Ethical Review Board (ERB) approval**
-> --- i.e., what share of research involving **human data** has valid ethical
-> approval and an integrated DMP?
-
-```{python}
-#| output: asis
-df = h.erb_approval_by_department(dmps, erbs)
-fig = px.bar(df, x="Approval rate", y="Department", orientation="h",
-             text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-             hover_data=["ERBs", "Approved"], color="Approval rate",
-             color_continuous_scale="Greens")
-fig.update_layout(yaxis={"categoryorder": "total ascending"},
-                  xaxis_tickformat="0%", coloraxis_showscale=False, height=500)
-print(h.render_chart(fig))
-```
-
-### ERB decisions
-
-> **Q2.** What share of projects require **Ethical Review Board (ERB) approval**
-> --- i.e., what share of research involving **human data** has valid ethical
-> approval and an integrated DMP?
-
-```{python}
-#| output: asis
-df = h.erb_breakdown(dmps, erbs)
-fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
-fig.update_layout(showlegend=False, height=500)
-print(h.render_chart(fig))
-```
-
-### Repository choice
-
-> **Q5.** To what extent do projects **publish their FAIR data in a trusted
-> repository** --- i.e., what share of researchers selected a repository for
-> publication (open or restricted)?
-
-```{python}
-#| output: asis
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    df = h.repository_breakdown(pdf)
-    df = df[df["Repository"] != "(none)"]
-    fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
-    fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=500)
-    print(h.render_chart(fig))
-    print('</div>')
-```
-
-### Archive location
-
-> **Q6.** What share of projects **archive their data at the TU/e archive
-> (RAPS)**?
-
-```{python}
-#| output: asis
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    df = h.archive_breakdown(pdf)
-    total = df["DMPs"].sum() or 1
-    df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-    df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-    fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
-    fig.update_traces(textposition="auto")
-    fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=500,
-                      barmode="stack", showlegend=True, legend_title="Location")
-    print(h.render_chart(fig))
-    print('</div>')
-```
-
-## Data handling {.tabset}
-
-### Storage
-
-> **Q3.** To what extent do projects use **TU/e secured storage**, and
-> conversely, what share of **sensitive research data** is stored **outside**
-> TU/e-supported solutions?
-
-```{python}
-#| output: asis
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    df = h.storage_split(pdf)
-    total = df["DMPs"].sum() or 1
-    df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-    df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-    fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label",
-                 color_discrete_map={
-                     "Using TU/e storage": "#742459",
-                     "Not using TU/e storage": "#2F3845",
-                 })
-    fig.update_traces(textposition="auto")
-    fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=500,
-                      barmode="stack", showlegend=True, legend_title="Storage")
-    print(h.render_chart(fig))
-    print('</div>')
-```
-
-### Data sharing
-
-> **Q4.** What share of projects require a **data sharing/receiving agreement**
-> or other legal agreement (DPIA, etc., for special-category data)? How many
-> DMPs **triggered a DA (Data Agreement) request**?
-
-```{python}
-#| output: asis
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    df = h.data_sharing_breakdown(pdf)
-    fig = px.bar(df, x="Destination", y="DMPs", text="DMPs", color="Destination")
-    fig.update_layout(showlegend=False, height=500)
-    print(h.render_chart(fig))
-    print('</div>')
-```
-
-## Workflow {.tabset}
-
-### Revisions
-
-> **Q7.** How often does a DMP enter the **"Revision Requested"** status?
-
-```{python}
-#| output: asis
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    df = h.revision_distribution(pdf)
-    fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
-    fig.update_layout(showlegend=False, height=500)
-    print(h.render_chart(fig))
-    print('</div>')
-```
-
-### Days to first submission
-
-> **Q8.** How long elapses between **DRAFT and SUBMITTED** (ideally pre-computed
-> as `days_to_first_submission`)?
-
-```{python}
-#| output: asis
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    s = h.days_to_first_submission(pdf).dropna()
-    fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-    fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=500, showlegend=False,
-                      annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                      xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-    print(h.render_chart(fig))
-    print('</div>')
-```
-
-### First response time
-
-> **Q9.** How long does it take a **Data Steward to first respond** after
-> submission (ideally pre-computed)?
-
-```{python}
-#| output: asis
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    s = h.first_response_time(pdf).dropna()
-    fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-    fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=500, showlegend=False,
-                      annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                      xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-    print(h.render_chart(fig))
-    print('</div>')
-```
-
-### Help needed
-
-> **Q10.** What proportion of DMPs state **"I need help"** during first
-> submission?
-
-```{python}
-#| output: asis
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    df = h.help_needed_rate(pdf)
-    fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
-    fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=500)
-    print(h.render_chart(fig))
-    print('</div>')
-```
 
 </div>
 
 ```{python}
 #| tags: [hide-all]
 #| output: asis
+
 for dept in h.DEPARTMENTS:
     slug = h.DEPT_SLUGS[dept]
-    dd_all = dept_data[dept]["dmps"]
-    de = dept_data[dept]["erbs"]
+    dd_all = dept_data[dept]
     print(f'<div class="dept-panel" id="dept-{slug}" style="display:none">')
 
     for pkey, pval in h.PURPOSES:
@@ -333,87 +113,6 @@ for dept in h.DEPARTMENTS:
         dd = h.filter_by_purpose(dd_all, pval)
 
         print(h.kpi_html(dd, dept=dept, show_trend=False))
-
-        print("<h3>Compliance</h3>")
-
-        df = h.approval_by_purpose(dd)
-        fig = px.bar(df, x="Purpose", y="Approval rate",
-                     text=df["Approval rate"].map(lambda v: f"{v:.0%}"),
-                     hover_data=["DMPs", "Approved"], color="Purpose")
-        fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450,
-                          title="Approval rate")
-        print(h.render_chart(fig))
-
-        df = h.erb_breakdown(dd_all, de)
-        fig = px.bar(df, x="Decision", y="ERBs", color="Decision", text="ERBs")
-        fig.update_layout(showlegend=False, height=450, title="ERB decisions")
-        print(h.render_chart(fig))
-
-        df = h.repository_breakdown(dd)
-        df = df[df["Repository"] != "(none)"]
-        fig = px.bar(df, x="DMPs", y="Repository", orientation="h", text="DMPs", color="Repository")
-        fig.update_layout(yaxis={"categoryorder": "total ascending"}, showlegend=False, height=450,
-                          title="Repository choice")
-        print(h.render_chart(fig))
-
-        df = h.archive_breakdown(dd)
-        total = df["DMPs"].sum() or 1
-        df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-        fig = px.bar(df, x="All", y="DMPs", color="Location", text="Label")
-        fig.update_traces(textposition="auto")
-        fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                          showlegend=True, legend_title="Location", title="Archive location")
-        print(h.render_chart(fig))
-
-        print("<h3>Data handling</h3>")
-
-        df = h.storage_split(dd)
-        total = df["DMPs"].sum() or 1
-        df = df.assign(Share=df["DMPs"] / total, All="All DMPs")
-        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-        fig = px.bar(df, x="All", y="DMPs", color="Category", text="Label",
-                     color_discrete_map={
-                         "Using TU/e storage": "#742459",
-                         "Not using TU/e storage": "#2F3845",
-                     })
-        fig.update_traces(textposition="auto")
-        fig.update_layout(xaxis_title="", yaxis_title="DMPs", height=450, barmode="stack",
-                          showlegend=True, legend_title="Storage", title="Storage")
-        print(h.render_chart(fig))
-
-        df = h.data_sharing_breakdown(dd)
-        fig = px.bar(df, x="Destination", y="DMPs", text="DMPs", color="Destination")
-        fig.update_layout(showlegend=False, height=450, title="Data sharing")
-        print(h.render_chart(fig))
-
-        print("<h3>Workflow</h3>")
-
-        df = h.revision_distribution(dd)
-        fig = px.bar(df, x="Revisions", y="DMPs", text="DMPs", color="DMPs")
-        fig.update_layout(showlegend=False, height=450, title="Revisions")
-        print(h.render_chart(fig))
-
-        s = h.days_to_first_submission(dd).dropna()
-        fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-        fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                          title="Days to first submission",
-                          annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                          xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-        print(h.render_chart(fig))
-
-        s = h.first_response_time(dd).dropna()
-        fig = px.histogram(s, nbins=40, labels={"value": "Days"})
-        fig.update_layout(xaxis_title="Days", yaxis_title="DMPs", height=450, showlegend=False,
-                          title="First response time",
-                          annotations=[dict(text=f"Median: {s.median():.0f} days | Mean: {s.mean():.1f} days",
-                          xref="paper", x=0.98, yref="paper", y=0.98, xanchor="right", showarrow=False)])
-        print(h.render_chart(fig))
-
-        df = h.help_needed_rate(dd)
-        fig = px.bar(df, x="Field", y="Rate", text=df["Rate"].map(lambda v: f"{v:.1%}"), color="Field")
-        fig.update_layout(yaxis_tickformat="0%", showlegend=False, height=450, title="Help needed")
-        print(h.render_chart(fig))
 
         print('</div>')
     print('</div>')

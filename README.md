@@ -81,8 +81,8 @@ Output is written to `_site/`.
 
 ## Dashboard structure
 
-- **`index.qmd`** — overview across all departments: KPI cards, circle
-  gauges, and charts for compliance, data handling, and workflow.
+- **`index.qmd`** — overview across all departments: KPI card grids with a
+  department dropdown and per-purpose toggle.
 - **`data-storage.qmd`** — storage, FAIR data adoption, repositories and
   archival, with a department dropdown.
 - **`process-eval.qmd`** — process quality metrics (Q12–Q15).

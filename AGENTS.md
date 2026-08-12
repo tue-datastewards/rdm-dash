@@ -117,7 +117,7 @@ data/ERBs_2025_09_10_onwards.csv  (5 cols, foreign keys → DMPs.issue_key)
         ↓ metric functions
   - kpi_table → dict of totals/rates
   - kpi_html → HTML string of KPI cards
-  - approval_by_department, erb_breakdown, etc.
+  - approval_by_department, dmps_by_department_purpose, etc.
         ↓ index.qmd, data-storage.qmd, process-eval.qmd
   - Plotly Express charts
   - `display(HTML(...))` for KPI gauges
@@ -223,18 +223,17 @@ Sidebar-subtitle class for muted secondary text, shown in breadcrumbs.
 | Category | Functions |
 |----------|-----------|
 | Loaders | `load_dmps()`, `load_erbs()` — with caching, JSON parsing, bool coercion |
-| Helpers | `in_department()`, `filter_department()`, `_parse_json_list()`, `_to_bool()` |
+| Helpers | `in_department()`, `filter_department()`, `department_erbs()`, `_parse_json_list()`, `_to_bool()` |
 | KPI | `kpi_table()`, `kpi_html()`, `gauge_svg()` — circle SVG generator |
-| Q1 | `approval_by_department()`, `dmps_by_department_purpose()` |
-| Q2 | `approval_by_department()`, `erb_breakdown()`, `erb_approval_by_department()` |
-| Q3 | `storage_split()` |
-| Q4 | `data_sharing_breakdown()` |
-| Q5 | `repository_breakdown()`, `trusted_repository_split()` — returns exactly two groups: "Using Trusted Repository" / "Not Using Trusted Repository" |
-| Q6 | `archive_breakdown()`, `archive_split()` — binary TU/e archive (RAPS) usage |
-| Q7 | `revision_distribution()` |
-| Q8 | `days_to_first_submission()` — reads pre-computed column; `status_history` fallback |
-| Q9 | `first_response_time()` — reads pre-computed column; `status_history` fallback |
-| Q10 | `help_needed_rate()` |
+| Overview | `approval_by_department()`, `dmps_by_department_purpose()` |
+| Q3 (storage) | `storage_split()`, `storage_solution_by_department()`, `_canonical_storage_solution()` |
+| Q5 (repos) | `repository_breakdown()`, `trusted_repository_split()` — returns exactly two groups: "Using Trusted Repository" / "Not Using Trusted Repository" |
+| Q6 (archival) | `archive_split()` — binary TU/e archive (RAPS) usage |
+| Q9 (response) | `first_response_time()` — reads pre-computed column; `status_history` fallback |
+| Process | `process_kpi_html()` — revision/response/help-need cards (`_HELP_FIELDS`) |
+| Feedback | `feedback_survey_html()`, `feedback_breakdown()`, `feedback_legend_html()`, `feedback_bar_html()`, `load_feedback_survey()` |
+| Communication | `communication_kpi_html()`, `communication_attendees_by_department()`, `load_communication_efforts()` |
+| Purpose | `filter_by_purpose()`, `purpose_toggle_html()`, `render_department_abbreviations()` |
 
 ### 6.1 KPI card generation
 

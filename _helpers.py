@@ -262,22 +262,6 @@ def department_erbs(df_dmps_dept: pd.DataFrame, df_erbs: pd.DataFrame) -> pd.Dat
     return df_erbs[df_erbs["related_dmp"].isin(keys)].copy()
 
 
-def approval_by_purpose(df: pd.DataFrame) -> pd.DataFrame:
-    """Approval counts and rates by purpose (scientific vs. educational)."""
-    out = []
-    for label, val in [("Scientific", True), ("Educational", False)]:
-        sub = df[df["is_scientific"] == val]
-        n = len(sub)
-        approved = int(sub["is_approved"].fillna(False).sum()) if n else 0
-        out.append({
-            "Purpose": label,
-            "DMPs": n,
-            "Approved": approved,
-            "Approval rate": approved / n if n else 0,
-        })
-    return pd.DataFrame(out)
-
-
 # Metrics -------------------------------------------------------------------
 
 def kpi_table(df: pd.DataFrame) -> dict:
@@ -449,36 +433,6 @@ def dmps_by_department_purpose(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def erb_breakdown(df_dmps: pd.DataFrame, df_erbs: pd.DataFrame) -> pd.DataFrame:
-    """ERB decision breakdown among ERB-linked DMPs (Q2).
-
-    Classifies each ERB by the highest outcome reached in its status
-    history (Approved > Rejected > Retracted > Conditional > Revisions
-    > In progress).
-    """
-    erbs = df_erbs.copy()
-
-    def classify(seq):
-        statuses = set(seq or [])
-        if "Approved" in statuses:
-            return "Approved"
-        if "Rejected" in statuses:
-            return "Rejected"
-        if "Retracted" in statuses:
-            return "Retracted"
-        if "Conditional approval" in statuses:
-            return "Conditional"
-        if {"Major revisions", "Minor revisions"} & statuses:
-            return "Revisions requested"
-        return "In progress"
-
-    erbs["decision"] = erbs["ordered_status_transition_list"].map(classify)
-    order = ["Approved", "Conditional", "Revisions requested", "Rejected", "Retracted", "In progress"]
-    counts = erbs["decision"].value_counts().reindex(order, fill_value=0).reset_index()
-    counts.columns = ["Decision", "ERBs"]
-    return counts
-
-
 def repository_breakdown(df: pd.DataFrame) -> pd.DataFrame:
     """Repository choice counts (Q5). Explodes the repository list."""
     rows = []
@@ -507,24 +461,6 @@ def trusted_repository_split(df: pd.DataFrame) -> pd.DataFrame:
         "Category": ["Using Trusted Repository", "Not Using Trusted Repository"],
         "DMPs": [trusted, n - trusted],
     })
-
-
-def archive_breakdown(df: pd.DataFrame) -> pd.DataFrame:
-    """Archive location breakdown (Q6)."""
-    n = len(df)
-    if not n:
-        return pd.DataFrame(columns=["Location", "DMPs"])
-    loc = df["archive_location"].fillna("(none)").replace({"null": "(none)"})
-    counts = loc.value_counts().reset_index()
-    counts.columns = ["Location", "DMPs"]
-    label_map = {
-        "tue_archive": "TU/e archive (RAPS)",
-        "other": "Other",
-        "other_archive": "Other archive",
-        "(none)": "Not archived",
-    }
-    counts["Location"] = counts["Location"].map(lambda v: label_map.get(v, v))
-    return counts
 
 
 def archive_split(df: pd.DataFrame) -> pd.DataFrame:
@@ -596,60 +532,6 @@ def storage_solution_by_department(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def revision_distribution(df: pd.DataFrame) -> pd.DataFrame:
-    """Distribution of "Revision requested" occurrences per DMP (Q7)."""
-    if not len(df):
-        return pd.DataFrame(columns=["Revisions", "DMPs"])
-
-    def n_revisions(seq):
-        return sum(1 for s in seq if s == "Revision requested")
-
-    counts = df["ordered_status_transition_list"].map(n_revisions)
-    out = counts.value_counts().sort_index().reset_index()
-    out.columns = ["Revisions", "DMPs"]
-    out["Revisions"] = out["Revisions"].map(lambda v: "3+" if v >= 3 else str(v))
-    out = out.groupby("Revisions", as_index=False).sum()
-    return out
-
-
-# Q2 additions --------------------------------------------------------------
-
-def erb_approval_by_department(df_dmps: pd.DataFrame, df_erbs: pd.DataFrame) -> pd.DataFrame:
-    """ERB approval rate per department (Q2)."""
-    out = []
-    for dept in DEPARTMENTS:
-        sub_dmps = filter_department(df_dmps, dept)
-        keys = set(sub_dmps["issue_key"])
-        sub_erbs = df_erbs[df_erbs["related_dmp"].isin(keys)]
-        n = len(sub_erbs)
-        approved = int(sub_erbs["is_approved"].fillna(False).sum()) if n else 0
-        out.append({
-            "Department": dept,
-            "ERBs": n,
-            "Approved": approved,
-            "Approval rate": approved / n if n else 0,
-        })
-    return pd.DataFrame(out)
-
-
-# Q4 -------------------------------------------------------------------------
-
-def data_sharing_breakdown(df: pd.DataFrame) -> pd.DataFrame:
-    """Breakdown of data-sharing destinations (Q4)."""
-    if not len(df):
-        return pd.DataFrame(columns=["Destination", "DMPs"])
-    label_map = {
-        "no": "No sharing",
-        "inside_eea": "Inside EEA",
-        "outside_eea": "Outside EEA",
-    }
-    s = df["data_sharing"].fillna("(unknown)").replace({"null": "(unknown)"})
-    s = s.map(lambda v: label_map.get(v, v))
-    counts = s.value_counts().reset_index()
-    counts.columns = ["Destination", "DMPs"]
-    return counts
-
-
 # Q8 / Q9 -------------------------------------------------------------------
 
 def _sorted_history(row) -> list:
@@ -670,29 +552,6 @@ def _sorted_history(row) -> list:
             pairs.append((st, dt))
     pairs.sort(key=lambda p: p[1])
     return pairs
-
-
-def days_to_first_submission(df: pd.DataFrame) -> pd.Series:
-    """Days from DMP creation to first 'Submitted' status (Q8).
-
-    Uses the pre-computed ``days_to_first_submission`` column from the
-    Cockpit export when available; falls back to computing it from
-    ``status_history`` if the column is absent.
-    """
-    if not len(df):
-        return pd.Series(dtype=float)
-    if "days_to_first_submission" in df.columns:
-        return df["days_to_first_submission"].astype(float)
-    out = []
-    for _, row in df.iterrows():
-        created = row["issue_creation_time"]
-        if pd.isna(created):
-            out.append(None)
-            continue
-        pairs = _sorted_history(row)
-        first_sub = next((ts for st, ts in pairs if st == "Submitted"), None)
-        out.append((first_sub - created).days if first_sub is not None else None)
-    return pd.Series(out, index=df.index)
 
 
 def first_response_time(df: pd.DataFrame) -> pd.Series:
@@ -720,28 +579,9 @@ def first_response_time(df: pd.DataFrame) -> pd.Series:
     return pd.Series(out, index=df.index)
 
 
-# Q10 -----------------------------------------------------------------------
+# Q9 / Process -------------------------------------------------------------
 
 _HELP_FIELDS = ["data_repository", "metadata_standard", "processing_tools_list"]
-
-
-def help_needed_rate(df: pd.DataFrame) -> pd.DataFrame:
-    """'I need advice' rate per DMP field (Q10)."""
-    n = len(df)
-    if not n:
-        return pd.DataFrame(columns=["Field", "DMPs", "Rate"])
-    rows = []
-    for field in _HELP_FIELDS:
-        count = int(df[field].map(
-            lambda v: any("i need advice" in str(x).lower() for x in v)
-        ).sum())
-        rows.append({"Field": field, "DMPs": count, "Rate": count / n})
-    combined = int(df.apply(
-        lambda r: any("i need advice" in str(x).lower() for f in _HELP_FIELDS for x in r[f]),
-        axis=1,
-    ).sum())
-    rows.append({"Field": "Any field (combined)", "DMPs": combined, "Rate": combined / n})
-    return pd.DataFrame(rows)
 
 
 def gauge_svg(value_float: float, label: str, description: str | None = None) -> str:
