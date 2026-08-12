@@ -149,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./research-questions.html">Reference</a></li><li class="breadcrumb-item"><a href="./queries.html">Data Queries</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./queries.html">More Info</a></li><li class="breadcrumb-item"><a href="./queries.html">Data Queries</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -185,22 +185,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Communication &amp; Training<br><span class="sidebar-subtitle">Outreach &amp; training activities</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./compliance.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Policy Compliance<br><span class="sidebar-subtitle">Policy adherence metrics (Q8–Q10)</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./lifecycle.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DMP Lifecycle<br><span class="sidebar-subtitle">Data management planning (Q1–Q11)</span></span></a>
-  </div>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Reference</span></a>
+ <span class="menu-text">More Info</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -208,30 +196,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./research-questions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Research Questions</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./metrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Metrics</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./queries.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Data Queries</span></a>
   </div>
 </li>
-      </ul>
-  </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About</span></a>
   </div>
 </li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -259,7 +235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./research-questions.html">Reference</a></li><li class="breadcrumb-item"><a href="./queries.html">Data Queries</a></li></ol></nav></header>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./queries.html">More Info</a></li><li class="breadcrumb-item"><a href="./queries.html">Data Queries</a></li></ol></nav></header>
 
 
 
@@ -311,23 +287,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td><code>issue_key</code></td>
-<td><code>department_erbs</code>, <code>erb_approval_by_department</code></td>
+<td>not currently consumed (primary key)</td>
 </tr>
 <tr class="even">
 <td><code>issue_creation_time</code></td>
-<td>Reporting-period filter; <code>kpi_html</code> date range; Q8 fallback</td>
+<td>Reporting-period filter; <code>kpi_html</code> date range</td>
 </tr>
 <tr class="odd">
 <td><code>is_approved</code></td>
-<td><code>kpi_table</code>, <code>approval_by_department</code>, <code>approval_by_purpose</code> (Q1)</td>
+<td><code>kpi_table</code>, <code>approval_by_department</code> (Q1)</td>
 </tr>
 <tr class="even">
 <td><code>status_history</code></td>
-<td>Q8/Q9 fallback only (pre-computed columns preferred)</td>
+<td>Q9 fallback only (pre-computed column preferred)</td>
 </tr>
 <tr class="odd">
 <td><code>ordered_status_transition_list</code></td>
-<td><code>revision_distribution</code>, <code>revision_summary</code> (Q7)</td>
+<td><code>process_kpi_html</code> (revision requested rate)</td>
 </tr>
 <tr class="even">
 <td><code>tue_department</code></td>
@@ -339,15 +315,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td><code>data_repository</code></td>
-<td><code>kpi_table</code>, <code>repository_breakdown</code>, <code>help_needed_rate</code> (Q5/Q10)</td>
+<td><code>kpi_table</code>, <code>repository_breakdown</code> (Q5)</td>
 </tr>
 <tr class="odd">
 <td><code>metadata_standard</code></td>
-<td><code>help_needed_rate</code> (Q10)</td>
+<td><code>process_kpi_html</code> (help rate)</td>
 </tr>
 <tr class="even">
 <td><code>processing_tools_list</code></td>
-<td><code>help_needed_rate</code> (Q10)</td>
+<td><code>process_kpi_html</code> (help rate)</td>
 </tr>
 <tr class="odd">
 <td><code>has_related_erb</code></td>
@@ -355,23 +331,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td><code>is_scientific</code></td>
-<td><code>approval_by_purpose</code></td>
+<td><code>filter_by_purpose</code>, <code>dmps_by_department_purpose</code></td>
 </tr>
 <tr class="odd">
 <td><code>has_special_category</code></td>
-<td><code>special_category_summary</code> (Q4)</td>
+<td>not currently consumed</td>
 </tr>
 <tr class="even">
 <td><code>data_sharing</code></td>
-<td><code>data_sharing_breakdown</code> (Q4)</td>
+<td><code>kpi_table</code> (Q4)</td>
 </tr>
 <tr class="odd">
 <td><code>archive_location</code></td>
-<td><code>kpi_table</code>, <code>archive_breakdown</code> (Q6)</td>
+<td><code>kpi_table</code>, <code>archive_split</code> (Q6)</td>
 </tr>
 <tr class="even">
 <td><code>days_to_first_submission</code></td>
-<td><code>days_to_first_submission</code> (Q8)</td>
+<td>not currently consumed</td>
 </tr>
 <tr class="odd">
 <td><code>days_to_first_response</code></td>
@@ -425,15 +401,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><code>related_dmp</code></td>
-<td><code>department_erbs</code>, <code>erb_approval_by_department</code> (Q2)</td>
+<td>not currently consumed</td>
 </tr>
 <tr class="even">
 <td><code>is_approved</code></td>
-<td><code>erb_approval_by_department</code> (Q2)</td>
+<td>not currently consumed</td>
 </tr>
 <tr class="odd">
 <td><code>ordered_status_transition_list</code></td>
-<td><code>erb_breakdown</code> (Q2 decisions)</td>
+<td>not currently consumed</td>
 </tr>
 </tbody>
 </table>
