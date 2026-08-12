@@ -18,6 +18,7 @@ DMP_FILE = DATA_DIR / "DMPs_2025_09_10_onwards.csv"
 ERB_FILE = DATA_DIR / "ERBs_2025_09_10_onwards.csv"
 HISTORICAL_DMP_FILE = DATA_DIR / "dmps-2024-2025.json"
 FEEDBACK_SURVEY_FILE = DATA_DIR / "feedback-survey-responses.csv"
+COMMUNICATION_EFFORTS_FILE = DATA_DIR / "communication-efforts-dataset.json"
 
 # Classification rules -------------------------------------------------------
 
@@ -1065,3 +1066,83 @@ def feedback_survey_html() -> str:
     ))
     parts.append(feedback_legend_html("stars"))
     return "\n".join(parts)
+
+
+# Communication & training (Q16/Q17) ----------------------------------------
+
+# Property names in data/communication-efforts-dataset.json whose observations
+# carry the university-wide totals for each KPI.
+_COMMUNICATION_METRIC_NAMES = {
+    "News items": "Number of RDM news items",
+    "Policy roadshows": "Total number of policy roadshow sessions",
+    "RDM Training sessions": "Total number of RDM training sessions",
+    "RDM Training attendees": "Total number of RDM training attendees",
+}
+
+
+@cache
+def load_communication_efforts() -> dict:
+    """Load the communication & training totals from the JSON-LD dataset.
+
+    Returns a dict mapping the ``_COMMUNICATION_METRIC_NAMES`` labels to the
+    ``schema:value`` of the matching university-wide observation.
+    """
+    with open(COMMUNICATION_EFFORTS_FILE) as f:
+        data = json.load(f)
+    values = {}
+    for obs in data.get("observation", []):
+        prop = obs.get("schema:measuredProperty", {}).get("schema:name")
+        val = obs.get("schema:value", {}).get("schema:value")
+        if prop and val is not None:
+            values[prop] = val
+    return {label: values[name] for label, name in _COMMUNICATION_METRIC_NAMES.items()}
+
+
+# Label used for university-wide activities attributed to all departments
+# (e.g. the PROOF & DataBites trainings) in per-department breakdowns.
+UNIVERSITY_WIDE_LABEL = "University-wide"
+
+
+def communication_attendees_by_department() -> pd.DataFrame:
+    """RDM training attendees per department, plus the university-wide total.
+
+    Department values come from the ``Number of RDM training attendees``
+    observations; university-wide activities (attributed to all departments)
+    are included as a single ``UNIVERSITY_WIDE_LABEL`` row.
+    """
+    with open(COMMUNICATION_EFFORTS_FILE) as f:
+        data = json.load(f)
+    rows = []
+    for obs in data.get("observation", []):
+        prop = obs.get("schema:measuredProperty", {}).get("schema:name")
+        val = obs.get("schema:value", {}).get("schema:value")
+        if val is None:
+            continue
+        if prop == "Number of RDM training attendees":
+            dept = obs.get("schema:observationAbout", {}).get("schema:name")
+            if dept in DEPARTMENTS:
+                rows.append({"Department": dept, "Attendees": val})
+        elif prop == "Number of RDM training attendees for all departments":
+            rows.append({"Department": UNIVERSITY_WIDE_LABEL, "Attendees": val})
+    return pd.DataFrame(rows)
+
+
+def communication_kpi_html() -> str:
+    """Return an HTML string of the four communication & training KPI cards."""
+    k = load_communication_efforts()
+    descriptions = {
+        "News items": "RDM news items published this reporting period",
+        "Policy roadshows": "Policy roadshow sessions held across the university",
+        "RDM Training sessions": "RDM training sessions delivered",
+        "RDM Training attendees": "Researchers who attended an RDM training session",
+    }
+    cards = []
+    for label in _COMMUNICATION_METRIC_NAMES:
+        cards.append(
+            '<div class="kpi-card kpi-blue">'
+            f'<div class="kpi-label"><p>{label}</p></div>'
+            f'<div class="kpi-value"><p>{k[label]}</p></div>'
+            f'<div class="kpi-desc">{descriptions[label]}</div>'
+            '</div>'
+        )
+    return '<div class="kpi-grid">' + "".join(cards) + "</div>"

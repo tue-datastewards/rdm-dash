@@ -6,14 +6,64 @@ format:
     toc: false
 ---
 
-## Communication & Training
+```{python}
+#| output: asis
 
-These metrics track the **reach and effectiveness** of RDM communication and
-training activities across the university.
+import _helpers as h
 
-| # | Question | Status |
-|---|----------|--------|
-| Q16 | What is the **reach of RDM communication activities** (news items, roadshows, workshops, steward support)? | Pending |
-| Q17 | What is the **training participation rate**? | Pending |
+print(h.communication_kpi_html())
+```
 
-*Data from communication and training tracking systems will be integrated in a future update.*
+```{python}
+#| output: asis
+
+import pandas as pd
+import plotly.express as px
+import plotly.io as pio
+
+pio.templates.default = "plotly_white"
+
+df = h.communication_attendees_by_department()
+df["Department"] = df["Department"].map(lambda d: h.DEPT_ABBREVIATIONS.get(d, d))
+fig = px.bar(df, x="Attendees", y="Department", text="Attendees",
+             title="RDM Training Attendees by Department")
+fig.update_traces(marker_color="#742459")
+fig.update_layout(
+    yaxis={"categoryorder": "total ascending"},
+    margin={"t": 100},
+)
+print(h.render_chart(fig))
+print(h.render_department_abbreviations())
+print('<p style="font-size:0.85em;color:#6b7280"><i>University-wide = RDM training '
+      'activities (PROOF &amp; DataBites), not tied to a single department.</i></p>')
+```
+
+## How to improve the implementation for the next year, 2026-2027
+
+### What we can do
+
+#### Amplify RDM policy awareness
+
+- At the Data Steward team, we will continue to publish news items to inform and
+  remind researchers about the RDM policy
+- Plan more visits to the research groups to present the policy and introduce
+  their data Steward
+- We plan to organize a symposium about Research Cockpit to increase the
+  awareness
+
+#### Enhance training uptake
+
+- We have revamped the [PROOF course on Open Science and
+  RDM](https://tuenl.sharepoint.com/sites/intranet-human-resources-management/SitePages/Archive-2024/Open-Science----PhD,-PDoc.aspx)
+  to include training on how to make DMPs
+- We have created [RDM guidelines for PhD
+  supervisors](https://rdm.tue.nl/docs/category/skill-building--learning)
+- We are preparing an e-learning course about Research Data Management
+
+### What you can do
+
+You can help us by inviting us to your staff meetings. Please email
+rdmsupport@tue.nl or reach out to your data steward directly ([Find your data
+steward](https://rdm.tue.nl/docs/contact/)).
+
+<a class="cta-btn" href="mailto:rdmsupport@tue.nl">Email Data Steward Team</a>

@@ -10,9 +10,9 @@ website:
       - href: data-storage.qmd
         text: "Data Storage<br><span class='sidebar-subtitle'>Storage, repositories & archival</span>"
       - href: process-eval.qmd
-        text: "DMP Process Evaluation<br><span class='sidebar-subtitle'>Process quality metrics (Q12–Q15)</span>"
+        text: "DMP Process Evaluation<br><span class='sidebar-subtitle'>Response time & satisfaction</span>"
       - href: communication-training.qmd
-        text: "Communication & Training<br><span class='sidebar-subtitle'>Outreach activities (Q16–Q17)</span>"
+        text: "Communication & Training<br><span class='sidebar-subtitle'>Outreach & training activities</span>"
       - href: compliance.qmd
         text: "Policy Compliance<br><span class='sidebar-subtitle'>Policy adherence metrics (Q8–Q10)</span>"
       - href: lifecycle.qmd

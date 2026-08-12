@@ -298,8 +298,10 @@ Changes to `.qmd`, `_quarto.yml`, and `styles.css` trigger live rebuilds.
 
 > **No manual re-render by default.** The live preview rebuilds automatically
 > on save, so changes to `.qmd`, `_quarto.yml`, and `styles.css` do not require
-> running `quarto render` afterwards. Only render (7.4) when explicitly asked
-> or when a full `_site/` build is needed for deployment.
+> running `quarto render` afterwards. **Do NOT run `quarto render` while the
+> live preview is active** — it disrupts/restarts the preview server. Only
+> render (7.4) when the user explicitly asks, or when a full `_site/` build is
+> needed for deployment.
 
 ### 7.4 Full render
 
