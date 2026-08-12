@@ -612,28 +612,6 @@ def revision_distribution(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def revision_summary(df: pd.DataFrame) -> dict:
-    """Headline revision metrics (Q7)."""
-    n = len(df)
-    if not n:
-        return {
-            "DMPs with \u22651 revision": 0,
-            "% with \u22651 revision": 0,
-            "Avg revisions per DMP": 0,
-        }
-
-    def n_revisions(seq):
-        return sum(1 for s in seq if s == "Revision requested")
-
-    counts = df["ordered_status_transition_list"].map(n_revisions)
-    n_rev = int((counts > 0).sum())
-    return {
-        "DMPs with \u22651 revision": n_rev,
-        "% with \u22651 revision": float((counts > 0).mean()),
-        "Avg revisions per DMP": float(counts.mean()),
-    }
-
-
 # Q2 additions --------------------------------------------------------------
 
 def erb_approval_by_department(df_dmps: pd.DataFrame, df_erbs: pd.DataFrame) -> pd.DataFrame:
@@ -654,20 +632,6 @@ def erb_approval_by_department(df_dmps: pd.DataFrame, df_erbs: pd.DataFrame) -> 
     return pd.DataFrame(out)
 
 
-def erb_integration_timing(df_dmps: pd.DataFrame) -> pd.DataFrame:
-    """Distribution of days to ERB link creation (Q2)."""
-    if not len(df_dmps):
-        return pd.DataFrame(columns=["Metric", "Value"])
-    s = df_dmps.loc[df_dmps["days_to_erb_link_creation"].notna(), "days_to_erb_link_creation"]
-    s = pd.to_numeric(s, errors="coerce").dropna()
-    if not len(s):
-        return pd.DataFrame(columns=["Metric", "Value"])
-    return pd.DataFrame({
-        "Metric": ["Median", "Mean", "25th pct", "75th pct"],
-        "Value": [s.median(), s.mean(), s.quantile(0.25), s.quantile(0.75)],
-    })
-
-
 # Q4 -------------------------------------------------------------------------
 
 def data_sharing_breakdown(df: pd.DataFrame) -> pd.DataFrame:
@@ -684,15 +648,6 @@ def data_sharing_breakdown(df: pd.DataFrame) -> pd.DataFrame:
     counts = s.value_counts().reset_index()
     counts.columns = ["Destination", "DMPs"]
     return counts
-
-
-def special_category_summary(df: pd.DataFrame) -> dict:
-    """Special-category (DPIA-relevance proxy) rate (Q4)."""
-    n = len(df)
-    if not n:
-        return {"Special-category rate": 0}
-    sc = int(df["has_special_category"].fillna(False).sum())
-    return {"Special-category rate": sc / n}
 
 
 # Q8 / Q9 -------------------------------------------------------------------

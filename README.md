@@ -85,10 +85,6 @@ Output is written to `_site/`.
   gauges, and charts for compliance, data handling, and workflow.
 - **`data-storage.qmd`** — storage, FAIR data adoption, repositories and
   archival, with a department dropdown.
-- **`compliance.qmd`** — policy compliance with a department dropdown
-  (overview + per-department panels).
-- **`lifecycle.qmd`** — DMP lifecycle metrics (Q1–Q11) as section-grouped KPI
-  blocks.
 - **`process-eval.qmd`** — process quality metrics (Q12–Q15).
 - **`communication-training.qmd`** — outreach activities (Q16–Q17).
 - **`about.qmd`** — credits.
@@ -150,13 +146,8 @@ pipenv run python scripts/validate-feedback-dataset.py
 
 ## Reference documents
 
-Available under the navbar **Reference** menu:
+Available under the navbar **More Info** menu:
 
-- [`research-questions.md`](research-questions.md) — the 17 research questions
-  (A: Compliance, B: Lifecycle, C: Survey, D: Communication & Training).
-- [`metrics.md`](metrics.md) — metrics per question. Q1–Q10 are answerable
-  from the DMP/ERB datasets; Q11–Q17 require survey, training, and
-  communication data not yet available.
 - [`queries.md`](queries.md) — the source SQL queries behind the exports.
 
 ## Project structure
@@ -166,15 +157,11 @@ rdm-dash/
 ├── _quarto.yml                 # Site config: navbar, theme, code hidden
 ├── index.qmd                   # Overview dashboard
 ├── data-storage.qmd            # Storage, repositories & archival
-├── compliance.qmd              # Policy compliance (dept dropdown)
-├── lifecycle.qmd               # DMP lifecycle metrics
 ├── process-eval.qmd            # Process quality metrics
 ├── communication-training.qmd  # Outreach activities
 ├── about.qmd                   # Credits
 ├── _helpers.py                 # Data loading + metric functions
 ├── styles.css                  # Custom CSS overrides
-├── research-questions.md       # 17 research questions
-├── metrics.md                  # Metrics per question
 ├── queries.md                  # Source SQL queries
 ├── datapackage.json            # Frictionless Data Package (both resources)
 ├── scripts/

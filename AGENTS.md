@@ -63,14 +63,10 @@ rdm-dash/
 ├── _quarto.yml          # Site config: navbar, CSS, theme (cosmo), execute: echo: false
 ├── index.qmd            # Overview dashboard: 1 integer card + 5 circle gauges + charts
 ├── data-storage.qmd     # Data storage, FAIR data adoption, repository & archival charts
-├── compliance.qmd       # Policy compliance: dept dropdown + 10 panels (overview + 9 depts)
-├── lifecycle.qmd        # DMP lifecycle: 10 section-grouped KPI blocks + charts
 ├── process-eval.qmd     # Process evaluation metrics
 ├── communication-training.qmd  # Outreach activities
 ├── about.qmd            # Credits / about
-├── metrics.md           # Metrics per question (Q1–Q17)
 ├── queries.md           # Source SQL queries
-├── research-questions.md    # 17 research questions, grouped by section (A–D)
 ├── _helpers.py            # Shared data loading + metric functions (~830 lines)
 ├── styles.css             # Custom CSS (RDM Handbook purple palette, gauges, navbar, sidebar)
 ├── data/
@@ -89,16 +85,14 @@ rdm-dash/
 |------|-------------|--------------|
 | **index.qmd** | Overview dashboard (all departments) | DMPs per dept, Compliance, Data handling, Workflow |
 | **data-storage.qmd** | Storage, repositories & archival with dept dropdown | TU/e storage donut, FAIR Data Adoption, Repository choice, Archival |
-| **compliance.qmd** | Policy adherence with dept selector dropdown | Dept dropdown → 9 panels (overview + 8 depts) |
-| **lifecycle.qmd** | DMP lifecycle metrics | 10 section-grouped KPI blocks + charts |
 | **process-eval.qmd** | Process quality metrics | KPI grid + charts |
 | **communication-training.qmd** | Outreach activities | Metrics + tables |
 | **about.qmd** | Credits | Text only |
 
 > **Sidebar navigation** is configured in `_quarto.yml`.
 > The old `dept-*.qmd` per-department files were removed in commit
-> `850cfc8`; department views now live inside `data-storage.qmd`,
-> `compliance.qmd` and `lifecycle.qmd` with a JavaScript-based dropdown
+> `850cfc8`; department views now live inside `index.qmd`,
+> `data-storage.qmd` and `process-eval.qmd` with a JavaScript-based dropdown
 > selector (`dept-select`) plus an All/Scientific/Educational purpose
 > toggle (`purpose-toggle`) that shows/hides matching `.purpose-content`
 > panels.
@@ -124,7 +118,7 @@ data/ERBs_2025_09_10_onwards.csv  (5 cols, foreign keys → DMPs.issue_key)
   - kpi_table → dict of totals/rates
   - kpi_html → HTML string of KPI cards
   - approval_by_department, erb_breakdown, etc.
-        ↓ index.qmd, compliance.qmd, lifecycle.qmd
+        ↓ index.qmd, data-storage.qmd, process-eval.qmd
   - Plotly Express charts
   - `display(HTML(...))` for KPI gauges
 ```
@@ -234,10 +228,10 @@ Sidebar-subtitle class for muted secondary text, shown in breadcrumbs.
 | Q1 | `approval_by_department()`, `dmps_by_department_purpose()` |
 | Q2 | `approval_by_department()`, `erb_breakdown()`, `erb_approval_by_department()` |
 | Q3 | `storage_split()` |
-| Q4 | `data_sharing_breakdown()`, `special_category_summary()` |
+| Q4 | `data_sharing_breakdown()` |
 | Q5 | `repository_breakdown()`, `trusted_repository_split()` — returns exactly two groups: "Using Trusted Repository" / "Not Using Trusted Repository" |
 | Q6 | `archive_breakdown()`, `archive_split()` — binary TU/e archive (RAPS) usage |
-| Q7 | `revision_distribution()`, `revision_summary()` |
+| Q7 | `revision_distribution()` |
 | Q8 | `days_to_first_submission()` — reads pre-computed column; `status_history` fallback |
 | Q9 | `first_response_time()` — reads pre-computed column; `status_history` fallback |
 | Q10 | `help_needed_rate()` |
@@ -345,8 +339,8 @@ triggers on `push main`.
 |------|------|
 | `_quarto.yml` | Site config: navbar, sidebar, CSS, theme, code-hidden |
 | `index.qmd` | Homepage — 1 integer card + 5 circle gauges + all charts |
-| `compliance.qmd` | 10 panels (overview + 9 depts), JS dropdown selector |
-| `lifecycle.qmd` | 10 section KPI blocks + bar charts |
+| `data-storage.qmd` | Storage, repositories & archival with dept dropdown |
+| `process-eval.qmd` | Process quality KPI grid + feedback survey |
 | `_helpers.py` | All data logic — loaders, filters, metrics, HTML builders |
 | `styles.css` | RDM purple palette, KPI gauges, navbar, sidebar styling |
 | `data/departments.json` | schema.org JSON-LD department definitions with Wikidata IDs |
@@ -356,4 +350,4 @@ triggers on `push main`.
 
 ---
 
-_Last updated: 2026-08-06_
+_Last updated: 2026-08-12_

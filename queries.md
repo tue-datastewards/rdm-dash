@@ -26,7 +26,6 @@ SELECT
   processing_tools_list,
   has_related_erb,
   is_scientific,
-  has_special_category,
   data_sharing,
   archive_location,
   days_to_first_submission,
@@ -46,7 +45,7 @@ WHERE
 | `issue_creation_time`            | Reporting-period filter; `kpi_html` date range; Q8 fallback        |
 | `is_approved`                    | `kpi_table`, `approval_by_department`, `approval_by_purpose` (Q1) |
 | `status_history`                 | Q8/Q9 fallback only (pre-computed columns preferred)               |
-| `ordered_status_transition_list` | `revision_distribution`, `revision_summary` (Q7)                  |
+| `ordered_status_transition_list` | `revision_distribution` (Q7)                       |
 | `tue_department`                 | `filter_department`                                               |
 | `data_storage_list`              | `storage_split` (Q3)                                              |
 | `data_repository`                | `kpi_table`, `repository_breakdown`, `help_needed_rate` (Q5/Q10)  |
@@ -54,7 +53,6 @@ WHERE
 | `processing_tools_list`          | `help_needed_rate` (Q10)                                          |
 | `has_related_erb`                | `kpi_table` (Q2 linkage)                                          |
 | `is_scientific`                  | `approval_by_purpose`                                             |
-| `has_special_category`           | `special_category_summary` (Q4)                                   |
 | `data_sharing`                   | `data_sharing_breakdown` (Q4)                                     |
 | `archive_location`               | `kpi_table`, `archive_breakdown` (Q6)                             |
 | `days_to_first_submission`       | `days_to_first_submission` (Q8)                                   |
