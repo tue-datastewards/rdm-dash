@@ -1098,6 +1098,35 @@ def load_communication_efforts() -> dict:
     return {label: values[name] for label, name in _COMMUNICATION_METRIC_NAMES.items()}
 
 
+# Label used for university-wide activities attributed to all departments
+# (e.g. the PROOF & DataBites trainings) in per-department breakdowns.
+CROSS_DEPARTMENT_LABEL = "Cross-department"
+
+
+def communication_attendees_by_department() -> pd.DataFrame:
+    """RDM training attendees per department, plus the cross-department total.
+
+    Department values come from the ``Number of RDM training attendees``
+    observations; university-wide activities (attributed to all departments)
+    are included as a single ``CROSS_DEPARTMENT_LABEL`` row.
+    """
+    with open(COMMUNICATION_EFFORTS_FILE) as f:
+        data = json.load(f)
+    rows = []
+    for obs in data.get("observation", []):
+        prop = obs.get("schema:measuredProperty", {}).get("schema:name")
+        val = obs.get("schema:value", {}).get("schema:value")
+        if val is None:
+            continue
+        if prop == "Number of RDM training attendees":
+            dept = obs.get("schema:observationAbout", {}).get("schema:name")
+            if dept in DEPARTMENTS:
+                rows.append({"Department": dept, "Attendees": val})
+        elif prop == "Number of RDM training attendees for all departments":
+            rows.append({"Department": CROSS_DEPARTMENT_LABEL, "Attendees": val})
+    return pd.DataFrame(rows)
+
+
 def communication_kpi_html() -> str:
     """Return an HTML string of the four communication & training KPI cards."""
     k = load_communication_efforts()

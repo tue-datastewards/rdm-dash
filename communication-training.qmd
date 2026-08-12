@@ -13,3 +13,27 @@ import _helpers as h
 
 print(h.communication_kpi_html())
 ```
+
+```{python}
+#| output: asis
+
+import pandas as pd
+import plotly.express as px
+import plotly.io as pio
+
+pio.templates.default = "plotly_white"
+
+df = h.communication_attendees_by_department()
+df["Department"] = df["Department"].map(lambda d: h.DEPT_ABBREVIATIONS.get(d, d))
+fig = px.bar(df, x="Attendees", y="Department", text="Attendees",
+             title="RDM Training Attendees by Department")
+fig.update_traces(marker_color="#742459")
+fig.update_layout(
+    yaxis={"categoryorder": "total ascending"},
+    margin={"t": 100},
+)
+print(h.render_chart(fig))
+print(h.render_department_abbreviations())
+print('<p style="font-size:0.85em;color:#6b7280"><i>Cross-department = university-wide RDM training '
+      'activities (PROOF &amp; DataBites), not tied to a single department.</i></p>')
+```
