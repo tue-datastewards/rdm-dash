@@ -13,19 +13,12 @@ website:
         text: "DMP Process Evaluation<br><span class='sidebar-subtitle'>Response time & satisfaction</span>"
       - href: communication-training.qmd
         text: "Communication & Training<br><span class='sidebar-subtitle'>Outreach & training activities</span>"
-      - href: compliance.qmd
-        text: "Policy Compliance<br><span class='sidebar-subtitle'>Policy adherence metrics (Q8–Q10)</span>"
-      - href: lifecycle.qmd
-        text: "DMP Lifecycle<br><span class='sidebar-subtitle'>Data management planning (Q1–Q11)</span>"
-      - section: "Reference"
+      - section: "More Info"
         contents:
-          - href: research-questions.md
-            text: Research Questions
-          - href: metrics.md
-            text: Metrics
           - href: queries.md
             text: Data Queries
-      - about.qmd
+          - href: about.qmd
+            text: About
   navbar:
     logo: images/logo.svg
     logo-alt: "TU/e logo"
