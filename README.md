@@ -99,6 +99,12 @@ The source CSVs are filtered to `issue_creation_time >= '2025-09-01'` and
 exported from the Cockpit gold tables (`dmp_gold_fact_dedup`,
 `erb_gold_fact_dedup`); the original SQL is in [`queries.md`](queries.md).
 
+When loading, `load_dmps()` keeps only **actual DMPs**. Rows with an empty
+status history (never-submitted drafts), DMPs currently **Retracted**, and
+non-DMP task items that never entered the real DMP workflow (statuses such as
+*Done* / *Work in progress* / *In Progress*) are excluded from all counts and
+rates. See `_helpers.py::_is_actual_dmp()`.
+
 The dataset structure is described with [Frictionless Data Table Schemas](https://specs.frictionlessdata.io/table-schema/)
 and validated with the `frictionless` package:
 
