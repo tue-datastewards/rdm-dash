@@ -151,6 +151,36 @@ _LIST_COLS_DMP = [
     "data_volume_list",
 ]
 
+# Statuses that indicate a genuine DMP progressed through the Research Cockpit
+# workflow (Draft -> Submitted -> ... ). A DMP is treated as an *actual* DMP
+# only if its status history intersects this set. Rows whose statuses never
+# reach any of these (e.g. Done / Work in progress / In Progress / Pending /
+# Preparation) are non-DMP task items, not real DMP documents.
+_REAL_DMP_STATUSES = {
+    "Draft",
+    "Submitted",
+    "Revision requested",
+    "Revised (Positive advise)",
+    "Generate DMP Approval Letter",
+    "Archived",
+    "Inactive",
+}
+
+
+def _is_actual_dmp(statuses: list) -> bool:
+    """True if a row represents an actual DMP.
+
+    Excludes:
+    - rows with an empty status history (never-submitted drafts),
+    - DMPs currently Retracted,
+    - non-DMP task items that never entered the real DMP workflow.
+    """
+    if not statuses:
+        return False
+    if statuses[0] == "Retracted":
+        return False
+    return bool(set(statuses) & _REAL_DMP_STATUSES)
+
 
 def _parse_json_list(val) -> list:
     """Parse a JSON array string into a list.
@@ -194,6 +224,10 @@ def load_dmps() -> pd.DataFrame:
     for c in ("issue_creation_time", "latest_status_time", "erb_link_creation_date", "gold_processed_at"):
         if c in df.columns:
             df[c] = pd.to_datetime(df[c], errors="coerce", utc=True)
+    # Keep only actual DMPs: drop never-submitted drafts (empty status
+    # history), currently-retracted DMPs, and non-DMP task items.
+    if "ordered_status_transition_list" in df.columns:
+        df = df[df["ordered_status_transition_list"].map(_is_actual_dmp)]
     return df
 
 

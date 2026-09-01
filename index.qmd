@@ -56,6 +56,11 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     print('</div>')
 ```
 
+<div class="kpi-scope-note">
+  <em>Scope:</em> counts reflect actual DMPs only &mdash; never-submitted
+  drafts, currently retracted DMPs, and non-DMP task items are excluded.
+</div>
+
 
 ## Data Management Plans (DMPs) per department
 

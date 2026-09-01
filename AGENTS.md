@@ -126,6 +126,11 @@ data/ERBs_2025_09_10_onwards.csv  (5 cols, foreign keys → DMPs.issue_key)
 ### 4.1 Key data concepts
 
 - **DMP status flow:** Draft → Submitted → Revision requested → Revised → Approved / Rejected
+- **Actual DMPs only:** `load_dmps()` keeps only genuine DMPs. Rows with an
+  empty status history (never-submitted drafts), DMPs currently **Retracted**,
+  and non-DMP task items that never entered the real workflow (statuses such
+  as *Done* / *Work in progress* / *In Progress*) are excluded from all
+  counts and rates (see `_helpers.py::_is_actual_dmp()`).
 - **ERB decision flow:** Conditional → Approved / Rejected / Retracted / Revisions → In progress
 - **Trusted repositories:** 4TU.ResearchData, Zenodo, OSF, Figshare
 - **TU/e storage:** 01 TU/e Network Drive, 02 Microsoft SharePoint/Teams, 04 SURF Research Drive
@@ -222,8 +227,8 @@ Sidebar-subtitle class for muted secondary text, shown in breadcrumbs.
 
 | Category | Functions |
 |----------|-----------|
-| Loaders | `load_dmps()`, `load_erbs()` — with caching, JSON parsing, bool coercion |
-| Helpers | `in_department()`, `filter_department()`, `department_erbs()`, `_parse_json_list()`, `_to_bool()` |
+| Loaders | `load_dmps()`, `load_erbs()` — with caching, JSON parsing, bool coercion. `load_dmps()` keeps only actual DMPs (see `_is_actual_dmp()`) |
+| Helpers | `in_department()`, `filter_department()`, `department_erbs()`, `_parse_json_list()`, `_to_bool()`, `_is_actual_dmp()` |
 | KPI | `kpi_table()`, `kpi_html()`, `gauge_svg()` — circle SVG generator |
 | Overview | `approval_by_department()`, `dmps_by_department_purpose()` |
 | Q3 (storage) | `storage_split()`, `storage_solution_by_department()`, `_canonical_storage_solution()` |

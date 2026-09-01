@@ -46,7 +46,7 @@ WHERE
 | `issue_creation_time`            | Reporting-period filter; `kpi_html` date range                   |
 | `is_approved`                    | `kpi_table`, `approval_by_department` (Q1)                       |
 | `status_history`                 | Q9 fallback only (pre-computed column preferred)                |
-| `ordered_status_transition_list` | `process_kpi_html` (revision requested rate)                    |
+| `ordered_status_transition_list` | `load_dmps` actual-DMP filter (`_is_actual_dmp`); `process_kpi_html` (revision requested rate) |
 | `tue_department`                 | `filter_department`                                             |
 | `data_storage_list`              | `storage_split` (Q3)                                            |
 | `data_repository`                | `kpi_table`, `repository_breakdown` (Q5)                        |

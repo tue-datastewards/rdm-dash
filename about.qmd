@@ -4,3 +4,11 @@ title: "About"
 
 RDM Dashboard is brought to you by Nami Sunami and Liz Guzman-Ramirez, TU/e Data
 Stewards.
+
+## Data scope
+
+The dashboard reflects **actual DMPs only**. DMP records that were never
+submitted (empty status history / drafts), DMPs currently **Retracted**, and
+non-DMP task items in the Research Cockpit that never entered the real DMP
+workflow (statuses such as *Done* / *Work in progress* / *In Progress*) are
+excluded from all counts and rates on this site.
