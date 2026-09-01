@@ -108,8 +108,6 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     print('<p style="font-size:0.85em;color:#6b7280"><i>Note: TU/e storage solutions include TU/e Network Drive, SURF Research Drive, Microsoft SharePoint/Teams, and Microsoft OneDrive.</i></p>')
     print(h.render_department_abbreviations())
 
-    print('<details class="storage-details"><summary>Breakdown: TU/e Data Storage Choices by Department</summary>')
-
     solution_titles = {
         "all": "TU/e Data Storage Choices by Department",
         "scientific": "Scientific DMPs with TU/e Data Storage Choices by Department",
@@ -153,7 +151,6 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of storage '
           '<b>choices</b>, not of DMPs. A DMP can select multiple storage options.</i></p>')
     print(h.render_department_abbreviations())
-    print('</details>')
     print('<br>')
     print('</div>')
 ```
@@ -251,12 +248,10 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
         margin={"t": 100},
         legend_title_text="",
     )
-    print('<details class="storage-details"><summary>Breakdown: Trusted Repository Choices by Department</summary>')
     print(h.render_chart(fig))
     print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Counts are repository '
           '<b>choices</b>, not DMPs. A DMP can select multiple repositories. Data only include choices indicating a use of a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
     print(h.render_department_abbreviations())
-    print('</details>')
     print('</div>')
 ```
 
@@ -352,8 +347,6 @@ for dept in h.DEPARTMENTS:
                           margin={"t": 80, "l": 20, "r": 20, "b": 20})
         print(h.render_chart(fig, width=500, height=450))
 
-        print(f'<details class="storage-details"><summary>TU/e Data Storage Choices at {dept}</summary>')
-
         df = h.storage_solution_by_department(dd)
         df = df[df["Department"] == dept]
         df = df.set_index("Solution")["DMPs"].reindex(sol_order, fill_value=0).reset_index(name="DMPs")
@@ -386,7 +379,6 @@ for dept in h.DEPARTMENTS:
         print(h.render_chart(fig))
         print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of storage '
               '<b>choices</b>, not of DMPs. A DMP can select multiple storage options.</i></p>')
-        print('</details>')
 
         print("<h2>FAIR Data Adoption</h2>")
 
@@ -412,8 +404,6 @@ for dept in h.DEPARTMENTS:
                           title=f"DMPs indicating a use of a trusted repository for FAIR data <br>at {dept}",
                           margin={"t": 80, "l": 20, "r": 20, "b": 20})
         print(h.render_chart(fig, width=500, height=450))
-
-        print(f'<details class="storage-details"><summary>Trusted Repository Choices at {dept}</summary>')
 
         df = h.repository_breakdown(dd)
         df = df[df["Repository"].isin(repo_order)]
@@ -442,7 +432,6 @@ for dept in h.DEPARTMENTS:
         print(h.render_chart(fig))
         print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of repository '
               '<b>choices</b>, not of DMPs. A DMP can select multiple repositories. Data only include choices indicating a use of a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
-        print('</details>')
 
         print("<h2>Archive location</h2>")
 
