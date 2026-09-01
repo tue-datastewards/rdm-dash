@@ -260,6 +260,13 @@
   text-align: center;
 }
 
+.kpi-scope-note {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: #6b7280;
+}
+
 /* ---------- Department selector ---------- */
 
 .filter-bar {
