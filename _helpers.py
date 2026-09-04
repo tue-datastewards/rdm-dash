@@ -330,7 +330,7 @@ def kpi_table(df: pd.DataFrame) -> dict:
         "Repository selection rate": n_repo / n if n else 0,
         "Trusted repository": n_trusted,
         "Trusted repository rate": n_trusted / n if n else 0,
-        "Archived at RAPS": n_raps,
+        "Plan to Archive at RAPS": n_raps,
         "RAPS archival rate": n_raps / n if n else 0,
     }
 
@@ -394,8 +394,8 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None, show_trend: bool = True)
              f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage at {abbr}'),
             ("Trusted repository", k["Trusted repository rate"],
              f'{k["Trusted repository"]} of {n} DMPs use a trusted data repository at {abbr}'),
-            ("Archived at RAPS", k["RAPS archival rate"],
-             f'{k["Archived at RAPS"]} of {n} DMPs at {abbr} are archived at RAPS'),
+            ("Plan to Archive at RAPS", k["RAPS archival rate"],
+             f'{k["Plan to Archive at RAPS"]} of {n} DMPs at {abbr} are archived at RAPS'),
         ]
     else:
         pct_kpis = [
@@ -409,8 +409,8 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None, show_trend: bool = True)
              f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage'),
             ("Trusted repository", k["Trusted repository rate"],
              f'{k["Trusted repository"]} of {n} DMPs use a trusted data repository'),
-            ("Archived at RAPS", k["RAPS archival rate"],
-             f'{k["Archived at RAPS"]} of {n} DMPs are archived at RAPS'),
+            ("Plan to Archive at RAPS", k["RAPS archival rate"],
+             f'{k["Plan to Archive at RAPS"]} of {n} DMPs are archived at RAPS'),
         ]
     for label, value, desc in pct_kpis:
         items.append(gauge_svg(value, label, desc))
