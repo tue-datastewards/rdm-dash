@@ -328,7 +328,7 @@ def kpi_table(df: pd.DataFrame) -> dict:
         "TU/e storage rate": n_tue_storage / n if n else 0,
         "Repository selected": n_repo,
         "Repository selection rate": n_repo / n if n else 0,
-        "Trusted repository": n_trusted,
+        "Plan to Use Trusted Repository": n_trusted,
         "Trusted repository rate": n_trusted / n if n else 0,
         "Plan to Archive at RAPS": n_raps,
         "RAPS archival rate": n_raps / n if n else 0,
@@ -392,8 +392,8 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None, show_trend: bool = True)
              f'{k["Data sharing agreement"]} of {n} DMPs require a data sharing agreement at {abbr}'),
             ("TU/e storage", k["TU/e storage rate"],
              f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage at {abbr}'),
-            ("Trusted repository", k["Trusted repository rate"],
-             f'{k["Trusted repository"]} of {n} DMPs use a trusted data repository at {abbr}'),
+            ("Plan to Use Trusted Repository", k["Trusted repository rate"],
+             f'{k["Plan to Use Trusted Repository"]} of {n} DMPs use a trusted data repository at {abbr}'),
             ("Plan to Archive at RAPS", k["RAPS archival rate"],
              f'{k["Plan to Archive at RAPS"]} of {n} DMPs at {abbr} are archived at RAPS'),
         ]
@@ -407,8 +407,8 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None, show_trend: bool = True)
              f'{k["Data sharing agreement"]} of {n} DMPs require a data sharing agreement'),
             ("TU/e storage", k["TU/e storage rate"],
              f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage'),
-            ("Trusted repository", k["Trusted repository rate"],
-             f'{k["Trusted repository"]} of {n} DMPs use a trusted data repository'),
+            ("Plan to Use Trusted Repository", k["Trusted repository rate"],
+             f'{k["Plan to Use Trusted Repository"]} of {n} DMPs use a trusted data repository'),
             ("Plan to Archive at RAPS", k["RAPS archival rate"],
              f'{k["Plan to Archive at RAPS"]} of {n} DMPs are archived at RAPS'),
         ]
@@ -492,7 +492,7 @@ def trusted_repository_split(df: pd.DataFrame) -> pd.DataFrame:
         lambda v: any(r in TRUSTED_REPOSITORIES for r in v)
     ).sum())
     return pd.DataFrame({
-        "Category": ["Using Trusted Repository", "Not Using Trusted Repository"],
+        "Category": ["Plan to Use Trusted Repository", "Not Using Trusted Repository"],
         "DMPs": [trusted, n - trusted],
     })
 

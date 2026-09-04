@@ -184,7 +184,7 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
                  text="DMPs",
                  title=title_by_purpose[pkey],
                  color_discrete_map={
-                     "Using Trusted Repository": "#742459",
+                     "Plan to Use Trusted Repository": "#742459",
                      "Not Using Trusted Repository": "#FAE1F0",
                  })
     fig.update_layout(
@@ -386,9 +386,9 @@ for dept in h.DEPARTMENTS:
         total = df["DMPs"].sum() or 1
         df = df.assign(Share=df["DMPs"] / total)
         df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-        trusted_rate = df.loc[df["Category"] == "Using Trusted Repository", "Share"].iloc[0] if len(df) else 0
+        trusted_rate = df.loc[df["Category"] == "Plan to Use Trusted Repository", "Share"].iloc[0] if len(df) else 0
         trusted_colors = {
-            "Using Trusted Repository": "#742459",
+            "Plan to Use Trusted Repository": "#742459",
             "Not Using Trusted Repository": "#FAE1F0",
         }
         fig = px.pie(df, names="Category", values="DMPs", hole=0.55)
