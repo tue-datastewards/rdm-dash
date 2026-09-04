@@ -232,7 +232,7 @@ Sidebar-subtitle class for muted secondary text, shown in breadcrumbs.
 | KPI | `kpi_table()`, `kpi_html()`, `gauge_svg()` — circle SVG generator |
 | Overview | `approval_by_department()`, `dmps_by_department_purpose()` |
 | Q3 (storage) | `storage_split()`, `storage_solution_by_department()`, `_canonical_storage_solution()` |
-| Q5 (repos) | `repository_breakdown()`, `trusted_repository_split()` — returns exactly two groups: "Plan to Use Trusted Repository" / "Not Using Trusted Repository" |
+| Q5 (repos) | `repository_breakdown()`, `trusted_repository_split()` — returns exactly two groups: "Plan to Use Trusted Repository" / "Not planning to use a trusted repository" |
 | Q6 (archival) | `archive_split()` — binary TU/e archive (RAPS) usage |
 | Q9 (response) | `first_response_time()` — reads pre-computed column; `status_history` fallback |
 | Process | `process_kpi_html()` — revision/response/help-need cards (`_HELP_FIELDS`) |

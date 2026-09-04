@@ -393,7 +393,7 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None, show_trend: bool = True)
             ("TU/e storage", k["TU/e storage rate"],
              f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage at {abbr}'),
             ("Plan to Use Trusted Repository", k["Trusted repository rate"],
-             f'{k["Plan to Use Trusted Repository"]} of {n} DMPs use a trusted data repository at {abbr}'),
+             f'{k["Plan to Use Trusted Repository"]} of {n} DMPs at {abbr} plan to use a trusted data repository'),
             ("Plan to Archive at RAPS", k["RAPS archival rate"],
              f'{k["Plan to Archive at RAPS"]} of {n} DMPs at {abbr} plan to archive at RAPS'),
         ]
@@ -408,7 +408,7 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None, show_trend: bool = True)
             ("TU/e storage", k["TU/e storage rate"],
              f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage'),
             ("Plan to Use Trusted Repository", k["Trusted repository rate"],
-             f'{k["Plan to Use Trusted Repository"]} of {n} DMPs use a trusted data repository'),
+             f'{k["Plan to Use Trusted Repository"]} of {n} DMPs plan to use a trusted data repository'),
             ("Plan to Archive at RAPS", k["RAPS archival rate"],
              f'{k["Plan to Archive at RAPS"]} of {n} DMPs plan to archive at RAPS'),
         ]
@@ -492,7 +492,7 @@ def trusted_repository_split(df: pd.DataFrame) -> pd.DataFrame:
         lambda v: any(r in TRUSTED_REPOSITORIES for r in v)
     ).sum())
     return pd.DataFrame({
-        "Category": ["Plan to Use Trusted Repository", "Not Using Trusted Repository"],
+        "Category": ["Plan to Use Trusted Repository", "Not planning to use a trusted repository"],
         "DMPs": [trusted, n - trusted],
     })
 

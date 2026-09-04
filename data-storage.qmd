@@ -165,9 +165,9 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
     import pandas as pd
     title_by_purpose = {
-        "all": "DMPs with Trusted Repository by Department",
-        "scientific": "Scientific DMPs with Trusted Repository by Department",
-        "educational": "Educational DMPs with Trusted Repository by Department",
+        "all": "DMPs indicating the plan to use a trusted repository by Department",
+        "scientific": "Scientific DMPs indicating the plan to use a trusted repository by Department",
+        "educational": "Educational DMPs indicating the plan to use a trusted repository by Department",
     }
     rows = []
     for dept in h.DEPARTMENTS:
@@ -185,7 +185,7 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
                  title=title_by_purpose[pkey],
                  color_discrete_map={
                      "Plan to Use Trusted Repository": "#742459",
-                     "Not Using Trusted Repository": "#FAE1F0",
+                     "Not planning to use a trusted repository": "#FAE1F0",
                  })
     fig.update_layout(
         yaxis={"categoryorder": "total ascending"},
@@ -214,9 +214,9 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
     import pandas as pd
     title_by_purpose = {
-        "all": "Trusted Repository Choices by Department",
-        "scientific": "Scientific DMPs with Trusted Repository Choices by Department",
-        "educational": "Educational DMPs with Trusted Repository Choices by Department",
+        "all": "Choices Indicating the Plan to Use a Trusted Repository by Department",
+        "scientific": "Scientific Choices Indicating the Plan to Use a Trusted Repository by Department",
+        "educational": "Educational Choices Indicating the Plan to Use a Trusted Repository by Department",
     }
     rows = []
     for dept in h.DEPARTMENTS:
@@ -250,7 +250,7 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     )
     print(h.render_chart(fig))
     print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Counts are repository '
-          '<b>choices</b>, not DMPs. A DMP can select multiple repositories. Data only include choices indicating a use of a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
+          '<b>choices</b>, not DMPs. A DMP can select multiple repositories. Data only include choices indicating the plan to use a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
     print(h.render_department_abbreviations())
     print('</div>')
 ```
@@ -389,7 +389,7 @@ for dept in h.DEPARTMENTS:
         trusted_rate = df.loc[df["Category"] == "Plan to Use Trusted Repository", "Share"].iloc[0] if len(df) else 0
         trusted_colors = {
             "Plan to Use Trusted Repository": "#742459",
-            "Not Using Trusted Repository": "#FAE1F0",
+            "Not planning to use a trusted repository": "#FAE1F0",
         }
         fig = px.pie(df, names="Category", values="DMPs", hole=0.55)
         fig.update_traces(text=df["Label"], textposition="outside", textinfo="text",
@@ -401,7 +401,7 @@ for dept in h.DEPARTMENTS:
             showarrow=False,
         )
         fig.update_layout(showlegend=True,
-                          title=f"DMPs indicating a use of a trusted repository for FAIR data <br>at {dept}",
+                          title=f"DMPs indicating the plan to use a trusted repository for FAIR data<br>at {dept}",
                           margin={"t": 80, "l": 20, "r": 20, "b": 20})
         print(h.render_chart(fig, width=500, height=450))
 
@@ -428,10 +428,10 @@ for dept in h.DEPARTMENTS:
                                   "xanchor": "left", "x": 0},
                           legend_title_text="",
                           margin={"t": 100},
-                          title=f"Trusted repository choice in {dept}")
+                          title=f"Choices indicating the plan to use a trusted repository in {dept}")
         print(h.render_chart(fig))
         print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of repository '
-              '<b>choices</b>, not of DMPs. A DMP can select multiple repositories. Data only include choices indicating a use of a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
+              '<b>choices</b>, not of DMPs. A DMP can select multiple repositories. Data only include choices indicating the plan to use a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
 
         print("<h2>Archive location</h2>")
 
