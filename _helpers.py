@@ -395,7 +395,7 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None, show_trend: bool = True)
             ("Plan to Use Trusted Repository", k["Trusted repository rate"],
              f'{k["Plan to Use Trusted Repository"]} of {n} DMPs use a trusted data repository at {abbr}'),
             ("Plan to Archive at RAPS", k["RAPS archival rate"],
-             f'{k["Plan to Archive at RAPS"]} of {n} DMPs at {abbr} are archived at RAPS'),
+             f'{k["Plan to Archive at RAPS"]} of {n} DMPs at {abbr} plan to archive at RAPS'),
         ]
     else:
         pct_kpis = [
@@ -410,7 +410,7 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None, show_trend: bool = True)
             ("Plan to Use Trusted Repository", k["Trusted repository rate"],
              f'{k["Plan to Use Trusted Repository"]} of {n} DMPs use a trusted data repository'),
             ("Plan to Archive at RAPS", k["RAPS archival rate"],
-             f'{k["Plan to Archive at RAPS"]} of {n} DMPs are archived at RAPS'),
+             f'{k["Plan to Archive at RAPS"]} of {n} DMPs plan to archive at RAPS'),
         ]
     for label, value, desc in pct_kpis:
         items.append(gauge_svg(value, label, desc))
@@ -504,7 +504,7 @@ def archive_split(df: pd.DataFrame) -> pd.DataFrame:
         return pd.DataFrame(columns=["Category", "DMPs"])
     using = int((df["archive_location"] == "tue_archive").sum())
     return pd.DataFrame({
-        "Category": ["Using TU/e archive", "Not using TU/e archive"],
+        "Category": ["Plan to use TU/e archive", "Not planning to use TU/e archive"],
         "DMPs": [using, n - using],
     })
 

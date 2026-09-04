@@ -261,13 +261,13 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
 ```{python}
 #| output: asis
 title_by_purpose = {
-    "all": "DMPs indicating the use of TU/e archive (RAPS) by Department",
-    "scientific": "Scientific DMPs indicating the use of TU/e archive (RAPS) by Department",
-    "educational": "Educational DMPs indicating the use of TU/e archive (RAPS) by Department",
+    "all": "DMPs indicating the plan to use TU/e archive (RAPS) by Department",
+    "scientific": "Scientific DMPs indicating the plan to use TU/e archive (RAPS) by Department",
+    "educational": "Educational DMPs indicating the plan to use TU/e archive (RAPS) by Department",
 }
 archive_colors = {
-    "Using TU/e archive": "#742459",
-    "Not using TU/e archive": "#FAE1F0",
+    "Plan to use TU/e archive": "#742459",
+    "Not planning to use TU/e archive": "#FAE1F0",
 }
 for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
     act = " purpose-active" if pkey == "all" else ""
@@ -439,10 +439,10 @@ for dept in h.DEPARTMENTS:
         total = df["DMPs"].sum() or 1
         df = df.assign(Share=df["DMPs"] / total)
         df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-        archive_rate = df.loc[df["Category"] == "Using TU/e archive", "Share"].iloc[0] if len(df) else 0
+        archive_rate = df.loc[df["Category"] == "Plan to use TU/e archive", "Share"].iloc[0] if len(df) else 0
         archive_colors = {
-            "Using TU/e archive": "#742459",
-            "Not using TU/e archive": "#FAE1F0",
+            "Plan to use TU/e archive": "#742459",
+            "Not planning to use TU/e archive": "#FAE1F0",
         }
         fig = px.pie(df, names="Category", values="DMPs", hole=0.55)
         fig.update_traces(text=df["Label"], textposition="outside", textinfo="text",
@@ -454,7 +454,7 @@ for dept in h.DEPARTMENTS:
             showarrow=False,
         )
         fig.update_layout(showlegend=True,
-                          title=f"DMPs indicating the use of TU/e archive (RAPS)<br>at {dept}",
+                          title=f"DMPs indicating the plan to use TU/e archive (RAPS)<br>at {dept}",
                           margin={"t": 80, "l": 20, "r": 20, "b": 20})
         print(h.render_chart(fig, width=500, height=450))
 
