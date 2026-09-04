@@ -214,9 +214,9 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
     import pandas as pd
     title_by_purpose = {
-        "all": "Choices Indicating the Plan to Use a Trusted Repository by Department",
-        "scientific": "Scientific Choices Indicating the Plan to Use a Trusted Repository by Department",
-        "educational": "Educational Choices Indicating the Plan to Use a Trusted Repository by Department",
+        "all": "Choices indicating the plan to use a trusted repository by Department",
+        "scientific": "Scientific choices indicating the plan to use a trusted repository by Department",
+        "educational": "Educational choices indicating the plan to use a trusted repository by Department",
     }
     rows = []
     for dept in h.DEPARTMENTS:
