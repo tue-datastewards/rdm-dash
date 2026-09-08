@@ -228,6 +228,10 @@ def load_dmps() -> pd.DataFrame:
     # history), currently-retracted DMPs, and non-DMP task items.
     if "ordered_status_transition_list" in df.columns:
         df = df[df["ordered_status_transition_list"].map(_is_actual_dmp)]
+    # Drop DMPs with a missing study type (is_scientific) so the purpose
+    # breakdown is complete: Scientific + Educational == total.
+    if "is_scientific" in df.columns:
+        df = df[df["is_scientific"].notna()]
     return df
 
 
@@ -449,19 +453,18 @@ def dmps_by_department_purpose(df: pd.DataFrame) -> pd.DataFrame:
 
     Returns one row per (department, purpose) with the DMP count, so the
     rows can be stacked to decompose each department's total. ``is_scientific``
-    is mapped to ``Scientific`` (true) / ``Educational`` (false) / ``Unknown``
-    (null); the three categories sum to the department's total DMP count.
+    is mapped to ``Scientific`` (true) / ``Educational`` (false); the two
+    categories sum to the department's total DMP count (rows with a missing
+    study type are dropped in ``load_dmps``).
     """
     rows = []
     for dept in DEPARTMENTS:
         sub = filter_department(df, dept)
         n_sci = int((sub["is_scientific"] == True).sum())
         n_edu = int((sub["is_scientific"] == False).sum())
-        n_unk = int(sub["is_scientific"].isna().sum())
         for label, count in (
             ("Scientific", n_sci),
             ("Educational", n_edu),
-            ("Unknown", n_unk),
         ):
             rows.append({"Department": dept, "Purpose": label, "DMPs": count})
     return pd.DataFrame(rows)
