@@ -103,7 +103,9 @@ When loading, `load_dmps()` keeps only **actual DMPs**. Rows with an empty
 status history (never-submitted drafts), DMPs currently **Retracted**, and
 non-DMP task items that never entered the real DMP workflow (statuses such as
 *Done* / *Work in progress* / *In Progress*) are excluded from all counts and
-rates. See `_helpers.py::_is_actual_dmp()`.
+rates. DMPs with a missing study type (`is_scientific`) are also excluded, so
+the Scientific and Educational purpose counts sum to the total. See
+`_helpers.py::_is_actual_dmp()`.
 
 The dataset structure is described with [Frictionless Data Table Schemas](https://specs.frictionlessdata.io/table-schema/)
 and validated with the `frictionless` package:

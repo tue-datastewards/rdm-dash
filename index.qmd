@@ -97,11 +97,10 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
 df = h.dmps_by_department_purpose(dmps)
 df["Department"] = df["Department"].map(h.DEPT_ABBREVIATIONS)
 fig = px.bar(df, x="DMPs", y="Department", color="Purpose", orientation="h",
-             text="DMPs", category_orders={"Purpose": ["Scientific", "Educational", "Unknown"]},
+             text="DMPs", category_orders={"Purpose": ["Scientific", "Educational"]},
              color_discrete_map={
                  "Scientific": "#742459",
                  "Educational": "#a12d76",
-                 "Unknown": "#FAE1F0",
              })
 fig.update_layout(yaxis={"categoryorder": "total ascending"}, barmode="stack",
                   height=500,
@@ -110,6 +109,9 @@ fig.update_layout(yaxis={"categoryorder": "total ascending"}, barmode="stack",
                   legend_title_text="",
                   margin={"t": 100})
 print(h.render_chart(fig))
+print('<p style="font-size:0.85em;color:#6b7280"><i>Note: DMPs with a missing '
+      'study type (n = 57) are excluded from the scientific/educational split, '
+      'so the two categories sum to the total DMP count.</i></p>')
 print(h.render_department_abbreviations())
 ```
 

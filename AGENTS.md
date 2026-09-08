@@ -131,6 +131,9 @@ data/ERBs_2025_09_10_onwards.csv  (5 cols, foreign keys → DMPs.issue_key)
   and non-DMP task items that never entered the real workflow (statuses such
   as *Done* / *Work in progress* / *In Progress*) are excluded from all
   counts and rates (see `_helpers.py::_is_actual_dmp()`).
+- **Known study type only:** `load_dmps()` also drops DMPs with a missing
+  study type (`is_scientific`), so the Scientific + Educational purpose counts
+  sum to the total DMP count.
 - **ERB decision flow:** Conditional → Approved / Rejected / Retracted / Revisions → In progress
 - **Trusted repositories:** 4TU.ResearchData, Zenodo, OSF, Figshare
 - **TU/e storage:** 01 TU/e Network Drive, 02 Microsoft SharePoint/Teams, 04 SURF Research Drive
