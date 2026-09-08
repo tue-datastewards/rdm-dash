@@ -688,6 +688,13 @@ def purpose_toggle_html() -> str:
         + "\n</div>"
     )
 
+def render_department_options() -> str:
+    return "\n".join(
+        f'<option value="{DEPT_SLUGS[d]}">{d}</option>'
+        for d in sorted(DEPARTMENTS)
+    )
+
+
 # Render department abbreviations -----------------------------------------------------------
 def render_department_abbreviations(font_size: str = "0.85em") -> str:
     parts = []
