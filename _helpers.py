@@ -399,6 +399,14 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None, show_trend: bool = True)
 
     items = []
 
+    # Explanation for the TU/e storage gauge: counts DMPs (not options).
+    TUE_STORAGE_INFO = (
+        "Counts DMPs that selected at least one TU/e-supported storage option "
+        "(TU/e Network Drive, Microsoft SharePoint/Teams, SURF Research Drive, "
+        "Data Foundry, Microsoft OneDrive, TU/e GitLab). A DMP is counted once "
+        "even if it lists several options."
+    )
+
     trend_delta = ""
     if show_trend:
         prev_total = load_historical_dmps()
@@ -424,35 +432,37 @@ def kpi_html(df: pd.DataFrame, dept: str | None = None, show_trend: bool = True)
     if abbr:
         pct_kpis = [
             ("Approval rate", k["Approval rate"],
-             f'{k["Approved DMPs"]} of {n} DMPs are approved at {abbr}'),
+             f'{k["Approved DMPs"]} of {n} DMPs are approved at {abbr}', None),
             ("DMPs with ERB", k["ERB linkage rate"],
-             f'{k["Linked ERB"]} of {n} DMPs are linked to an ERB at {abbr}'),
+             f'{k["Linked ERB"]} of {n} DMPs are linked to an ERB at {abbr}', None),
             ("Data sharing agreement", k["Data sharing agreement rate"],
-             f'{k["Data sharing agreement"]} of {n} DMPs require a data sharing agreement at {abbr}'),
+             f'{k["Data sharing agreement"]} of {n} DMPs require a data sharing agreement at {abbr}', None),
             ("TU/e storage", k["TU/e storage rate"],
-             f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage at {abbr}'),
+             f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage at {abbr}',
+             TUE_STORAGE_INFO),
             ("Plan to Use Trusted Repository", k["Trusted repository rate"],
-             f'{k["Plan to Use Trusted Repository"]} of {n} DMPs at {abbr} plan to use a trusted data repository'),
+             f'{k["Plan to Use Trusted Repository"]} of {n} DMPs at {abbr} plan to use a trusted data repository', None),
             ("Plan to Archive at RAPS", k["RAPS archival rate"],
-             f'{k["Plan to Archive at RAPS"]} of {n} DMPs at {abbr} plan to archive at RAPS'),
+             f'{k["Plan to Archive at RAPS"]} of {n} DMPs at {abbr} plan to archive at RAPS', None),
         ]
     else:
         pct_kpis = [
             ("Approval rate", k["Approval rate"],
-             f'{k["Approved DMPs"]} of {n} DMPs are approved'),
+             f'{k["Approved DMPs"]} of {n} DMPs are approved', None),
             ("DMPs with ERB", k["ERB linkage rate"],
-             f'{k["Linked ERB"]} of {n} DMPs are linked to an ERB'),
+             f'{k["Linked ERB"]} of {n} DMPs are linked to an ERB', None),
             ("Data sharing agreement", k["Data sharing agreement rate"],
-             f'{k["Data sharing agreement"]} of {n} DMPs require a data sharing agreement'),
+             f'{k["Data sharing agreement"]} of {n} DMPs require a data sharing agreement', None),
             ("TU/e storage", k["TU/e storage rate"],
-             f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage'),
+             f'{k["TU/e storage"]} of {n} DMPs use TU/e-supported storage',
+             TUE_STORAGE_INFO),
             ("Plan to Use Trusted Repository", k["Trusted repository rate"],
-             f'{k["Plan to Use Trusted Repository"]} of {n} DMPs plan to use a trusted data repository'),
+             f'{k["Plan to Use Trusted Repository"]} of {n} DMPs plan to use a trusted data repository', None),
             ("Plan to Archive at RAPS", k["RAPS archival rate"],
-             f'{k["Plan to Archive at RAPS"]} of {n} DMPs plan to archive at RAPS'),
+             f'{k["Plan to Archive at RAPS"]} of {n} DMPs plan to archive at RAPS', None),
         ]
-    for label, value, desc in pct_kpis:
-        items.append(gauge_svg(value, label, desc))
+    for label, value, desc, info in pct_kpis:
+        items.append(gauge_svg(value, label, desc, info=info))
 
     return '<div class="kpi-header">' + total_card + '<div class="kpi-grid">' + "".join(items) + "</div></div>"
 
@@ -656,8 +666,13 @@ def first_response_time(df: pd.DataFrame) -> pd.Series:
 _HELP_FIELDS = ["data_repository", "metadata_standard", "processing_tools_list"]
 
 
-def gauge_svg(value_float: float, label: str, description: str | None = None) -> str:
-    """Return an inline SVG circle gauge for a decimal value 0-1."""
+def gauge_svg(value_float: float, label: str, description: str | None = None,
+              info: str | None = None) -> str:
+    """Return an inline SVG circle gauge for a decimal value 0-1.
+
+    If ``info`` is given, an ℹ tooltip explaining the metric is added to the
+    card (rendered on hover/focus).
+    """
     pct = max(0.0, min(1.0, value_float))
     pct_display = f"{pct:.0%}"
     x = 66
@@ -669,8 +684,20 @@ def gauge_svg(value_float: float, label: str, description: str | None = None) ->
     ca_str = f"{round(circumference, 1)}"
     off_str = f"{round(offset, 1)}"
     desc_html = f'<div class="kpi-desc">{description}</div>' if description else ""
+    info_html = ""
+    if info:
+        info_html = (
+            '<span class="info-tip" aria-label="Calculation note" tabindex="0">'
+            '<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">'
+            '<circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"/>'
+            '<path d="M8 7.2v3.6M8 5.1h.01" stroke="currentColor" stroke-width="1.6" '
+            'stroke-linecap="round"/></svg>'
+            f'<span class="info-tip-text">{info}</span>'
+            '</span>'
+        )
     return (
         '<div class="kpi-card kpi-circle">'
+        f'{info_html}'
         '<div class="gauge-wrap">'
         '<svg class="gauge-svg" viewBox="0 0 132 132" width="132" height="132">'
         '<circle cx="{x}" cy="{y}" r="{r}" '

@@ -104,7 +104,7 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     legend_title_text="",
 )
     print(h.render_chart(fig))
-    print('<p style="font-size:0.85em;color:#6b7280"><i>Note: TU/e storage solutions include TU/e Network Drive, SURF Research Drive, Microsoft SharePoint/Teams, and Microsoft OneDrive.</i></p>')
+    print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Counts DMPs that selected at least one TU/e-supported storage option (TU/e Network Drive, Microsoft SharePoint/Teams, SURF Research Drive, Data Foundry, Microsoft OneDrive, TU/e GitLab). A DMP is counted once even if it lists several options.</i></p>')
     print(h.render_department_abbreviations())
 
     solution_titles = {
@@ -323,6 +323,7 @@ for dept in h.DEPARTMENTS:
                           title=title_by_purpose[pkey],
                           margin={"t": 80, "l": 20, "r": 20, "b": 20})
         print(h.render_chart(fig, width=500, height=450))
+        print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Counts DMPs that selected at least one TU/e-supported storage option (TU/e Network Drive, Microsoft SharePoint/Teams, SURF Research Drive, Data Foundry, Microsoft OneDrive, TU/e GitLab). A DMP is counted once even if it lists several options.</i></p>')
 
         df = h.storage_solution_by_department(dd)
         df = df[df["Department"] == dept]
