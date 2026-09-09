@@ -154,6 +154,8 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
     print('</div>')
 ```
 
+<div id="fair-archive-section">
+
 ## FAIR Data Adoption
 
 
@@ -300,6 +302,8 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
 
 </div>
 
+</div>
+
 ```{python}
 #| tags: [hide-all]
 #| output: asis
@@ -379,83 +383,84 @@ for dept in h.DEPARTMENTS:
         print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of storage '
               '<b>choices</b>, not of DMPs. A DMP can select multiple storage options.</i></p>')
 
-        print("<h2>FAIR Data Adoption</h2>")
+        if pkey != "educational":
+            print("<h2>FAIR Data Adoption</h2>")
 
-        df = h.trusted_repository_split(dd)
-        total = df["DMPs"].sum() or 1
-        df = df.assign(Share=df["DMPs"] / total)
-        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-        trusted_rate = df.loc[df["Category"] == "Plan to Use Trusted Repository", "Share"].iloc[0] if len(df) else 0
-        trusted_colors = {
-            "Plan to Use Trusted Repository": "#742459",
-            "Not planning to use a trusted repository": "#FAE1F0",
-        }
-        fig = px.pie(df, names="Category", values="DMPs", hole=0.55)
-        fig.update_traces(text=df["Label"], textposition="outside", textinfo="text",
-                          sort=False,
-                          marker_colors=[trusted_colors[c] for c in df["Category"]])
-        fig.add_annotation(
-            text=f"{trusted_rate:.0%}",
-            font={"size": 28, "color": "#111827"},
-            showarrow=False,
-        )
-        fig.update_layout(showlegend=True,
-                          title=f"DMPs indicating the plan to use a trusted repository for FAIR data<br>at {dept}",
-                          margin={"t": 80, "l": 20, "r": 20, "b": 20})
-        print(h.render_chart(fig, width=500, height=450))
+            df = h.trusted_repository_split(dd)
+            total = df["DMPs"].sum() or 1
+            df = df.assign(Share=df["DMPs"] / total)
+            df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+            trusted_rate = df.loc[df["Category"] == "Plan to Use Trusted Repository", "Share"].iloc[0] if len(df) else 0
+            trusted_colors = {
+                "Plan to Use Trusted Repository": "#742459",
+                "Not planning to use a trusted repository": "#FAE1F0",
+            }
+            fig = px.pie(df, names="Category", values="DMPs", hole=0.55)
+            fig.update_traces(text=df["Label"], textposition="outside", textinfo="text",
+                              sort=False,
+                              marker_colors=[trusted_colors[c] for c in df["Category"]])
+            fig.add_annotation(
+                text=f"{trusted_rate:.0%}",
+                font={"size": 28, "color": "#111827"},
+                showarrow=False,
+            )
+            fig.update_layout(showlegend=True,
+                              title=f"DMPs indicating the plan to use a trusted repository for FAIR data<br>at {dept}",
+                              margin={"t": 80, "l": 20, "r": 20, "b": 20})
+            print(h.render_chart(fig, width=500, height=450))
 
-        df = h.repository_breakdown(dd)
-        df = df[df["Repository"].isin(repo_order)]
-        df = df.set_index("Repository")["DMPs"].reindex(repo_order, fill_value=0).reset_index(name="DMPs")
-        df["Share"] = df["DMPs"] / (df["DMPs"].sum() or 1)
-        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-        df["Department"] = h.DEPT_ABBREVIATIONS[dept]
-        df["Short"] = df["Repository"].map({"4TU.ResearchData": "4TU"})
-        df["Short"] = df["Short"].fillna(df["Repository"])
-        fig = px.bar(df, x="Share", y="Department", color="Repository",
-                     barmode="stack", orientation="h",
-                     text=df["Short"], height=240,
-                     category_orders={"Repository": repo_order},
-                     color_discrete_map=repo_colors,
-                     custom_data=df[["Label", "DMPs"]])
-        fig.update_traces(texttemplate="%{text}<br>%{customdata[1]} (%{x:.0%})", textposition="inside",
-                          textangle=0, insidetextanchor="middle",
-                          hovertemplate="%{y} · %{fullData.name}<br>%{customdata[0]}<extra></extra>")
-        fig.update_layout(yaxis_title="",
-                          xaxis={"tickformat": ".0%", "title": "", "range": [0, 1]},
-                          legend={"orientation": "h", "yanchor": "bottom", "y": 1.00,
-                                  "xanchor": "left", "x": 0},
-                          legend_title_text="",
-                          margin={"t": 100},
-                          title=f"Choices indicating the plan to use a trusted repository in {dept}")
-        print(h.render_chart(fig))
-        print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of repository '
-              '<b>choices</b>, not of DMPs. A DMP can select multiple repositories. Data only include choices indicating the plan to use a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
+            df = h.repository_breakdown(dd)
+            df = df[df["Repository"].isin(repo_order)]
+            df = df.set_index("Repository")["DMPs"].reindex(repo_order, fill_value=0).reset_index(name="DMPs")
+            df["Share"] = df["DMPs"] / (df["DMPs"].sum() or 1)
+            df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+            df["Department"] = h.DEPT_ABBREVIATIONS[dept]
+            df["Short"] = df["Repository"].map({"4TU.ResearchData": "4TU"})
+            df["Short"] = df["Short"].fillna(df["Repository"])
+            fig = px.bar(df, x="Share", y="Department", color="Repository",
+                         barmode="stack", orientation="h",
+                         text=df["Short"], height=240,
+                         category_orders={"Repository": repo_order},
+                         color_discrete_map=repo_colors,
+                         custom_data=df[["Label", "DMPs"]])
+            fig.update_traces(texttemplate="%{text}<br>%{customdata[1]} (%{x:.0%})", textposition="inside",
+                              textangle=0, insidetextanchor="middle",
+                              hovertemplate="%{y} · %{fullData.name}<br>%{customdata[0]}<extra></extra>")
+            fig.update_layout(yaxis_title="",
+                              xaxis={"tickformat": ".0%", "title": "", "range": [0, 1]},
+                              legend={"orientation": "h", "yanchor": "bottom", "y": 1.00,
+                                      "xanchor": "left", "x": 0},
+                              legend_title_text="",
+                              margin={"t": 100},
+                              title=f"Choices indicating the plan to use a trusted repository in {dept}")
+            print(h.render_chart(fig))
+            print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of repository '
+                  '<b>choices</b>, not of DMPs. A DMP can select multiple repositories. Data only include choices indicating the plan to use a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
 
-        print("<h2>Archive location</h2>")
+            print("<h2>Archive location</h2>")
 
-        df = h.archive_split(dd)
-        total = df["DMPs"].sum() or 1
-        df = df.assign(Share=df["DMPs"] / total)
-        df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
-        archive_rate = df.loc[df["Category"] == "Plan to use TU/e archive", "Share"].iloc[0] if len(df) else 0
-        archive_colors = {
-            "Plan to use TU/e archive": "#742459",
-            "Not planning to use TU/e archive": "#FAE1F0",
-        }
-        fig = px.pie(df, names="Category", values="DMPs", hole=0.55)
-        fig.update_traces(text=df["Label"], textposition="outside", textinfo="text",
-                          sort=False,
-                          marker_colors=[archive_colors[c] for c in df["Category"]])
-        fig.add_annotation(
-            text=f"{archive_rate:.0%}",
-            font={"size": 28, "color": "#111827"},
-            showarrow=False,
-        )
-        fig.update_layout(showlegend=True,
-                          title=f"DMPs indicating the plan to use TU/e archive (RAPS)<br>at {dept}",
-                          margin={"t": 80, "l": 20, "r": 20, "b": 20})
-        print(h.render_chart(fig, width=500, height=450))
+            df = h.archive_split(dd)
+            total = df["DMPs"].sum() or 1
+            df = df.assign(Share=df["DMPs"] / total)
+            df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
+            archive_rate = df.loc[df["Category"] == "Plan to use TU/e archive", "Share"].iloc[0] if len(df) else 0
+            archive_colors = {
+                "Plan to use TU/e archive": "#742459",
+                "Not planning to use TU/e archive": "#FAE1F0",
+            }
+            fig = px.pie(df, names="Category", values="DMPs", hole=0.55)
+            fig.update_traces(text=df["Label"], textposition="outside", textinfo="text",
+                              sort=False,
+                              marker_colors=[archive_colors[c] for c in df["Category"]])
+            fig.add_annotation(
+                text=f"{archive_rate:.0%}",
+                font={"size": 28, "color": "#111827"},
+                showarrow=False,
+            )
+            fig.update_layout(showlegend=True,
+                              title=f"DMPs indicating the plan to use TU/e archive (RAPS)<br>at {dept}",
+                              margin={"t": 80, "l": 20, "r": 20, "b": 20})
+            print(h.render_chart(fig, width=500, height=450))
 
         print('</div>')
     print('</div>')
@@ -502,6 +507,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function showPurpose(p) {
       pBtns.forEach(function (b) { b.classList.toggle("active", b.dataset.purpose === p); });
       pPanels.forEach(function (el) { el.classList.toggle("purpose-active", el.dataset.purpose === p); });
+      var fa = document.getElementById("fair-archive-section");
+      if (fa) fa.style.display = (p === "educational") ? "none" : "";
     }
     pBtns.forEach(function (b) { b.addEventListener("click", function () { showPurpose(this.dataset.purpose); }); });
     showPurpose("all");
