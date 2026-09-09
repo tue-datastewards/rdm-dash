@@ -29,6 +29,41 @@ TUE_STORAGE = {
     "04 SURF Research Drive",
 }
 
+# Key phrases used to fuzzy-match a raw ``data_storage_list`` item to a
+# TU/e-supported service. Each key phrase is matched case-insensitively as a
+# substring after stripping any leading "NN " numbering prefix, so un-numbered
+# variants (e.g. "TU/e Network Drive") and prose answers naming the service
+# are still counted as compliant.
+_TUE_STORAGE_KEYS = (
+    "tu/e network drive",
+    "sharepoint/teams",
+    "surf research drive",
+    "data foundry",
+    "tu/e gitlab",
+    # TU/e-provided OneDrive only; bare "OneDrive" is too ambiguous
+    # (company/personal drives) and is deliberately NOT matched.
+    "tu/e onedrive",
+)
+
+# Exact option labels for OneDrive (deliberate). A substring match on
+# "onedrive" would also catch company/personal drives in prose answers, so
+# only these exact template labels count as TU/e-supported OneDrive.
+_TUE_STORAGE_EXACT = {
+    "03 Microsoft OneDrive",
+    "Microsoft OneDrive",
+}
+
+
+def _is_tue_storage(item) -> bool:
+    """True if a raw storage item denotes a TU/e-supported service."""
+    s = " ".join(str(item).split())
+    if len(s) >= 3 and s[:2].isdigit() and s[2] == " ":
+        s = s[3:]
+    if s in _TUE_STORAGE_EXACT:
+        return True
+    s = s.casefold()
+    return any(key in s for key in _TUE_STORAGE_KEYS)
+
 # Repositories considered trusted (FAIR) destinations.
 TRUSTED_REPOSITORIES = {
     "4TU.ResearchData",
@@ -310,7 +345,7 @@ def kpi_table(df: pd.DataFrame) -> dict:
     n_sharing = int(df["data_sharing"].isin(["inside_eea", "outside_eea"]).sum()) if n else 0
     n_tue_storage = int(
         df["data_storage_list"].map(
-            lambda v: any(s in TUE_STORAGE for s in v)
+            lambda v: any(_is_tue_storage(s) for s in v)
         ).sum()
     ) if n else 0
     n_repo = int(df["data_repository"].map(lambda v: len(v) > 0).sum()) if n else 0
@@ -520,7 +555,7 @@ def storage_split(df: pd.DataFrame) -> pd.DataFrame:
 
     compliant = int(
         df["data_storage_list"].map(
-            lambda v: any(s in TUE_STORAGE for s in v)
+            lambda v: any(_is_tue_storage(s) for s in v)
         ).sum()
     )
     non_compliant = n - compliant
