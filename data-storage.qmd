@@ -161,99 +161,81 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
 
 ```{python}
 #| output: asis
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    import pandas as pd
-    title_by_purpose = {
-        "all": "DMPs indicating the plan to use a trusted repository by Department",
-        "scientific": "Scientific DMPs indicating the plan to use a trusted repository by Department",
-        "educational": "Educational DMPs indicating the plan to use a trusted repository by Department",
-    }
-    rows = []
-    for dept in h.DEPARTMENTS:
-        sub = h.filter_department(pdf, dept)
-        for _, r in h.trusted_repository_split(sub).iterrows():
-            rows.append({
-                "Department": h.DEPT_ABBREVIATIONS[dept],
-                "Category": r["Category"],
-                "DMPs": r["DMPs"],
-            })
-    df = pd.DataFrame(rows)
-    fig = px.bar(df, x="DMPs", y="Department", color="Category",
-                 barmode="stack", height=500,
-                 text="DMPs",
-                 title=title_by_purpose[pkey],
-                 color_discrete_map={
-                     "Plan to Use Trusted Repository": "#742459",
-                     "Not planning to use a trusted repository": "#FAE1F0",
-                 })
-    fig.update_layout(
-        yaxis={"categoryorder": "total ascending"},
-        legend={
-            "orientation": "h",
-            "yanchor": "bottom",
-            "y": 1.00,
-            "xanchor": "left",
-            "x": 0,
-        },
-        margin={"t": 100},
-        legend_title_text="",
-    )
-    print(h.render_chart(fig))
-    print(h.render_department_abbreviations())
-    print('<br>')
-    print('</div>')
+import pandas as pd
+rows = []
+for dept in h.DEPARTMENTS:
+    sub = h.filter_department(dmps_sci, dept)
+    for _, r in h.trusted_repository_split(sub).iterrows():
+        rows.append({
+            "Department": h.DEPT_ABBREVIATIONS[dept],
+            "Category": r["Category"],
+            "Scientific DMPs": r["DMPs"],
+        })
+df = pd.DataFrame(rows)
+fig = px.bar(df, x="Scientific DMPs", y="Department", color="Category",
+             barmode="stack", height=500,
+             text="Scientific DMPs",
+             title="Scientific DMPs indicating the plan to use a trusted repository by Department",
+             color_discrete_map={
+                 "Plan to Use Trusted Repository": "#742459",
+                 "Not planning to use a trusted repository": "#FAE1F0",
+             })
+fig.update_layout(
+    yaxis={"categoryorder": "total ascending"},
+    legend={
+        "orientation": "h",
+        "yanchor": "bottom",
+        "y": 1.00,
+        "xanchor": "left",
+        "x": 0,
+    },
+    margin={"t": 100},
+    legend_title_text="",
+)
+print(h.render_chart(fig))
+print(h.render_department_abbreviations())
+print('<br>')
 ```
 
 
 
 ```{python}
 #| output: asis
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    import pandas as pd
-    title_by_purpose = {
-        "all": "Choices indicating the plan to use a trusted repository by Department",
-        "scientific": "Scientific choices indicating the plan to use a trusted repository by Department",
-        "educational": "Educational choices indicating the plan to use a trusted repository by Department",
-    }
-    rows = []
-    for dept in h.DEPARTMENTS:
-        sub = h.filter_department(pdf, dept)
-        for _, r in h.repository_breakdown(sub).iterrows():
-            if r["Repository"] not in repo_order:
-                continue
-            rows.append({
-                "Department": h.DEPT_ABBREVIATIONS[dept],
-                "Repository": r["Repository"],
-                "Choices": r["DMPs"],
-            })
-    df = pd.DataFrame(rows)
-    fig = px.bar(df, x="Choices", y="Department", color="Repository",
-                 barmode="stack", height=500,
-                 text="Choices",
-                 title=title_by_purpose[pkey],
-                 category_orders={"Repository": repo_order},
-                 color_discrete_map=repo_colors)
-    fig.update_layout(
-        yaxis={"categoryorder": "total ascending"},
-        legend={
-            "orientation": "h",
-            "yanchor": "bottom",
-            "y": 1.00,
-            "xanchor": "left",
-            "x": 0,
-        },
-        margin={"t": 100},
-        legend_title_text="",
-    )
-    print(h.render_chart(fig))
-    print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Counts are repository '
-          '<b>choices</b>, not DMPs. A DMP can select multiple repositories. Data only include choices indicating the plan to use a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
-    print(h.render_department_abbreviations())
-    print('</div>')
+import pandas as pd
+rows = []
+for dept in h.DEPARTMENTS:
+    sub = h.filter_department(dmps_sci, dept)
+    for _, r in h.repository_breakdown(sub).iterrows():
+        if r["Repository"] not in repo_order:
+            continue
+        rows.append({
+            "Department": h.DEPT_ABBREVIATIONS[dept],
+            "Repository": r["Repository"],
+            "Choices from Scientific DMPs": r["DMPs"],
+        })
+df = pd.DataFrame(rows)
+fig = px.bar(df, x="Choices from Scientific DMPs", y="Department", color="Repository",
+             barmode="stack", height=500,
+             text="Choices from Scientific DMPs",
+             title="Choices from Scientific DMPs indicating the plan to use a trusted repository by Department",
+             category_orders={"Repository": repo_order},
+             color_discrete_map=repo_colors)
+fig.update_layout(
+    yaxis={"categoryorder": "total ascending"},
+    legend={
+        "orientation": "h",
+        "yanchor": "bottom",
+        "y": 1.00,
+        "xanchor": "left",
+        "x": 0,
+    },
+    margin={"t": 100},
+    legend_title_text="",
+)
+print(h.render_chart(fig))
+print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Counts are repository '
+      '<b>choices</b>, not DMPs. A DMP can select multiple repositories. Data only include choices indicating the plan to use a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
+print(h.render_department_abbreviations())
 ```
 
 ## Archive location
@@ -261,43 +243,35 @@ for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", d
 
 ```{python}
 #| output: asis
-title_by_purpose = {
-    "all": "DMPs indicating the plan to use TU/e archive (RAPS) by Department",
-    "scientific": "Scientific DMPs indicating the plan to use TU/e archive (RAPS) by Department",
-    "educational": "Educational DMPs indicating the plan to use TU/e archive (RAPS) by Department",
-}
+import pandas as pd
 archive_colors = {
     "Plan to use TU/e archive": "#742459",
     "Not planning to use TU/e archive": "#FAE1F0",
 }
-for pkey, pdf in [("all", dmps_all), ("scientific", dmps_sci), ("educational", dmps_edu)]:
-    act = " purpose-active" if pkey == "all" else ""
-    print(f'<div class="purpose-content{act}" data-purpose="{pkey}">')
-    import pandas as pd
-    rows = []
-    for dept in h.DEPARTMENTS:
-        sub = h.filter_department(pdf, dept)
-        for _, r in h.archive_split(sub).iterrows():
-            rows.append({"Department": h.DEPT_ABBREVIATIONS[dept], "Category": r["Category"], "DMPs": r["DMPs"]})
-    df = pd.DataFrame(rows)
-    fig = px.bar(df, x="DMPs", y="Department", color="Category",
-                 barmode="stack", text="DMPs", title=title_by_purpose[pkey],
-                 color_discrete_map=archive_colors)
-    fig.update_layout(
-        yaxis={"categoryorder": "total ascending"},
-        legend={
-            "orientation": "h",
-            "yanchor": "bottom",
-            "y": 1.00,
-            "xanchor": "left",
-            "x": 0,
-        },
-        margin={"t": 100},
-        legend_title_text="",
-    )
-    print(h.render_chart(fig))
-    print(h.render_department_abbreviations())
-    print('</div>')
+rows = []
+for dept in h.DEPARTMENTS:
+    sub = h.filter_department(dmps_sci, dept)
+    for _, r in h.archive_split(sub).iterrows():
+        rows.append({"Department": h.DEPT_ABBREVIATIONS[dept], "Category": r["Category"], "Scientific DMPs": r["DMPs"]})
+df = pd.DataFrame(rows)
+fig = px.bar(df, x="Scientific DMPs", y="Department", color="Category",
+             barmode="stack", text="Scientific DMPs",
+             title="Scientific DMPs indicating the plan to use TU/e archive (RAPS) by Department",
+             color_discrete_map=archive_colors)
+fig.update_layout(
+    yaxis={"categoryorder": "total ascending"},
+    legend={
+        "orientation": "h",
+        "yanchor": "bottom",
+        "y": 1.00,
+        "xanchor": "left",
+        "x": 0,
+    },
+    margin={"t": 100},
+    legend_title_text="",
+)
+print(h.render_chart(fig))
+print(h.render_department_abbreviations())
 ```
 
 </div>
@@ -384,9 +358,10 @@ for dept in h.DEPARTMENTS:
               '<b>choices</b>, not of DMPs. A DMP can select multiple storage options.</i></p>')
 
         if pkey != "educational":
+            dd_fair = h.filter_by_purpose(dd, True)
             print("<h2>FAIR Data Adoption</h2>")
 
-            df = h.trusted_repository_split(dd)
+            df = h.trusted_repository_split(dd_fair)
             total = df["DMPs"].sum() or 1
             df = df.assign(Share=df["DMPs"] / total)
             df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
@@ -405,11 +380,11 @@ for dept in h.DEPARTMENTS:
                 showarrow=False,
             )
             fig.update_layout(showlegend=True,
-                              title=f"DMPs indicating the plan to use a trusted repository for FAIR data<br>at {dept}",
+                              title=f"Scientific DMPs indicating the plan to use a trusted repository for FAIR data<br>at {dept}",
                               margin={"t": 80, "l": 20, "r": 20, "b": 20})
             print(h.render_chart(fig, width=500, height=450))
 
-            df = h.repository_breakdown(dd)
+            df = h.repository_breakdown(dd_fair)
             df = df[df["Repository"].isin(repo_order)]
             df = df.set_index("Repository")["DMPs"].reindex(repo_order, fill_value=0).reset_index(name="DMPs")
             df["Share"] = df["DMPs"] / (df["DMPs"].sum() or 1)
@@ -432,14 +407,14 @@ for dept in h.DEPARTMENTS:
                                       "xanchor": "left", "x": 0},
                               legend_title_text="",
                               margin={"t": 100},
-                              title=f"Choices indicating the plan to use a trusted repository in {dept}")
+                              title=f"Choices from Scientific DMPs indicating the plan to use a trusted repository in {dept}")
             print(h.render_chart(fig))
             print('<p style="font-size:0.85em;color:#6b7280"><i>Note: Percentages are shares of repository '
                   '<b>choices</b>, not of DMPs. A DMP can select multiple repositories. Data only include choices indicating the plan to use a trusted repository. Trusted repositories included here are: 4TU.ResearchData, Zenodo, OSF, Figshare.</i></p>')
 
             print("<h2>Archive location</h2>")
 
-            df = h.archive_split(dd)
+            df = h.archive_split(dd_fair)
             total = df["DMPs"].sum() or 1
             df = df.assign(Share=df["DMPs"] / total)
             df["Label"] = df.apply(lambda r: f'{r["DMPs"]} ({r["Share"]:.0%})', axis=1)
@@ -458,7 +433,7 @@ for dept in h.DEPARTMENTS:
                 showarrow=False,
             )
             fig.update_layout(showlegend=True,
-                              title=f"DMPs indicating the plan to use TU/e archive (RAPS)<br>at {dept}",
+                              title=f"Scientific DMPs indicating the plan to use TU/e archive (RAPS)<br>at {dept}",
                               margin={"t": 80, "l": 20, "r": 20, "b": 20})
             print(h.render_chart(fig, width=500, height=450))
 
