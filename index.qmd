@@ -1,6 +1,6 @@
 ---
 title: "RDM Policy Implementation Dashboard"
-subtitle: "Eindhoven Unviersity of Technology"
+subtitle: "Eindhoven University of Technology"
 format:
   html:
     page-layout: full
