@@ -456,6 +456,15 @@ h4 {
   font-weight: 600;
 }
 
+.sidebar-footer a {
+  color: var(--rdm-700);
+  text-decoration: none;
+}
+
+.sidebar-footer a:hover {
+  text-decoration: underline;
+}
+
 /* ---------- Navbar (rdm.tue.nl dark slate) ---------- */
 
 .navbar {
